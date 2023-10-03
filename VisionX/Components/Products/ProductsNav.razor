@@ -1,0 +1,53 @@
+﻿@using VisionX.Components.Products
+
+<div class="inner-nav">
+    <button class="nav-underline" @onclick="ShowFrames">Frames</button>
+    <button class="nav-underline" @onclick="ShowSunglasses">Sunglasses</button>
+    <button class="nav-underline" @onclick="ShowContactLenses">Contact Lenses</button>
+</div>
+
+<br />
+
+<div>
+    @if (showFrames)
+    {
+        <TheFrames />
+    }
+
+    @if (showSunglasses)
+    {
+        <TheSunglasses />
+    }
+
+    @if (showContactLenses)
+    {
+        <TheContactLenses />
+    }
+</div>
+
+@code {
+    private bool showFrames = true;
+    private bool showSunglasses = false;
+    private bool showContactLenses = false;
+
+    private void ShowFrames()
+    {
+        showFrames = true;
+        showSunglasses = false;
+        showContactLenses = false;
+    }
+
+    private void ShowSunglasses()
+    {
+        showFrames = false;
+        showSunglasses = true;
+        showContactLenses = false;
+    }
+
+    private void ShowContactLenses()
+    {
+        showFrames = false;
+        showSunglasses = false;
+        showContactLenses = true;
+    }
+}

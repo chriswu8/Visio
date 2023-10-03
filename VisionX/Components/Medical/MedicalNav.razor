@@ -1,0 +1,71 @@
+﻿@using VisionX.Components.Medical
+
+<div class="inner-nav">
+    <button class="nav-underline" @onclick="ShowEyeExams">Eye Exams</button>
+    <button class="nav-underline" @onclick="ShowOcularScans">Ocular Scans</button>
+    <button class="nav-underline" @onclick="ShowPrescriptions">Prescriptions</button>
+    <button class="nav-underline" @onclick="ShowWillsManual">Will's Manual</button>
+</div>
+
+<br />
+
+<div>
+    @if (showEyeExams)
+    {
+        <TheEyeExams />
+    }
+
+    @if (showOcularScans)
+    {
+        <TheOcularScans />
+    }
+
+    @if (showPrescriptions)
+    {
+        <ThePrescriptions />
+    }
+
+    @if (showWillsManual)
+    {
+        <TheWillsManual />
+    }
+</div>
+
+@code {
+    private bool showEyeExams = true;
+    private bool showOcularScans = false;
+    private bool showPrescriptions = false;
+    private bool showWillsManual = false;
+
+    private void ShowEyeExams()
+    {
+        showEyeExams = true;
+        showOcularScans = false;
+        showPrescriptions = false;
+        showWillsManual = false;
+    }
+
+    private void ShowOcularScans()
+    {
+        showEyeExams = false;
+        showOcularScans = true;
+        showPrescriptions = false;
+        showWillsManual = false;
+    }
+
+    private void ShowPrescriptions()
+    {
+        showEyeExams = false;
+        showOcularScans = false;
+        showPrescriptions = true;
+        showWillsManual = false;
+    }
+
+    private void ShowWillsManual()
+    {
+        showEyeExams = false;
+        showOcularScans = false;
+        showPrescriptions = false;
+        showWillsManual = true;
+    }
+}
