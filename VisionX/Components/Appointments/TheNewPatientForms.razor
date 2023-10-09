@@ -1,5 +1,121 @@
-﻿<h3>NewPatientForms</h3>
+﻿@page "/newpatientforms"
+
+<h3>New Patient Forms</h3>
+
+<div class="form-buttons">
+    <button class="book-button" @onclick="ShowAdultForm">View Adult Form</button>
+    <button class="book-button" @onclick="ShowChildForm">View Child Form</button>
+    <button class="book-button" @onclick="ShowInfantForm">View Infant Form</button>
+</div>
+
+@if (showModal)
+{
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close" @onclick="CloseModal">×</span>
+            <iframe src="@currentFormUrl" width="100%" height="500"></iframe>
+            <button class="book-button print-button" @onclick="PrintForm">Print</button>
+        </div>
+    </div>
+}
+
+<style>
+    .book-button {
+        background-color: #f0f0f0;
+        border: none;
+        color: #333;
+        padding: 10px;
+        margin-bottom: 5px;
+        width: 100%;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+    }
+
+        .book-button:hover {
+            background-color: #666;
+            color: #fff;
+        }
+
+
+    .modal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+        position: relative;
+        max-width: 60%;
+        margin: 0 auto;
+    }
+
+    .close {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .print-button {
+        background-color: grey;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .print-button:hover {
+            background-color: #333;
+        }
+</style>
 
 @code {
+    private bool showModal = false;
+    private string currentFormUrl = "";
 
+    private void ShowAdultForm()
+    {
+        currentFormUrl = "/PatientForms/AdultForm.pdf";
+        showModal = true;
+    }
+
+    private void ShowChildForm()
+    {
+        currentFormUrl = "/PatientForms/ChildForm.pdf";
+        showModal = true;
+    }
+
+    private void ShowInfantForm()
+    {
+        currentFormUrl = "/PatientForms/InfantForm.pdf";
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+        currentFormUrl = "";
+    }
+
+    private void PrintForm()
+    {
+
+    }
 }
