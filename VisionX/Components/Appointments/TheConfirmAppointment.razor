@@ -1,0 +1,55 @@
+﻿<div>
+    <div>
+        <div class="modal-content">
+            <div class="left-column">
+                <div>Date:</div>
+                <input type="date" />
+                <div>Time:</div>
+                <input type="time" />
+            </div>
+            <div class="right-column">
+                <div>Exam:</div>
+                <select>
+                    <option value="exam1">Exam 1</option>
+                    <option value="exam2">Exam 2</option>
+                </select>
+                <div>Fee:</div>
+                <div class="grey-box">
+                    <!-- Fee will be auto-populated here based on selection -->
+                </div>
+            </div>
+        </div>
+        <div class="button-bar">
+            <button class="visionX-button" @onclick="OnSave">Save</button>
+            <button class="visionX-button" @onclick="OnCancel">Cancel</button>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    /* Modal container styles */
+
+
+
+</style>
+
+@code {
+    [Parameter] public EventCallback OnSaveClicked { get; set; }
+    [Parameter] public EventCallback OnCancelClicked { get; set; }
+
+    // Event handlers
+    private async Task OnSave()
+    {
+        // Emit the OnSaveClicked event
+        await OnSaveClicked.InvokeAsync();
+    }
+
+    private async Task OnCancel()
+    {
+        Console.WriteLine("Cancel button clicked.");
+
+        // Emit the OnCancelClicked event
+        await OnCancelClicked.InvokeAsync();
+    }
+}
