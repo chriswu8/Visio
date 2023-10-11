@@ -21,7 +21,7 @@
             <button class="book-button">Delete</button>
         </div>
         <div class="patient-buttons2">
-            @if (true)
+            @if (selectedPatient != null && ShouldRenderBookGEE1Button(selectedPatient.Sex, DetermineLifeStage(selectedPatient.BirthDate), selectedPatient.BloodPressure, selectedPatient.GlaucomaHistory, selectedPatient.HasGlaucoma))
             {
                 <button class="book-button green-button">Book GEE1</button>
             }
@@ -358,15 +358,17 @@
     private List<Patient> patients = new List<Patient>
     {
         new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Sex = "Male", BloodPressure = "Normal", GlaucomaHistory = "None", HasGlaucoma = "No", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "2023-01-01", PHN = "9812714728", ImageID = "VXE1" },
-        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Sex = "Female", BloodPressure = "Hypertensive Crisis", GlaucomaHistory = "Maternal parent", HasGlaucoma = "Yes", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "2023-02-02", PHN = "9843926834", ImageID = "VXE2" },
+        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Sex = "Female", BloodPressure = "Hypertensive Crisis", GlaucomaHistory = "Maternal parent", HasGlaucoma = "Yes", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1923-02-02", PHN = "9843926834", ImageID = "VXE2" },
         new Patient { PatientID = 3, LastName = "Johnson", FirstName = "Emily", MiddleName = "Grace", Sex = "Female", BloodPressure = "High (stage 1)", GlaucomaHistory = "Maternal parent", HasGlaucoma = "No", Address = "789 Oak St", Province = "BC", City = "Vancouver", PostalCode = "V7Z2W1", BirthDate = "1996-03-03", PHN = "9876543210", ImageID = "VXE3"},
         new Patient { PatientID = 4, LastName = "Brown", FirstName = "Michael", MiddleName = "David", Sex = "Male", BloodPressure = "High (stage 2)", GlaucomaHistory = "Paternal parent", HasGlaucoma = "No", Address = "567 Pine St", Province = "BC", City = "Surrey", PostalCode = "V6A8X7", BirthDate = "1970-04-04", PHN = "9876543211", ImageID = "VXE4"},
     };
+    private Patient selectedPatient; // Property to store the selected patient
 
     private int nextPatientID = 3;
     private bool isEditing = false;
     private string editButtonText = "Edit";
     private bool showPatientInfo = false;
+
 
     private void ShowPatientInfoModal()
     {
@@ -399,6 +401,11 @@
         }
 
         patient.IsSelected = !patient.IsSelected;
+
+        if (patient.IsSelected)
+        {
+            selectedPatient = patient;
+        }
     }
 
     private void ToggleEdit()
@@ -486,11 +493,11 @@
             case "High (stage 2)":
                 bloodPressureValue = 0.3;
                 break;
-            case "Hypertensive crisis":
+            case "Hypertensive Crisis":
                 bloodPressureValue = 0.4;
                 break;
             default:
-                bloodPressureValue = 0.02; // Default to Normal
+                bloodPressureValue = -1.0; // for debugging purposes
                 break;
         }
         switch (familyHistory)
@@ -515,8 +522,67 @@
 
         double gValue = numerator / denominator;
 
+        // =========================================
+        double thesexValue, thelifeStageValue, thebloodPressureValue, thefamilyHistoryValue, thehasGlaucomaValue;
+        thesexValue = sexValue + 0;
+        thelifeStageValue = lifeStageValue + 0;
+        thebloodPressureValue = bloodPressureValue + 0;
+        thefamilyHistoryValue = familyHistoryValue + 0;
+        thehasGlaucomaValue = hasGlaucomaValue + 0;
+
+ 
+        Console.WriteLine("Calculated thesexValue: " + thesexValue);
+        Console.WriteLine("Calculated thelifeStageValue: " + thelifeStageValue);
+        Console.WriteLine("Calculated thebloodPressureValue: " + thebloodPressureValue);
+        Console.WriteLine("Calculated thefamilyHistoryValue: " + thefamilyHistoryValue);
+        Console.WriteLine("Calculated thehasGlaucomaValue: " + thehasGlaucomaValue);
+        Console.WriteLine("Calculated gValue: " + gValue);
+
         return gValue > 5.0E-8; // Check if the gValue is greater than 5.0E-8
     }
+
+    private string DetermineLifeStage(string birthDate)
+    {
+        DateTime parsedBirthDate;
+        if (DateTime.TryParse(birthDate, out parsedBirthDate))
+        {
+            int age = DateTime.Now.Year - parsedBirthDate.Year;
+
+            if (age >= 0 && age <= 2)
+            {
+                return "Infant";
+            }
+            else if (age > 2 && age <= 3)
+            {
+                return "Toddler";
+            }
+            else if (age > 3 && age <= 12)
+            {
+                return "Childhood";
+            }
+            else if (age >= 13 && age <= 19)
+            {
+                return "Adolescence";
+            }
+            else if (age >= 20 && age <= 39)
+            {
+                return "Young adulthood";
+            }
+            else if (age >= 40 && age <= 64)
+            {
+                return "Middle adulthood";
+            }
+            else
+            {
+                return "Senior";
+            }
+        }
+        else
+        {
+            return "INAPPROPRIATE VALUE TO DETERMINE LIFE STAGE"; 
+        }
+    }
+
 
 
 }
