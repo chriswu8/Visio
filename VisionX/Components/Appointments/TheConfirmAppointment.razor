@@ -1,4 +1,5 @@
 ﻿<div>
+    <link rel="stylesheet" href="/css/site.css" />
     <div class="modal-content">
         <div class="left-column">
             <span>Date:</span>
@@ -47,19 +48,23 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
         margin: 20px;
     }
 
     .button-bar {
         display: flex;
         justify-content: flex-end;
+        align-items: right; /* Vertically align buttons in the middle */
+        margin-top: 15px;
+        margin-bottom: -5px;
     }
 
-    .visionX-button {
-        width: 8em;
-    }
-</style>
+        .button-bar button {
+            margin-left: 20px; /* Add margin between buttons */
+            margin-bottom: -2px;
+        }
+    
+    </style>
 
 
 
