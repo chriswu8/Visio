@@ -7,7 +7,7 @@
                 <button class="search-button">Last Name</button>
                 <button class="search-button">PHN</button>
                 <button class="search-button">Phone</button>
-                <input  class="search-input" type="text" placeholder="Search..." />
+                <input  class="search-input" type="text" placeholder="  Search..." />
                 <button class="cancel-button visionX-button" @onclick="OnTopCancel">Cancel</button>
             </div>
            
@@ -25,9 +25,9 @@
         <div class="patient-buttons2">
             @if (selectedPatient != null && ShouldRenderBookGEE1Button(selectedPatient.Sex, DetermineLifeStage(selectedPatient.BirthDate), selectedPatient.BloodPressure, selectedPatient.GlaucomaHistory, selectedPatient.HasGlaucoma))
             {
-                <button class="book-button green-button" @onclick="ShowConfirmAppointmentModal">Book GEE1</button>
+                <button class="glaucoma-button" @onclick="ShowConfirmAppointmentModal">Book GEE1</button>
             }
-            <button class="book-button">View Invoice</button>
+@*             <button class="book-button">View Invoice</button> *@
             <button class="book-button" @onclick="ShowConfirmAppointmentModal">Schedule Patient</button>
         </div>
     </div>
@@ -355,7 +355,27 @@
     .search-input {
         margin-left: 3em;
         min-width: 25em;
-    } 
+    }
+
+    .glaucoma-button {
+        display: inline-block;
+        padding: 6px 20px;
+        background-color: #4CAF50; 
+        color: #fff; 
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        margin-right: 12px;
+
+    }
+
+        .glaucoma-button:hover {
+            background-color: #45a049; 
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); 
+        }
 
 </style>
 

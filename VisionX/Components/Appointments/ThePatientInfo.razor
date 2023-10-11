@@ -6,8 +6,6 @@
     <div class="input-row">
         <div class="input-label first-name-div  ">First Name:</div>
         <input class="input-field first-name-input" type="text" />
-    @*     <div class="input-label middle-name-div">Middle Name:</div>
-        <input class="input-field middle-name-input" type="text" /> *@
     </div>
     <div class="info-columns">
         <div class="left-column">
@@ -45,14 +43,15 @@
             </div>
         </div>
         <div class="right-column">
+            <div class="input-row middle-name-row">
+                <div class="input-label middle-name-div">Middle Name:</div>
+                <input class="input-field middle-name-input" type="text" />
+            </div>
             <div class="input-row">
                 <div class="input-label">Province:</div>
                 <input class="input-field" type="text" />
             </div>   
-            <div class="input-row">
-                <div class="input-label middle-name-div">Middle Name:</div>
-                <input class="input-field middle-name-input" type="text" />
-            </div>
+           
             <div class="input-row">
                 <div class="input-label">Postal Code:</div>
                 <input class="input-field" type="text" />
@@ -167,13 +166,15 @@
         max-width: 425px;
     }
 
-/*     .middle-name-div {
-        margin-right: -45px;
-    } */
+    .middle-name-row {
+        margin-top: -90px;
+        margin-bottom: 100px;
+    }
 
     .middle-name-input {
         max-width: 425px;
     }
+
 </style>
 
 @code {
