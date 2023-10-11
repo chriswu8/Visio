@@ -4,10 +4,10 @@
     <div class="patient-controls">
         <div class="search-bar">
             <div class="buttons-top">
-                <button>Last Name</button>
-                <button>PHN</button>
-                <button>Phone</button> 
-                <input class="search-input" type="text" placeholder="Search..." />
+                <button class="search-button">Last Name</button>
+                <button class="search-button">PHN</button>
+                <button class="search-button">Phone</button>
+                <input  class="search-input" type="text" placeholder="Search..." />
                 <button class="cancel-button visionX-button" @onclick="OnTopCancel">Cancel</button>
             </div>
            
@@ -25,7 +25,7 @@
         <div class="patient-buttons2">
             @if (selectedPatient != null && ShouldRenderBookGEE1Button(selectedPatient.Sex, DetermineLifeStage(selectedPatient.BirthDate), selectedPatient.BloodPressure, selectedPatient.GlaucomaHistory, selectedPatient.HasGlaucoma))
             {
-                <button class="book-button green-button">Book GEE1</button>
+                <button class="book-button green-button" @onclick="ShowConfirmAppointmentModal">Book GEE1</button>
             }
             <button class="book-button">View Invoice</button>
             <button class="book-button" @onclick="ShowConfirmAppointmentModal">Schedule Patient</button>
@@ -262,13 +262,15 @@
         }
 
     .cancel-button {
-        margin-left: 450px; 
+        margin-left: 375px; 
         min-width: 7em;
     }
 
     .buttons-top {
         display: flex;
         gap: 10px;
+        max-height: 40px;
+        margin-top: -60px;
     }
 
         .buttons-top button {
@@ -285,6 +287,9 @@
                 background-color: #666;
                 color: #fff;
             }
+    .search-button {
+        min-width: 100px;
+    }
 
     .patient-table {
         margin-top: 10px;
@@ -350,7 +355,7 @@
     .search-input {
         margin-left: 3em;
         min-width: 25em;
-    }
+    } 
 
 </style>
 
