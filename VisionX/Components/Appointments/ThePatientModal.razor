@@ -21,6 +21,10 @@
             <button class="book-button">Delete</button>
         </div>
         <div class="patient-buttons2">
+            @if (true)
+            {
+                <button class="book-button green-button">Book GEE1</button>
+            }
             <button class="book-button">View Invoice</button>
             <button class="book-button">Schedule Patient</button>
         </div>
@@ -34,6 +38,10 @@
                     <th>Last Name</th>
                     <th>First Name</th>
                     <th>Middle Name</th>
+                    <th>Sex</th>
+                    <th>Blood pressure</th>
+                    <th>Glaucoma History</th>
+                    <th>Has Glaucoma</th>
                     <th>Address</th>
                     <th>Province</th>
                     <th>City</th>
@@ -76,6 +84,46 @@
                             else
                             {
                                 @patient.MiddleName
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.Sex" />
+                            }
+                            else
+                            {
+                                @patient.Sex
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.BloodPressure" />
+                            }
+                            else
+                            {
+                                @patient.BloodPressure
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.GlaucomaHistory" />
+                            }
+                            else
+                            {
+                                @patient.GlaucomaHistory
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.HasGlaucoma" />
+                            }
+                            else
+                            {
+                                @patient.HasGlaucoma
                             }
                         </td>
                         <td>
@@ -309,8 +357,10 @@
 
     private List<Patient> patients = new List<Patient>
     {
-        new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "1990-01-01", PHN = "9812714728", ImageID = "VXE1" },
-        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-15", PHN = "9843926834", ImageID = "VXE2" }
+        new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Sex = "Male", BloodPressure = "Normal", GlaucomaHistory = "None", HasGlaucoma = "No", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "2023-01-01", PHN = "9812714728", ImageID = "VXE1" },
+        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Sex = "Female", BloodPressure = "Hypertensive Crisis", GlaucomaHistory = "Maternal parent", HasGlaucoma = "Yes", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "2023-02-02", PHN = "9843926834", ImageID = "VXE2" },
+        new Patient { PatientID = 3, LastName = "Johnson", FirstName = "Emily", MiddleName = "Grace", Sex = "Female", BloodPressure = "High (stage 1)", GlaucomaHistory = "Maternal parent", HasGlaucoma = "No", Address = "789 Oak St", Province = "BC", City = "Vancouver", PostalCode = "V7Z2W1", BirthDate = "1996-03-03", PHN = "9876543210", ImageID = "VXE3"},
+        new Patient { PatientID = 4, LastName = "Brown", FirstName = "Michael", MiddleName = "David", Sex = "Male", BloodPressure = "High (stage 2)", GlaucomaHistory = "Paternal parent", HasGlaucoma = "No", Address = "567 Pine St", Province = "BC", City = "Surrey", PostalCode = "V6A8X7", BirthDate = "1970-04-04", PHN = "9876543211", ImageID = "VXE4"},
     };
 
     private int nextPatientID = 3;
@@ -379,6 +429,10 @@
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
+        public string Sex { get; set; }
+        public string BloodPressure { get; set; }
+        public string GlaucomaHistory { get; set; }
+        public string HasGlaucoma { get; set; }
         public string Address { get; set; }
         public string Province { get; set; }
         public string City { get; set; }
@@ -390,4 +444,79 @@
         public bool IsSelected { get; set; }
         public bool IsEditing { get; set; }
     }
+
+    private bool ShouldRenderBookGEE1Button(string sex, string lifeStage, string bloodPressure, string familyHistory, string hasGlaucoma)
+    {
+        double sexValue, lifeStageValue, bloodPressureValue, familyHistoryValue, hasGlaucomaValue;
+
+        // Define values based on the provided conditions
+        sexValue = sex == "Male" ? 0.4 : 0.6;
+        switch (lifeStage)
+        {
+            case "Infant":
+            case "Toddler":
+            case "Childhood":
+            case "Adolescence":
+                lifeStageValue = 0.0002;
+                break;
+            case "Young adulthood":
+                lifeStageValue = 0.0005;
+                break;
+            case "Middle adulthood":
+                lifeStageValue = 0.002;
+                break;
+            case "Senior":
+                lifeStageValue = 0.043;
+                break;
+            default:
+                lifeStageValue = 0.0002; // Default to Infant
+                break;
+        }
+        switch (bloodPressure)
+        {
+            case "Normal":
+                bloodPressureValue = 0.02;
+                break;
+            case "Elevated":
+                bloodPressureValue = 0.08;
+                break;
+            case "High (stage 1)":
+                bloodPressureValue = 0.2;
+                break;
+            case "High (stage 2)":
+                bloodPressureValue = 0.3;
+                break;
+            case "Hypertensive crisis":
+                bloodPressureValue = 0.4;
+                break;
+            default:
+                bloodPressureValue = 0.02; // Default to Normal
+                break;
+        }
+        switch (familyHistory)
+        {
+            case "None":
+                familyHistoryValue = 0.09;
+                break;
+            case "Maternal parent":
+                familyHistoryValue = 0.78;
+                break;
+            case "Paternal parent":
+                familyHistoryValue = 0.13;
+                break;
+            default:
+                familyHistoryValue = 0.09; // Default to None
+                break;
+        }
+        hasGlaucomaValue = hasGlaucoma == "Yes" ? 0.9999 : 0.0001;
+
+        double numerator = sexValue * lifeStageValue * bloodPressureValue * familyHistoryValue * hasGlaucomaValue;
+        double denominator = 0.0462999; // The provided denominator
+
+        double gValue = numerator / denominator;
+
+        return gValue > 5.0E-8; // Check if the gValue is greater than 5.0E-8
+    }
+
+
 }
