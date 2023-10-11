@@ -6,10 +6,12 @@
             <div class="buttons-top">
                 <button>Last Name</button>
                 <button>PHN</button>
-                <button>Phone</button>
+                <button>Phone</button> 
+                <input class="search-input" type="text" placeholder="Search..." />
+                <button class="cancel-button visionX-button" @onclick="OnTopCancel">Cancel</button>
             </div>
-            <input class="search-input" type="text" placeholder="Search..." />
-            <button class="cancel-button visionX-button" @onclick="OnTopCancel">Cancel</button>
+           
+            
         </div>
     </div>
     <hr />
@@ -26,7 +28,7 @@
                 <button class="book-button green-button">Book GEE1</button>
             }
             <button class="book-button">View Invoice</button>
-            <button class="book-button">Schedule Patient</button>
+            <button class="book-button" @onclick="ShowConfirmAppointmentModal">Schedule Patient</button>
         </div>
     </div>
 
@@ -211,11 +213,30 @@
                 </div>
             </div>
         }
+
+        @if (showConfirmAppointment)
+        {
+            <div class="modal-container">
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <TheConfirmAppointment OnConfirmAppointmentSaveClicked="HideConfirmAppointmentModal" OnConfirmAppointmentCancelClicked="HideConfirmAppointmentModal" />
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div> 
 
 
 <style>
+
+    .modal-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 40em;
+    }
+
     .component-container {
         width: 95%;
         margin: 0 auto;
@@ -233,18 +254,17 @@
         margin-top: 2em;
     }
 
-        /* Adjust the width of the search input to make buttons slightly shorter */
         .search-bar input[type="text"] {
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 20vw; /* Adjust the width as needed */
+            width: 20vw;
         }
 
-    /* Add a margin to the Save and Cancel buttons to create a gap between them */
     .save-button,
     .cancel-button {
-        margin-left: 10px; /* Add the desired gap value */
+        margin-left: 450px; 
+        min-width: 7em;
     }
 
     .buttons-top {
@@ -330,6 +350,7 @@
 
     .search-input {
         margin-left: 3em;
+        min-width: 25em;
     }
 
 </style>
@@ -337,7 +358,20 @@
 @code {
     [Parameter] public EventCallback OnSaveClicked { get; set; }
     [Parameter] public EventCallback OnCancelClicked { get; set; }
+
     [Parameter] public EventCallback OnTopCancelClicked { get; set; }
+
+    private bool showConfirmAppointment = false;
+
+    private void ShowConfirmAppointmentModal()
+    {
+        showConfirmAppointment = true;
+    }
+
+    private void HideConfirmAppointmentModal()
+    {
+        showConfirmAppointment = false;
+    }
 
     private async Task OnTopCancel()
     {
@@ -476,7 +510,7 @@
                 lifeStageValue = 0.043;
                 break;
             default:
-                lifeStageValue = 0.0002; // Default to Infant
+                lifeStageValue = 0; // For debugging
                 break;
         }
         switch (bloodPressure)
@@ -497,7 +531,7 @@
                 bloodPressureValue = 0.4;
                 break;
             default:
-                bloodPressureValue = -1.0; // for debugging purposes
+                bloodPressureValue = 0; // For debugging
                 break;
         }
         switch (familyHistory)
@@ -512,7 +546,7 @@
                 familyHistoryValue = 0.13;
                 break;
             default:
-                familyHistoryValue = 0.09; // Default to None
+                familyHistoryValue = 0; // For debugging
                 break;
         }
         hasGlaucomaValue = hasGlaucoma == "Yes" ? 0.9999 : 0.0001;
