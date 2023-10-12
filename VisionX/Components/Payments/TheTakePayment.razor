@@ -1,0 +1,124 @@
+<!-- ThePayment.razor -->
+<div class="payment-modal">
+    <div class="left-panel">
+        <h4>Invoice / Posting Data</h4>
+        <input type="text" placeholder="Enter data" />
+
+        <h4>Date Wanted</h4>
+        <input type="text" placeholder="Enter date" />
+
+        <h4>Insurance</h4>
+        <input type="text" placeholder="Enter insurance details" />
+
+        <div class="payment-type">
+            <h4>Payment Type</h4>
+            <select>
+                <option value="credit">Credit Card</option>
+                <option value="cash">Cash</option>
+                <!-- Add more payment methods as needed -->
+            </select>
+            <input type="text" value="0.00" />
+        </div>
+
+        <div class="payment-type">
+            <h4>2nd Payment Type</h4>
+            <select>
+                <option value="credit">Credit Card</option>
+                <option value="cash">Cash</option>
+                <!-- Add more payment methods as needed -->
+            </select>
+            <input type="text" value="0.00" />
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="payment-summary">
+            <h3>Payment Summary</h3>
+        </div>
+        <div class="summary-details">
+            <div class="left-column">
+                <p>Items/Services:</p>
+                <p>HST/GST:</p>
+                <p>PST:</p>
+                <p class="red-text">TOTAL:</p>
+            </div>
+            <div class="right-column">
+                <p>$0.00</p>
+                <p>$0.00</p>
+                <p>$0.00</p>
+                <p class="red-text">$0.00</p>
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="visionX-button">Save</button>
+            <button class="visionX-button exit-button" @onclick="HidePaymentModal">Exit</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .payment-modal {
+        display: flex;
+        justify-content: space-between;
+        background-color: #000; /* Black background */
+        color: #fff; /* White text */
+    }
+
+    .left-panel {
+        width: 65%;
+        padding: 20px;
+    }
+
+    .right-panel {
+        width: 35%;
+        padding: 20px;
+    }
+
+    .payment-type {
+        margin-bottom: 20px;
+    }
+
+    select, input[type="text"] {
+        width: 100%;
+        padding: 5px;
+        margin-top: 5px;
+    }
+
+    .red-text {
+        color: red; /* Red-colored text */
+    }
+
+    .payment-summary {
+        text-align: center;
+    }
+
+    .summary-details {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .left-column, .right-column {
+        width: 50%;
+    }
+
+    .buttons {
+        margin-top: 20px;
+    }
+</style>
+
+
+
+@code {
+    [Parameter] public EventCallback OnExitPaymentClicked { get; set; }
+    [Parameter] public EventCallback OnSavePaymentClicked { get; set; }
+
+    private bool showPaymentModal; 
+
+
+    private async Task HidePaymentModal()
+    {
+        // Emit the OnCancelClicked event
+        await OnExitPaymentClicked.InvokeAsync();
+    }
+
+}

@@ -19,7 +19,7 @@
 
     <div class="right-panel">
         <button class="visionX-button">Make a new invoice</button>
-        <button class="visionX-button">Take a payment</button>
+        <button class="visionX-button" @onclick="ShowTakePayment">Take a payment</button>
         <button class="visionX-button">Print Receipt</button>
 
         <h4>Patient's Balance</h4>
@@ -29,15 +29,25 @@
 
         <button class="visionX-button exit-button" @onclick="HideModal">Exit</button>
     </div>
+
+     @if (showTakePayment)
+    {
+        <!-- Modal overlay -->
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheTakePayment OnSavePaymentClicked="HandlePaymentSave" OnExitPaymentClicked="HandlePaymentExit" />
+        </div>
+    }
+
 </div>
 
 <style>
     .invoice-modal {
         display: flex;
         justify-content: space-between;
-        border: 1px solid #fff; /* Slim white line */
-        background-color: #f5f5f5; /* Professional grey background */
-        padding: 20px; /* Add padding for a cleaner look */
+        border: 1px solid #fff; 
+        background-color: #f5f5f5; 
+        padding: 20px; 
     }
 
     .left-panel {
@@ -89,13 +99,34 @@
 @code {
     [Parameter] public EventCallback OnExitClicked { get; set; }
 
-    private bool showInvoiceModal; // Local variable for controlling the modal's visibility
+    private bool showInvoiceModal; 
 
 
     private async Task HideModal()
     {
         // Emit the OnCancelClicked event
         await OnExitClicked.InvokeAsync();
+    }
+
+    // =========================================
+
+    private bool showTakePayment = false;
+
+    private void ShowTakePayment()
+    {
+        showTakePayment = true;
+    }
+
+    private void HandlePaymentExit()
+    {
+        showTakePayment = false;
+    }
+
+    private void HandlePaymentSave()
+    {
+        // Handle the save action here
+
+        showTakePayment = false;
     }
 
 }
