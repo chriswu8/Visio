@@ -1,6 +1,6 @@
 <!-- ThePayment.razor -->
 <div class="payment-modal">
-    <div class="left-panel">
+    <div class="left-payment-panel">
         <h4 class="small-text">Invoice / Posting Data</h4>
         <input type="text" class="input-field" placeholder="Enter data" />
 
@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <div class="right-panel">
+    <div class="right-payment-panel">
         <div class="black-box">
             <div class="payment-summary">
                 <h3>Payment Summary</h3>
@@ -68,13 +68,13 @@
         border-radius: 3%;
     }
 
-    .left-panel {
-        width: 25%;
+    .left-payment-panel {
+        width: 35%; /* Adjusted width */
         padding: 20px;
     }
 
-    .right-panel {
-        width: 75%;
+    .right-payment-panel {
+        width: 65%; /* Adjusted width */
         padding: 20px;
     }
 
@@ -128,19 +128,15 @@
     }
 </style>
 
-
-
 @code {
     [Parameter] public EventCallback OnExitPaymentClicked { get; set; }
     [Parameter] public EventCallback OnSavePaymentClicked { get; set; }
 
-    private bool showPaymentModal; 
-
+    private bool showPaymentModal;
 
     private async Task HidePaymentModal()
     {
         // Emit the OnCancelClicked event
         await OnExitPaymentClicked.InvokeAsync();
     }
-
 }
