@@ -19,7 +19,6 @@
         <button class="book-button">Delete</button>
     </div>
     <div class="patient-buttons2">
-        <button class="book-button">View Invoice</button>
         <button class="book-button">Schedule Patient</button>
     </div>
 </div>
@@ -199,6 +198,36 @@
 </div>
 
 <style>
+    .modal-container {
+        transform: scale(0.9); /* Adjust the scale factor as needed */
+        transform-origin: center;
+        transition: transform 0.3s;
+    }
+
+    .modal-background {
+        background-color: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    /* Add this for smooth scaling on hover */
+    .modal-container:hover {
+        transform: scale(1);
+    }
+
+
     .patient-controls {
         display: flex;
         justify-content: space-between;
