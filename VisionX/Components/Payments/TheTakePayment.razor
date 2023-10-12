@@ -53,8 +53,8 @@
         </div>
 
         <div class="buttons">
-            <button class="visionX-button">Save</button>
-            <button class="visionX-button exit-button" @onclick="HidePaymentModal">Exit</button>
+            <button class="visionX-button payment-save-button">Save</button>
+            <button class="visionX-button payment-exit-button" @onclick="HidePaymentModal">Exit</button>
         </div>
     </div>
 </div>
@@ -62,19 +62,17 @@
 <style>
     .payment-modal {
         display: flex;
-        justify-content: space-between;
         background-color: #ddd;
         color: #000;
-        border-radius: 3%;
     }
 
     .left-payment-panel {
-        width: 35%; /* Adjusted width */
+        width: 47%; 
         padding: 20px;
     }
 
     .right-payment-panel {
-        width: 65%; /* Adjusted width */
+        width: 53%; 
         padding: 20px;
     }
 
@@ -82,7 +80,13 @@
         background-color: #000;
         color: #fff;
         min-width: 400px;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
+
 
     .small-text {
         font-size: 12px;
@@ -102,6 +106,8 @@
 
     .small-input {
         width: 80px;
+        height: 30px;
+        text-align: right;
     }
 
     .red-text {
@@ -117,6 +123,7 @@
         display: flex;
         justify-content: space-between;
         margin: 25px;
+        gap: 125px;
     }
 
     .left-column, .right-column {
@@ -125,7 +132,13 @@
 
     .buttons {
         margin-top: 20px;
+        display: flex; 
     }
+
+    .payment-save-button {
+        margin-right: 10px; /* Add some spacing between the buttons */
+    }
+
 </style>
 
 @code {
