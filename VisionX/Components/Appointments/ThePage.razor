@@ -1,4 +1,6 @@
-﻿<div>
+﻿<link rel="stylesheet" href="/css/site.css" />
+
+<div>
     <h3>@DateTime.Now.ToString("MMMM dd, yyyy")</h3>
 
     <div class="centered-appointment-section">
@@ -8,13 +10,36 @@
     </div>
 
     <div class="finishing-buttons">
-        <button class="book-button">Squeeze In</button>
+        <button class="book-button" @onclick="ShowPatientModal">Squeeze In</button>
         <button class="book-button">Change</button>
         <button class="book-button">Delete</button>
         <button class="book-button">Patient</button>
         <button class="book-button close-button">Close </button>
     </div>
 </div>
+
+@* @if (showConfirmAppointmentModal)
+{
+    <div class="modal-container">
+        <div class="modal-background">
+            <div class="modal-content">
+                 <TheConfirmAppointment OnSaveClicked="HandleSave" OnCancelClicked="HandleCancel" /> 
+                <!-- <ThePatient OnSaveClicked="HandleSave" OnCancelClicked="HandleCancel" />  -->
+            </div>
+        </div>
+    </div>
+} *@
+
+@if (showPatientModal)
+{
+    <div class="modal-container">
+        <div class="modal-background">
+            <div class="modal-content">
+                <ThePatientModal OnTopCancelClicked="HidePatientModal" />
+            </div>
+        </div>
+    </div>
+}
 
 <style>
     h3 {
@@ -75,4 +100,37 @@
         color: white;
         margin-left: 20px;
     }
+
+    .modal-content {
+        width: 88%;
+        height: 80%;
+        margin: 0 auto;
+    }
 </style>
+
+@code {
+    private bool showConfirmAppointmentModal = false; // likely needs to be in ThePatient and ThePatientModal
+    private bool showPatientModal = false;
+
+    private void ShowPatientModal()
+    {
+        showPatientModal = true;
+    }
+
+    private void HidePatientModal()
+    {
+        showPatientModal = false;
+    }
+
+    private void HandleSave()
+    {
+        // Handle the save action here
+
+        showConfirmAppointmentModal = false;
+    }
+
+    private void HandleCancel()
+    {
+        showConfirmAppointmentModal = false;
+    }
+}

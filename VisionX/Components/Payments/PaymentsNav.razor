@@ -2,8 +2,8 @@
 
 <div class="inner-nav">
     <button class="nav-underline" @onclick="ShowInvoices">Invoices</button>
-    <button class="nav-underline" @onclick="ShowTakePayment">Take Payment</button>
-    <button class="nav-underline" @onclick="ShowReceipt">Receipt</button>
+@*     <button class="nav-underline" @onclick="ShowTakePayment">Take Payment</button>
+    <button class="nav-underline" @onclick="ShowReceipt">Receipt</button> *@
 </div>
 
 <br />
@@ -14,7 +14,7 @@
         <TheInvoices />
     }
 
-    @if (showTakePayment)
+@*     @if (showTakePayment)
     {
         <TheTakePayment />
     }
@@ -22,32 +22,15 @@
     @if (showReceipt)
     {
         <TheReceipt />
-    }
+    } *@
 </div>
 
 @code {
     private bool showInvoices = true;
-    private bool showTakePayment = false;
-    private bool showReceipt = false;
+
 
     private void ShowInvoices()
     {
         showInvoices = true;
-        showTakePayment = false;
-        showReceipt = false;
-    }
-
-    private void ShowTakePayment()
-    {
-        showInvoices = false;
-        showTakePayment = true;
-        showReceipt = false;
-    }
-
-    private void ShowReceipt()
-    {
-        showInvoices = false;
-        showTakePayment = false;
-        showReceipt = true;
     }
 }

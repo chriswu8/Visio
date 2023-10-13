@@ -1,4 +1,6 @@
-﻿<div class="patient-controls">
+﻿<link rel="stylesheet" href="/css/site.css" />
+
+<div class="patient-controls">
     <div class="search-bar">
         <div class="buttons-top">
             <button>Last Name</button>
@@ -17,7 +19,6 @@
         <button class="book-button">Delete</button>
     </div>
     <div class="patient-buttons2">
-        <button class="book-button">View Invoice</button>
         <button class="book-button">Schedule Patient</button>
     </div>
 </div>
@@ -39,7 +40,7 @@
                 <th>Phone</th>
                 <th>Email</th>
                 <th>Occupation</th>
-                <th>ImageID</th>
+                <th>ExamID</th>
             </tr>
         </thead>
         <tbody>
@@ -197,6 +198,36 @@
 </div>
 
 <style>
+    .modal-container {
+        transform: scale(0.9); /* Adjust the scale factor as needed */
+        transform-origin: center;
+        transition: transform 0.3s;
+    }
+
+    .modal-background {
+        background-color: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    /* Add this for smooth scaling on hover */
+    .modal-container:hover {
+        transform: scale(1);
+    }
+
+
     .patient-controls {
         display: flex;
         justify-content: space-between;
@@ -303,42 +334,14 @@
         margin-left: 3em;
     }
 
-        
 
-    .patient-layout {
-        position: relative;
-    }
-
-    .modal-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999; 
-    }
-
-    .modal-background {
-        background-color: rgba(0, 0, 0, 0.5); 
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 </style>
 
 @code {
     private List<Patient> patients = new List<Patient>
     {
-        new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "1990-01-01", PHN = "9812714728", Phone = "123-456-7890", Email = "johndoe@example.com", Occupation = "Engineer", ImageID = "VXI1" },
-        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-15", PHN = "9843926834", Phone = "987-654-3210", Email = "janesmith@example.com", Occupation = "Doctor", ImageID = "VXI2" }
+        new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "1990-01-01", PHN = "9812714728", Phone = "123-456-7890", Email = "johndoe@example.com", Occupation = "Engineer", ImageID = "VXE1" },
+        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-15", PHN = "9843926834", Phone = "987-654-3210", Email = "janesmith@example.com", Occupation = "Doctor", ImageID = "VXE2" }
     };
 
     private int nextPatientID = 3;

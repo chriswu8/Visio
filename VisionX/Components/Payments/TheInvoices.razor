@@ -1,0 +1,416 @@
+<link rel="stylesheet" href="/css/site.css" />
+
+<div class="patient-controls">
+    <div class="search-bar">
+        <div class="buttons-top">
+            <button>Last Name</button>
+            <button>PHN</button>
+            <button>Phone</button>
+        </div>
+        <input class="search-input" type="text" placeholder="Search..." />
+    </div>
+</div>
+<hr />
+<div class="patient-buttons">
+    <div class="patient-buttons2">
+        <button class="book-button" @onclick="ShowInvoice">View Invoice</button>
+    </div>
+</div>
+
+<div class="patient-table">
+    <table>
+        <thead>
+            <tr class="header-row">
+                <th>PatientID</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Address</th>
+                <th>Province</th>
+                <th>City</th>
+                <th>Postal Code</th>
+                <th>Birth Date</th>
+                <th>PHN</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Occupation</th>
+                <th>ExamID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in patients)
+            {
+                <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(patient)">
+                    <td>@patient.PatientID</td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.LastName" />
+                        }
+                        else
+                        {
+                            @patient.LastName
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.FirstName" />
+                        }
+                        else
+                        {
+                            @patient.FirstName
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.MiddleName" />
+                        }
+                        else
+                        {
+                            @patient.MiddleName
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.Address" />
+                        }
+                        else
+                        {
+                            @patient.Address
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.Province" />
+                        }
+                        else
+                        {
+                            @patient.Province
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.City" />
+                        }
+                        else
+                        {
+                            @patient.City
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.PostalCode" />
+                        }
+                        else
+                        {
+                            @patient.PostalCode
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.BirthDate" />
+                        }
+                        else
+                        {
+                            @patient.BirthDate
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.PHN" />
+                        }
+                        else
+                        {
+                            @patient.PHN
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.Phone" />
+                        }
+                        else
+                        {
+                            @patient.Phone
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.Email" />
+                        }
+                        else
+                        {
+                            @patient.Email
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.Occupation" />
+                        }
+                        else
+                        {
+                            @patient.Occupation
+                        }
+                    </td>
+                    <td>
+                        @if (patient.IsEditing)
+                        {
+                            <input @bind="patient.ImageID" />
+                        }
+                        else
+                        {
+                            @patient.ImageID
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (showInvoice)
+    {
+        <!-- Modal overlay -->
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheInvoice OnExitClicked="HandleExit" />
+        </div>
+    }
+
+</div>
+
+<style>
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Adjust z-index as needed */
+    }
+
+    .modal-container {
+        transform: scale(0.9); /* Adjust the scale factor as needed */
+        transform-origin: center;
+        transition: transform 0.3s;
+    }
+
+    .modal-background {
+        background-color: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    /* Add this for smooth scaling on hover */
+    .modal-container:hover {
+        transform: scale(1);
+    }
+
+
+    .patient-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .search-bar {
+        display: flex;
+        align-items: center;
+        margin-top: 2em;
+    }
+
+        .search-bar input[type="text"] {
+            /* Style the search input */
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 23vw;
+        }
+
+    .buttons-top {
+        display: flex;
+        gap: 10px;
+    }
+
+        .buttons-top button {
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border: none;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .buttons-top button:hover {
+                background-color: #666;
+                color: #fff;
+            }
+
+    .patient-table {
+        margin-top: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .even-row {
+        background-color: #f0f0f0;
+        color: #000;
+    }
+
+    .odd-row {
+        background-color: #d0d0d0;
+    }
+
+    .selected-row {
+        background-color: red;
+        color: white;
+    }
+
+    .patient-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2em;
+    }
+
+    .book-button {
+        /* Style the action buttons */
+        background-color: #f0f0f0;
+        border: none;
+        color: #333;
+        padding: 10px;
+        width: auto;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 5px;
+        line-height: 19px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .book-button:hover {
+            background-color: #666;
+            color: #fff;
+        }
+
+    .header-row {
+        background-color: #333;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .search-input {
+        margin-left: 3em;
+    }
+
+
+</style>
+
+@code {
+    private bool showInvoice = false;
+
+    private void ShowInvoice()
+    {
+        showInvoice = true;
+    }
+
+    private void HandleExit()
+    {
+        // Handle the save action here
+
+        showInvoice = false;
+    }
+
+        private List<Patient> patients = new List<Patient>
+    {
+        new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "1990-01-01", PHN = "9812714728", Phone = "123-456-7890", Email = "johndoe@example.com", Occupation = "Engineer", ImageID = "VXE1" },
+        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-15", PHN = "9843926834", Phone = "987-654-3210", Email = "janesmith@example.com", Occupation = "Doctor", ImageID = "VXE2" }
+    };
+
+    private int nextPatientID = 3;
+    private bool isEditing = false;
+
+    private void SelectRow(Patient patient)
+    {
+        foreach (var p in patients)
+        {
+            p.IsSelected = false;
+        }
+
+        patient.IsSelected = !patient.IsSelected;
+    }
+
+
+    private void EditRow(Patient patient)
+    {
+        if (isEditing)
+        {
+            patient.IsEditing = true;
+        }
+    }
+
+    private void SaveRow(Patient patient)
+    {
+        if (isEditing)
+        {
+            patient.IsEditing = false;
+        }
+    }
+
+    public class Patient
+    {
+        public int PatientID { get; set; }
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string Address { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string PostalCode { get; set; }
+        public string BirthDate { get; set; }
+        public string PHN { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
+        public string Occupation { get; set; }
+        public string ImageID { get; set; }
+
+        public bool IsSelected { get; set; }
+        public bool IsEditing { get; set; }
+    }
+}

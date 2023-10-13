@@ -1,0 +1,155 @@
+<!-- ThePayment.razor -->
+<div class="payment-modal">
+    <div class="left-payment-panel">
+        <h4 class="small-text">Invoice / Posting Data</h4>
+        <input type="text" class="input-field" placeholder="Enter data" />
+
+        <h4 class="small-text">Date Wanted</h4>
+        <input type="text" class="input-field" placeholder="Enter date" />
+
+        <h4 class="small-text">Insurance</h4>
+        <input type="text" class="input-field" placeholder="Enter insurance details" />
+
+        <div class="payment-type">
+            <h4 class="small-text">Payment Type</h4>
+            <select class="input-field">
+                <option value="credit">Credit Card</option>
+                <option value="cash">Cash</option>
+                <!-- Add more payment methods as needed -->
+            </select>
+            <input type="text" class="input-field small-input" value="0.00" />
+        </div>
+
+        <div class="payment-type">
+            <h4 class="small-text">2nd Payment Type</h4>
+            <select class="input-field">
+                <option value="credit">Credit Card</option>
+                <option value="cash">Cash</option>
+                <!-- Add more payment methods as needed -->
+            </select>
+            <input type="text" class="input-field small-input" value="0.00" />
+        </div>
+    </div>
+
+    <div class="right-payment-panel">
+        <div class="black-box">
+            <div class="payment-summary">
+                <h3>Payment Summary</h3>
+            </div>
+            <div class="summary-details">
+                <div class="left-column">
+                    <p>Items/Services:</p>
+                    <p>HST/GST:</p>
+                    <p>PST:</p>
+                    <p class="red-text">TOTAL:</p>
+                </div>
+                <div class="right-column">
+                    <p>.00</p>
+                    <p>.00</p>
+                    <p>.00</p>
+                    <p class="red-text">0.00</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="visionX-button payment-save-button">Save</button>
+            <button class="visionX-button payment-exit-button" @onclick="HidePaymentModal">Exit</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .payment-modal {
+        display: flex;
+        background-color: #ddd;
+        color: #000;
+    }
+
+    .left-payment-panel {
+        width: 47%; 
+        padding: 20px;
+    }
+
+    .right-payment-panel {
+        width: 53%; 
+        padding: 20px;
+    }
+
+    .black-box {
+        background-color: #000;
+        color: #fff;
+        min-width: 400px;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    .small-text {
+        font-size: 12px;
+    }
+
+    .input-field {
+        width: 250px;
+        padding: 5px;
+        margin-top: 5px;
+    }
+
+    select.input-field {
+        width: 250px;
+        padding: 5px;
+        margin-top: 5px;
+    }
+
+    .small-input {
+        width: 80px;
+        height: 30px;
+        text-align: right;
+    }
+
+    .red-text {
+        color: red;
+    }
+
+    .payment-summary {
+        text-align: center;
+        margin: 10px;
+    }
+
+    .summary-details {
+        display: flex;
+        justify-content: space-between;
+        margin: 25px;
+        gap: 125px;
+    }
+
+    .left-column, .right-column {
+        width: 35%;
+    }
+
+    .buttons {
+        margin-top: 20px;
+        display: flex; 
+    }
+
+    .payment-save-button {
+        margin-right: 10px; /* Add some spacing between the buttons */
+    }
+
+</style>
+
+@code {
+    [Parameter] public EventCallback OnExitPaymentClicked { get; set; }
+    [Parameter] public EventCallback OnSavePaymentClicked { get; set; }
+
+    private bool showPaymentModal;
+
+    private async Task HidePaymentModal()
+    {
+        // Emit the OnCancelClicked event
+        await OnExitPaymentClicked.InvokeAsync();
+    }
+}

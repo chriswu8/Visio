@@ -1,0 +1,132 @@
+﻿<!-- TheInvoice.razor -->
+<div class="invoice-modal">
+    <div class="left-panel">
+        <p>Patient</p><p>Service/Product</p><p>Amount Due</p>
+
+        <!-- Grey box for displaying services -->
+        <div class="service-box">
+            <ul>
+                <li>GEE1 - $100</li>
+                <li>CEE1 - $120</li>
+                <li>REE1 - $130</li>
+                <li>CLFU - $140</li>
+                <li>VFEE - $150</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="empty-space"></div> <!-- Empty space between panels -->
+
+    <div class="right-panel">
+        <button class="visionX-button">Make a new invoice</button>
+        <button class="visionX-button" @onclick="ShowTakePayment">Take a payment</button>
+        <button class="visionX-button">Print Receipt</button>
+
+        <h4>Patient's Balance</h4>
+
+        <!-- Light blue textbox for notes -->
+        <div type="text" class="notes-textbox" > $100</div>
+
+        <button class="visionX-button exit-button" @onclick="HideModal">Exit</button>
+    </div>
+
+     @if (showTakePayment)
+    {
+        <!-- Modal overlay -->
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheTakePayment OnSavePaymentClicked="HandlePaymentSave" OnExitPaymentClicked="HandlePaymentExit" />
+        </div>
+    }
+
+</div>
+
+<style>
+    .invoice-modal {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #fff; 
+        background-color: #f5f5f5; 
+        padding: 20px; 
+    }
+
+    .left-panel {
+        width: 65%;
+    }
+
+    .right-panel {
+        width: 35%;
+    }
+
+        .left-panel p, .right-panel h4 {
+            display: inline;
+            margin: 0;
+            padding: 0 10px;
+        }
+
+    .empty-space {
+        width: 5%; /* Adjust the width as needed */
+    }
+
+    .service-box {
+        background-color: #ccc;
+        padding: 10px;
+    }
+
+        .service-box ul {
+            list-style-type: none;
+        }
+
+        .service-box li {
+            margin-bottom: 10px;
+        }
+
+    .notes-textbox {
+        background-color: #c7e1f7; /* Light blue background */
+        padding: 10px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .exit-button {
+        margin-top: 20px;
+    }
+</style>
+
+
+
+@code {
+    [Parameter] public EventCallback OnExitClicked { get; set; }
+
+    private bool showInvoiceModal; 
+
+
+    private async Task HideModal()
+    {
+        // Emit the OnCancelClicked event
+        await OnExitClicked.InvokeAsync();
+    }
+
+    // =========================================
+
+    private bool showTakePayment = false;
+
+    private void ShowTakePayment()
+    {
+        showTakePayment = true;
+    }
+
+    private void HandlePaymentExit()
+    {
+        showTakePayment = false;
+    }
+
+    private void HandlePaymentSave()
+    {
+        // Handle the save action here
+
+        showTakePayment = false;
+    }
+
+}
