@@ -1,0 +1,122 @@
+<div class="MyServicesTable">
+    <table>
+        <thead>
+            <tr class="header-row">
+                <th>ServiceID</th>
+                <th>Fee</th>
+                <th>ServiceDescription</th>
+               
+            </tr>
+        </thead>
+        @* Links the Services ID to the database data based off of the implementation from ThePatient.razor  *@
+        
+        <tbody>
+
+            @foreach (var service in services)
+            {
+                <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(service)">
+                   @*  <td>@service.ServiceID</td> *@
+
+                    <td>
+                        @if (service.IsEditing)
+                        {
+                            <input @bind="service.ServiceID" />
+                        }
+                        else
+                        {
+                            @service.ServiceID
+                         
+                        }
+                    </td>
+
+
+                    <td>
+                        @if (service.IsEditing)
+                        {
+                            <input @bind="service.Fee" />
+                        }
+                        else
+                        {
+                            @service.Fee
+                        }
+                    </td>
+
+                    <td>
+                        @if (service.IsEditing)
+                        {
+                            <input @bind="service.ServiceDescription" />
+                        }
+                        else
+                        {
+                            @service.ServiceDescription
+                        }
+                    </td>
+
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+
+
+@* CSS Styling *@
+
+<style>
+
+    .MyServicesTable {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #000000;
+        padding: 8px;
+        text-align: center;
+        background-color: #ccc;
+    }
+
+</style>
+
+@code {
+    private List<Service> services = new List<Service>
+    {
+        new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Test"},
+        new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"}
+    };
+
+
+    public class Service
+    {
+        public int ServiceID { get; set; }
+        public string Fee { get; set; }
+        public string ServiceDescription { get; set; }
+
+        public bool IsSelected { get; set; }
+        public bool IsEditing { get; set; }
+    }
+
+
+    private void SelectRow(Service service)
+    {
+        foreach (var s in services)
+        {
+            s.IsSelected = false;
+        }
+
+        service.IsSelected = !service.IsSelected;
+    }
+
+}
