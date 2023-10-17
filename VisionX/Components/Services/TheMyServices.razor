@@ -1,3 +1,11 @@
+<link rel="stylesheet" href="/css/site.css" />
+
+<div class="service-buttons">
+    <div class="service-buttons2">
+        <button class="service-button" @onclick="AddService">Add a Service</button>
+    </div>
+</div>
+
 <div class="MyServicesTable">
     <table>
         <thead>
@@ -60,6 +68,15 @@
 
     </table>
 
+    @if (addService)
+    {
+        <!-- Modal overlay -->
+        <div class="modal-overlay">
+            <!-- TheAdd (Services) modal component -->
+            <TheAdd OnExitClicked="HandleExit" />
+        </div>
+    }
+
 </div>
 
 
@@ -67,6 +84,48 @@
 @* CSS Styling *@
 
 <style>
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Adjust z-index as needed */
+    }
+
+    .modal-container {
+        transform: scale(0.9); /* Adjust the scale factor as needed */
+        transform-origin: center;
+        transition: transform 0.3s;
+    }
+
+    .modal-background {
+        background-color: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    /* Add this for smooth scaling on hover */
+    .modal-container:hover {
+        transform: scale(1);
+    }
+
 
     .MyServicesTable {
         margin-top: 10px;
@@ -81,16 +140,84 @@
         border-collapse: collapse;
     }
 
+
     th, td {
-        border: 1px solid #000000;
+        border: 1px solid #ccc;
         padding: 8px;
         text-align: center;
-        background-color: #ccc;
     }
 
+    .header-row {
+        background-color: #000000;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .even-row {
+        background-color: #f0f0f0;
+        color: #000;
+    }
+
+    .odd-row {
+        background-color: #d0d0d0;
+    }
+
+    .selected-row {
+        background-color: red;
+        color: white;
+    }
+
+    .header-row {
+        background-color: #333;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .service-button {
+        /* Style the action buttons */
+        background-color: #f0f0f0;
+        border: none;
+        color: #333;
+        padding: 10px;
+        width: auto;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 5px;
+        line-height: 19px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .service-button:hover {
+            background-color: #666;
+            color: #fff;
+        }
+
+    .service-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2em;
+    }
 </style>
 
 @code {
+
+    private bool addService = false;
+
+    private void AddService()
+    {
+        addService = true;
+    }
+
+    private void HandleExit()
+    {
+        // Handle the save action here
+
+        addService = false;
+    }
+
+
     private List<Service> services = new List<Service>
     {
         new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Test"},
