@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace VisionX.Models
 {
     public class Appointment
     {
+        [Key]
         public int ID { get; set; }
         public string? Month { get; set; }
         public string? Day { get; set; }
