@@ -143,15 +143,15 @@
 
 </style>
 
-@code {
+ @code {
     [Parameter] public EventCallback OnExitPaymentClicked { get; set; }
     [Parameter] public EventCallback OnSavePaymentClicked { get; set; }
 
     private bool showPaymentModal;
 
-    private async Task HidePaymentModal()
+   private async Task HidePaymentModal()
     {
-        // Emit the OnCancelClicked event
+        //Emit the OnCancelClicked event
         await OnExitPaymentClicked.InvokeAsync();
-    }
+   } 
 }

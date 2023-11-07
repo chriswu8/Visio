@@ -2,7 +2,7 @@
 
 <div class="service-buttons">
     <div class="service-buttons2">
-        <button class="service-button" @onclick="AddService">Add a Service</button>
+        <button class="service-button" @onclick="ModifyService">Modify Service</button>
     </div>
 </div>
 
@@ -67,13 +67,13 @@
         </tbody>
 
     </table>
-
-    @if (addService)
+    <!--modifyService-->
+    @if (modifyService)
     {
         <!-- Modal overlay -->
         <div class="modal-overlay">
-            <!-- TheAdd (Services) modal component -->
-            <TheAdd OnExitClicked="HandleExit" />
+            <!-- TheModifyService (Services) modal component -->
+            <TheModifyService OnExitClicked="HandleExit" />
         </div>
     }
 
@@ -202,19 +202,19 @@
 </style>
 
 @code {
-
-    private bool addService = false;
-
-    private void AddService()
-    {
-        addService = true;
+    // modifyService
+    private bool modifyService = false;
+    //ModifyService
+    private void ModifyService()
+    {   // modif
+        modifyService = true;
     }
 
     private void HandleExit()
     {
         // Handle the save action here
 
-        addService = false;
+        modifyService = false;
     }
 
 

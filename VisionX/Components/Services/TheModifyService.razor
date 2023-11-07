@@ -22,6 +22,12 @@
         <!-- ADD A SERVICE BUTTON -->
         <button class="visionX-button" @onclick="AddAService">Add Service</button>
 
+        <!-- EDIT A SERVICE BUTTON -->
+        <button class="visionX-button" @onclick="EditAService">Edit A Service</button>
+
+        <!-- DELETE A SERVICE BUTTON -->
+        <button class="visionX-button" @onclick="DeleteAService">Delete A Service</button>
+
         <!-- Commented out Test Button -->
         @* <button class="visionX-button">TEST</button> *@
 
@@ -37,8 +43,23 @@
             <TheAddNewService OnSavePaymentClicked="HandleAddAServiceSave" OnExitPaymentClicked="HandleAddAServiceExit" />
         </div>
     }
+    @if (editAService)
+    {
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheAddNewService OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit" />
+        </div>
+    }
 
-</div>
+    @if (deleteAService)
+    {
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheAddNewService OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit" />
+        </div>
+                
+     }
+  </div>
 
 <style>
     .service-modal {
@@ -117,11 +138,51 @@
         addAService = false;
     }
 
+    // Handle the save action here
     private void HandleAddAServiceSave()
     {
-        // Handle the save action here
-
         addAService = false;
     }
+
+    <!-- EDIT A SERVICE BUTTON OPTION  -->
+
+    private bool editAService = false; 
+
+    private void EditAService()
+    {
+        editAService = true;
+    }
+
+    private void HandleEditAServiceExit()
+    {
+        editAService = false;
+    }
+
+    // Handle the save action here
+    private void HandleEditAServiceSave()
+    {
+        editAService = false;
+    }
+
+
+    <!-- DELETE A SERVICE BUTTON OPTION  -->
+    private bool deleteAService = false;
+
+    private void DeleteAService()
+    {
+        deleteAService = true;
+    }
+
+    private void HandleDeleteAServiceExit()
+    {
+        deleteAService = false;
+    }
+
+    // Handle the save action here
+    private void HandleDeleteAServiceSave()
+    {
+        deleteAService = false;
+    }
+    
 
 }
