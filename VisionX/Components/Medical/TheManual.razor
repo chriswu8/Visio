@@ -1,0 +1,81 @@
+@page "/TheManual"
+
+<div style="display: flex; justify-content: space-between; height: 100%;">
+    <div class="left-page-container">
+        <!-- Left Page -->
+        <iframe src="@GetPdfPageUrl(currentPage - 1)" id="leftPageFrame"></iframe>
+    </div>
+    <div class="right-page-container">
+        <!-- Right Page -->
+        <iframe src="@GetPdfPageUrl(currentPage)" id="rightPageFrame"></iframe>
+    </div>
+</div>
+
+
+
+<style>
+    .prev-page-button, .next-page-button {
+        padding: 5px 10px;
+        background-color: #19C37D;
+        color: #fff;
+        border: none;
+        border-radius: 5%;
+        float: right;
+
+    }
+
+    .next-page-button {
+        margin-left: 10px;
+        padding: 5px 10px;
+        background-color: #19C37D;
+        color: #fff;
+        border: none;
+        border-radius: 5%;
+    }
+
+    .left-page-container, .right-page-container {
+        flex: 1;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 50%;
+        overflow: hidden;
+        height: 100vh; /* Set the height to 100% of the viewport height */
+    }
+
+        .left-page-container iframe, .right-page-container iframe {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+    .right-page-container {
+        margin-left: 10px;
+    }
+</style>
+
+@code {
+    private int currentPage = 24;
+
+    private bool IsFirstPage => currentPage == 1;
+    private bool IsLastPage => currentPage == 493;
+
+    private string GetPdfPageUrl(int pageNumber) => $"/WillsManual/WillsManual.pdf#page={pageNumber}";
+
+    private void FlipPageLeft()
+    {
+        if (!IsFirstPage)
+        {
+            currentPage--;
+            StateHasChanged(); // This triggers a re-render of the component
+        }
+    }
+
+    private void FlipPageRight()
+    {
+        if (!IsLastPage)
+        {
+            currentPage++;
+            StateHasChanged(); // This triggers a re-render of the component
+        }
+    }
+}
