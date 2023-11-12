@@ -1,16 +1,16 @@
-<!-- TheAdd.razor -->
-<div class="service-modal">
+﻿<!-- TheInvoice.razor -->
+<div class="invoice-modal">
     <div class="left-panel">
-        <p>ServiceID</p><p>Fee</p><p>ServiceDescription</p>
+        <p>Patient</p><p>Service/Product</p><p>Amount Due</p>
 
         <!-- Grey box for displaying services -->
         <div class="service-box">
             <ul>
-                <li>GEE1 - $100 - Basic Eye Exam</li>
-                <li>CEE1 - $120 - Eye Pressure</li>
-                <li>REE1 - $130 - Glaucoma Screening</li>
-                <li>CLFU - $140 - Cataract Screening </li>
-                <li>VFEE - $150 - Emergency Consultation </li>
+                <li>GEE1 - $100</li>
+                <li>CEE1 - $120</li>
+                <li>REE1 - $130</li>
+                <li>CLFU - $140</li>
+                <li>VFEE - $150</li>
             </ul>
         </div>
     </div>
@@ -18,30 +18,31 @@
     <div class="empty-space"></div> <!-- Empty space between panels -->
 
     <div class="right-panel">
- 
-        <!-- ADD A SERVICE BUTTON -->
-        <button class="visionX-button" @onclick="AddAService">Add Service</button>
+        <button class="visionX-button">Make a new invoice</button>
+        <button class="visionX-button" @onclick="ShowTakePayment">Take a payment</button>
+        <button class="visionX-button">Print Receipt</button>
 
-        <!-- Commented out Test Button -->
-        @* <button class="visionX-button">TEST</button> *@
+        <h4>Patient's Balance</h4>
+
+        <!-- Light blue textbox for notes -->
+        <div type="text" class="notes-textbox" > $100</div>
 
         <button class="visionX-button exit-button" @onclick="HideModal">Exit</button>
     </div>
 
-
-    @if (addAService)
+     @if (showTakePayment)
     {
         <!-- Modal overlay -->
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
-            <TheAddNewService OnSavePaymentClicked="HandleAddAServiceSave" OnExitPaymentClicked="HandleAddAServiceExit" />
+            <TheTakePayment OnSavePaymentClicked="HandlePaymentSave" OnExitPaymentClicked="HandlePaymentExit" />
         </div>
     }
 
 </div>
 
 <style>
-    .service-modal {
+    .invoice-modal {
         display: flex;
         justify-content: space-between;
         border: 1px solid #fff; 
@@ -69,7 +70,7 @@
 
     .service-box {
         background-color: #ccc;
-        padding: 5px;
+        padding: 10px;
     }
 
         .service-box ul {
@@ -80,6 +81,13 @@
             margin-bottom: 10px;
         }
 
+    .notes-textbox {
+        background-color: #c7e1f7; /* Light blue background */
+        padding: 10px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
     .exit-button {
         margin-top: 20px;
@@ -102,26 +110,23 @@
 
     // =========================================
 
+    private bool showTakePayment = false;
 
-    <!-- ADD A SERVICE BUTTON OPTION (Corresponds to Take a Payment Button) -->
-
-    private bool addAService = false;
-
-    private void AddAService()
+    private void ShowTakePayment()
     {
-        addAService = true;
+        showTakePayment = true;
     }
 
-    private void HandleAddAServiceExit()
+    private void HandlePaymentExit()
     {
-        addAService = false;
+        showTakePayment = false;
     }
 
-    private void HandleAddAServiceSave()
+    private void HandlePaymentSave()
     {
         // Handle the save action here
 
-        addAService = false;
+        showTakePayment = false;
     }
 
 }

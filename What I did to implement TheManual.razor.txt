@@ -1,6 +1,0 @@
-dotnet add package PdfJs.Blazor --version 2.0.1
-
-
-
-
-NuGet installed PDFjs by Robert Hajbok

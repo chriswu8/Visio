@@ -1,0 +1,57 @@
+﻿<div class="appointments-table">
+    <table class="appointments-table">
+        <tr class="header-row">
+            <td class="header-cell">Time</td>
+            <td class="header-cell">Patient</td>
+            <td class="header-cell">Service</td>
+            <td class="header-cell">Contact</td>
+        </tr>
+
+        @for (int hour = 9; hour <= 16; hour++)
+        {
+            @for (int minute = 0; minute < 60; minute += 20)
+            {
+                <tr class="appointment-row">
+                    <td>@hour.ToString("00"):@minute.ToString("00")</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
+<style>
+    .appointments-table {
+        width: 100%;
+        gap: 10px;
+        z-index: 1;
+    }
+
+    .header-row {
+        background-color: #ccc;
+        font-weight: bold;
+    }
+
+    .header-cell {
+        padding: 8px;
+        text-align: center;
+    }
+
+    .appointment-row:hover {
+        background-color: grey;
+        transition: background-color 0.5s ease;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+</style>

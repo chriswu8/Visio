@@ -1,0 +1,199 @@
+﻿<div class="patient-info">
+    <div class="input-row">
+        <div class="input-label last-name-div">Last Name:</div>
+        <input class="input-field last-name-input" type="text" />
+    </div>
+    <div class="input-row">
+        <div class="input-label first-name-div  ">First Name:</div>
+        <input class="input-field first-name-input" type="text" />
+    </div>
+    <div class="info-columns">
+        <div class="left-column">
+            <div class="input-row">
+                <div class="input-label">Address:</div>
+                <input class="input-field" type="text" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">City:</div>
+                <input class="input-field" type="text" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">Birthday Date:</div>
+                <input class="input-field" type="date" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">Phone:</div>
+                <input class="input-field" type="tel" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">E-mail:</div>
+                <input class="input-field" type="email" />
+            </div> <br /><br />
+            <div class="input-row">
+                <div class="input-label">Occupation:</div>
+                <input class="input-field" type="text" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">Last Visit:</div>
+                <input class="input-field" type="date" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">First Visit:</div>
+                <input class="input-field" type="date" />
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="input-row middle-name-row">
+                <div class="input-label middle-name-div">Middle Name:</div>
+                <input class="input-field middle-name-input" type="text" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">Province:</div>
+                <input class="input-field" type="text" />
+            </div>   
+           
+            <div class="input-row">
+                <div class="input-label">Postal Code:</div>
+                <input class="input-field" type="text" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">PHN:</div>
+                <input class="input-field" type="text" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">Insurance:</div>
+                <input class="input-field" type="text" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">Misc:</div>
+                <input class="input-field" type="text" />
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+        <button class="save-button-info-save" @onclick="OnSave">Save</button>
+        <button class="cancel-button-info-save" @onclick="OnCancel">Cancel</button>
+    </div>
+</div>
+
+<style>
+    .patient-info {
+        padding: 20px;
+
+    }
+
+    .input-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .input-label {
+        width: 20%;
+        text-align: left;
+        margin-right: 10px;
+    }
+
+    .input-field {
+        width: 75%;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .info-columns {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .left-column,
+    .right-column {
+        width: 48%;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: right  ;
+        margin-top: -40px;
+        justify-content: flex-end; /* Change this to flex-end for right alignment */
+    }
+
+    .save-button-info-save,
+    .cancel-button-info-save {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .save-button-info-save {
+        margin-left: 1000px;
+        }
+
+    .cancel-button-info-save {
+        margin-left: 10px;
+    }
+
+    .save-button-info-save:hover,
+        .cancel-button-info-save:hover {
+            background-color: #666;
+        }
+
+    .last-name {
+        max-width: 40vw;
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: left; 
+    }
+
+    .last-name-div {
+        margin-right: -111px;
+    }
+
+    .last-name-input{
+        max-width: 425px;
+    }
+
+    .first-name-div {
+        margin-right: -111px;
+    }
+
+    .first-name-input {
+        max-width: 425px;
+    }
+
+    .middle-name-row {
+        margin-top: -90px;
+        margin-bottom: 100px;
+    }
+
+    .middle-name-input {
+        max-width: 425px;
+    }
+
+</style>
+
+@code {
+    // Define event callbacks
+    [Parameter] public EventCallback OnSaveClicked { get; set; }
+    [Parameter] public EventCallback OnCancelClicked { get; set; }
+
+    // Event handlers
+    private async Task OnSave()
+    {
+        // Emit the OnSaveClicked event
+        await OnSaveClicked.InvokeAsync();
+    }
+
+    private async Task OnCancel()
+    {
+        Console.WriteLine("Cancel button clicked."); 
+
+        // Emit the OnCancelClicked event
+        await OnCancelClicked.InvokeAsync();
+    }
+}

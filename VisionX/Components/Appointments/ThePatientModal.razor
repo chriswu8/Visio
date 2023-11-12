@@ -1,0 +1,646 @@
+﻿<div class="component-container">
+    <link rel="stylesheet" href="/css/site.css" />
+
+    <div class="patient-controls">
+        <div class="search-bar">
+            <div class="buttons-top">
+                <button class="search-button">Last Name</button>
+                <button class="search-button">PHN</button>
+                <button class="search-button">Phone</button>
+                <input  class="search-input" type="text" placeholder="  Search..." />
+                <button class="cancel-button visionX-button" @onclick="OnTopCancel">Cancel</button>
+            </div>
+           
+            
+        </div>
+    </div>
+    <hr />
+    <div class="patient-buttons">
+        <div class="patient-buttons1">
+            <!-- <button class="book-button" @onclick="AddPatient">Add New Patient</button> -->
+            <button class="book-button" @onclick="ShowPatientInfoModal">Add New Patient</button>
+            <button class="book-button" @onclick="ToggleEdit">@editButtonText</button>
+            <button class="book-button">Delete</button>
+        </div>
+        <div class="patient-buttons2">
+            @if (selectedPatient != null && ShouldRenderBookGEE1Button(selectedPatient.Sex, DetermineLifeStage(selectedPatient.BirthDate), selectedPatient.BloodPressure, selectedPatient.GlaucomaHistory, selectedPatient.HasGlaucoma))
+            {
+                <button class="glaucoma-button" @onclick="ShowConfirmAppointmentModal">Book GEE1</button>
+            }
+@*             <button class="book-button">View Invoice</button> *@
+            <button class="book-button" @onclick="ShowConfirmAppointmentModal">Schedule Patient</button>
+        </div>
+    </div>
+
+    <div class="patient-table">
+        <table>
+            <thead>
+                <tr class="header-row">
+                    <th>PatientID</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Sex</th>
+                    <th>Blood pressure</th>
+                    <th>Glaucoma History</th>
+                    <th>Has Glaucoma</th>
+                    <th>Address</th>
+                    <th>Province</th>
+                    <th>City</th>
+                    <th>Postal Code</th>
+                    <th>Birth Date</th>
+                    <th>PHN</th>
+                    <th>ExamID</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var patient in patients)
+                {
+                    <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(patient)">
+                        <td>@patient.PatientID</td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.LastName" />
+                            }
+                            else
+                            {
+                                @patient.LastName
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.FirstName" />
+                            }
+                            else
+                            {
+                                @patient.FirstName
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.MiddleName" />
+                            }
+                            else
+                            {
+                                @patient.MiddleName
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.Sex" />
+                            }
+                            else
+                            {
+                                @patient.Sex
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.BloodPressure" />
+                            }
+                            else
+                            {
+                                @patient.BloodPressure
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.GlaucomaHistory" />
+                            }
+                            else
+                            {
+                                @patient.GlaucomaHistory
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.HasGlaucoma" />
+                            }
+                            else
+                            {
+                                @patient.HasGlaucoma
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.Address" />
+                            }
+                            else
+                            {
+                                @patient.Address
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.Province" />
+                            }
+                            else
+                            {
+                                @patient.Province
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.City" />
+                            }
+                            else
+                            {
+                                @patient.City
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.PostalCode" />
+                            }
+                            else
+                            {
+                                @patient.PostalCode
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.BirthDate" />
+                            }
+                            else
+                            {
+                                @patient.BirthDate
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.PHN" />
+                            }
+                            else
+                            {
+                                @patient.PHN
+                            }
+                        </td>
+                        <td>
+                            @if (patient.IsEditing)
+                            {
+                                <input @bind="patient.ImageID" />
+                            }
+                            else
+                            {
+                                @patient.ImageID
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (showPatientInfo)
+        {
+            <div class="modal-container">
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <ThePatientInfo OnSaveClicked="HandleSave" OnCancelClicked="HandleCancel" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (showConfirmAppointment)
+        {
+            <div class="modal-container">
+                <div class="modal-background">
+                    <div class="modal-content">
+                        <TheConfirmAppointment OnConfirmAppointmentSaveClicked="HideConfirmAppointmentModal" OnConfirmAppointmentCancelClicked="HideConfirmAppointmentModal" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 
+
+
+<style>
+
+    .modal-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 40em;
+    }
+
+    .component-container {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    .patient-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .search-bar {
+        display: flex;
+        align-items: center;
+        margin-top: 2em;
+    }
+
+        .search-bar input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 20vw;
+        }
+
+    .cancel-button {
+        margin-left: 375px; 
+        min-width: 7em;
+    }
+
+    .buttons-top {
+        display: flex;
+        gap: 10px;
+        max-height: 40px;
+        margin-top: -60px;
+    }
+
+        .buttons-top button {
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border: none;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .buttons-top button:hover {
+                background-color: #666;
+                color: #fff;
+            }
+    .search-button {
+        min-width: 100px;
+    }
+
+    .patient-table {
+        margin-top: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .even-row {
+        background-color: #f0f0f0;
+        color: #000;
+    }
+
+    .odd-row {
+        background-color: #d0d0d0;
+    }
+
+    .selected-row {
+        background-color: red;
+        color: white;
+    }
+
+    .patient-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2em;
+    }
+
+    .book-button {
+        background-color: #f0f0f0;
+        border: none;
+        color: #333;
+        padding: 10px;
+        width: auto;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 5px;
+        line-height: 19px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+        .book-button:hover {
+            background-color: #666;
+            color: #fff;
+        }
+
+    .header-row {
+        background-color: #333;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .search-input {
+        margin-left: 3em;
+        min-width: 25em;
+    }
+
+    .glaucoma-button {
+        display: inline-block;
+        padding: 6px 20px;
+        background-color: #4CAF50; 
+        color: #fff; 
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        margin-right: 12px;
+
+    }
+
+        .glaucoma-button:hover {
+            background-color: #45a049; 
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); 
+        }
+
+</style>
+
+@code {
+    [Parameter] public EventCallback OnSaveClicked { get; set; }
+    [Parameter] public EventCallback OnCancelClicked { get; set; }
+
+    [Parameter] public EventCallback OnTopCancelClicked { get; set; }
+
+    private bool showConfirmAppointment = false;
+
+    private void ShowConfirmAppointmentModal()
+    {
+        showConfirmAppointment = true;
+    }
+
+    private void HideConfirmAppointmentModal()
+    {
+        showConfirmAppointment = false;
+    }
+
+    private async Task OnTopCancel()
+    {
+        Console.WriteLine("Cancel button clicked.");
+
+        // Emit the OnCancelClicked event
+        await OnTopCancelClicked.InvokeAsync();
+    }
+
+    private async Task OnCancel()
+    {
+        Console.WriteLine("Cancel button clicked.");
+
+        // Emit the OnCancelClicked event
+        await OnCancelClicked.InvokeAsync();
+    }
+
+    private List<Patient> patients = new List<Patient>
+    {
+        new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Sex = "Male", BloodPressure = "Normal", GlaucomaHistory = "None", HasGlaucoma = "No", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "2023-01-01", PHN = "9812714728", ImageID = "VXE1" },
+        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Sex = "Female", BloodPressure = "Hypertensive Crisis", GlaucomaHistory = "Maternal parent", HasGlaucoma = "Yes", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1923-02-02", PHN = "9843926834", ImageID = "VXE2" },
+        new Patient { PatientID = 3, LastName = "Johnson", FirstName = "Emily", MiddleName = "Grace", Sex = "Female", BloodPressure = "High (stage 1)", GlaucomaHistory = "Maternal parent", HasGlaucoma = "No", Address = "789 Oak St", Province = "BC", City = "Vancouver", PostalCode = "V7Z2W1", BirthDate = "1996-03-03", PHN = "9876543210", ImageID = "VXE3"},
+        new Patient { PatientID = 4, LastName = "Brown", FirstName = "Michael", MiddleName = "David", Sex = "Male", BloodPressure = "High (stage 2)", GlaucomaHistory = "Paternal parent", HasGlaucoma = "No", Address = "567 Pine St", Province = "BC", City = "Surrey", PostalCode = "V6A8X7", BirthDate = "1970-04-04", PHN = "9876543211", ImageID = "VXE4"},
+    };
+    private Patient selectedPatient; // Property to store the selected patient
+
+    private int nextPatientID = 3;
+    private bool isEditing = false;
+    private string editButtonText = "Edit";
+    private bool showPatientInfo = false;
+
+
+    private void ShowPatientInfoModal()
+    {
+        showPatientInfo = true;
+    }
+
+    private void HandleSave()
+    {
+        // Handle the save action here
+
+        showPatientInfo = false;
+    }
+
+    private void HandleCancel()
+    {
+        showPatientInfo = false;
+    }
+
+    private void AddPatient()
+    {
+        patients.Add(new Patient { PatientID = nextPatientID });
+        nextPatientID++;
+    }
+
+    private void SelectRow(Patient patient)
+    {
+        foreach (var p in patients)
+        {
+            p.IsSelected = false;
+        }
+
+        patient.IsSelected = !patient.IsSelected;
+
+        if (patient.IsSelected)
+        {
+            selectedPatient = patient;
+        }
+    }
+
+    private void ToggleEdit()
+    {
+        isEditing = !isEditing;
+        editButtonText = isEditing ? "Save" : "Edit";
+    }
+
+    private void EditRow(Patient patient)
+    {
+        if (isEditing)
+        {
+            patient.IsEditing = true;
+        }
+    }
+
+    private void SaveRow(Patient patient)
+    {
+        if (isEditing)
+        {
+            patient.IsEditing = false;
+        }
+    }
+
+    public class Patient
+    {
+        public int PatientID { get; set; }
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string Sex { get; set; }
+        public string BloodPressure { get; set; }
+        public string GlaucomaHistory { get; set; }
+        public string HasGlaucoma { get; set; }
+        public string Address { get; set; }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string PostalCode { get; set; }
+        public string BirthDate { get; set; }
+        public string PHN { get; set; }
+        public string ImageID { get; set; }
+
+        public bool IsSelected { get; set; }
+        public bool IsEditing { get; set; }
+    }
+
+    private bool ShouldRenderBookGEE1Button(string sex, string lifeStage, string bloodPressure, string familyHistory, string hasGlaucoma)
+    {
+        double sexValue, lifeStageValue, bloodPressureValue, familyHistoryValue, hasGlaucomaValue;
+
+        // Define values based on the provided conditions
+        sexValue = sex == "Male" ? 0.4 : 0.6;
+        switch (lifeStage)
+        {
+            case "Infant":
+            case "Toddler":
+            case "Childhood":
+            case "Adolescence":
+                lifeStageValue = 0.0002;
+                break;
+            case "Young adulthood":
+                lifeStageValue = 0.0005;
+                break;
+            case "Middle adulthood":
+                lifeStageValue = 0.002;
+                break;
+            case "Senior":
+                lifeStageValue = 0.043;
+                break;
+            default:
+                lifeStageValue = 0; // For debugging
+                break;
+        }
+        switch (bloodPressure)
+        {
+            case "Normal":
+                bloodPressureValue = 0.02;
+                break;
+            case "Elevated":
+                bloodPressureValue = 0.08;
+                break;
+            case "High (stage 1)":
+                bloodPressureValue = 0.2;
+                break;
+            case "High (stage 2)":
+                bloodPressureValue = 0.3;
+                break;
+            case "Hypertensive Crisis":
+                bloodPressureValue = 0.4;
+                break;
+            default:
+                bloodPressureValue = 0; // For debugging
+                break;
+        }
+        switch (familyHistory)
+        {
+            case "None":
+                familyHistoryValue = 0.09;
+                break;
+            case "Maternal parent":
+                familyHistoryValue = 0.78;
+                break;
+            case "Paternal parent":
+                familyHistoryValue = 0.13;
+                break;
+            default:
+                familyHistoryValue = 0; // For debugging
+                break;
+        }
+        hasGlaucomaValue = hasGlaucoma == "Yes" ? 0.9999 : 0.0001;
+
+        double numerator = sexValue * lifeStageValue * bloodPressureValue * familyHistoryValue * hasGlaucomaValue;
+        double denominator = 0.0462999; // The provided denominator
+
+        double gValue = numerator / denominator;
+
+        // =========================================
+        double thesexValue, thelifeStageValue, thebloodPressureValue, thefamilyHistoryValue, thehasGlaucomaValue;
+        thesexValue = sexValue + 0;
+        thelifeStageValue = lifeStageValue + 0;
+        thebloodPressureValue = bloodPressureValue + 0;
+        thefamilyHistoryValue = familyHistoryValue + 0;
+        thehasGlaucomaValue = hasGlaucomaValue + 0;
+
+ 
+        Console.WriteLine("Calculated thesexValue: " + thesexValue);
+        Console.WriteLine("Calculated thelifeStageValue: " + thelifeStageValue);
+        Console.WriteLine("Calculated thebloodPressureValue: " + thebloodPressureValue);
+        Console.WriteLine("Calculated thefamilyHistoryValue: " + thefamilyHistoryValue);
+        Console.WriteLine("Calculated thehasGlaucomaValue: " + thehasGlaucomaValue);
+        Console.WriteLine("Calculated gValue: " + gValue);
+
+        return gValue > 5.0E-8; // Check if the gValue is greater than 5.0E-8
+    }
+
+    private string DetermineLifeStage(string birthDate)
+    {
+        DateTime parsedBirthDate;
+        if (DateTime.TryParse(birthDate, out parsedBirthDate))
+        {
+            int age = DateTime.Now.Year - parsedBirthDate.Year;
+
+            if (age >= 0 && age <= 2)
+            {
+                return "Infant";
+            }
+            else if (age > 2 && age <= 3)
+            {
+                return "Toddler";
+            }
+            else if (age > 3 && age <= 12)
+            {
+                return "Childhood";
+            }
+            else if (age >= 13 && age <= 19)
+            {
+                return "Adolescence";
+            }
+            else if (age >= 20 && age <= 39)
+            {
+                return "Young adulthood";
+            }
+            else if (age >= 40 && age <= 64)
+            {
+                return "Middle adulthood";
+            }
+            else
+            {
+                return "Senior";
+            }
+        }
+        else
+        {
+            return "INAPPROPRIATE VALUE TO DETERMINE LIFE STAGE"; 
+        }
+    }
+
+
+
+}

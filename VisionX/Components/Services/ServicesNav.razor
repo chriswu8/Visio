@@ -2,7 +2,7 @@
 
 <div class="inner-nav">
     <button class="nav-underline" @onclick="ShowMyServices">My Services</button>
-    <button class="nav-underline" @onclick="ShowAddService">Add</button>
+    @* <button class="nav-underline" @onclick="ShowAddService">Add</button> *@
     <button class="nav-underline" @onclick="ShowModifyService">Modify</button>
 </div>
 
@@ -14,10 +14,10 @@
         <TheMyServices />
     }
 
-    @if (showAddService)
+ @*    @if (showAddService)
     {
         <TheAdd />
-    }
+    } *@
 
     @if (showModifyService)
     {
@@ -27,27 +27,27 @@
 
 @code {
     private bool showMyServices = true;
-    private bool showAddService = false;
+    // private bool showAddService = false;
     private bool showModifyService = false;
 
     private void ShowMyServices()
     {
         showMyServices = true;
-        showAddService = false;
+        // showAddService = false;
         showModifyService = false;
     }
 
-    private void ShowAddService()
-    {
-        showMyServices = false;
-        showAddService = true;
-        showModifyService = false;
-    }
+    // private void ShowAddService()
+    // {
+    //     showMyServices = false;
+    //     showAddService = true;
+    //     showModifyService = false;
+    // }
 
     private void ShowModifyService()
     {
         showMyServices = false;
-        showAddService = false;
+        // showAddService = false;
         showModifyService = true;
     }
 }
