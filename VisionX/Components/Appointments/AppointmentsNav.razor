@@ -1,0 +1,54 @@
+﻿@using VisionX.Components.Appointments
+
+<div class="inner-nav">
+    <button class="nav-underline" @onclick="ShowBook">Book</button>
+    <button class="nav-underline" @onclick="ShowPatient">Patient</button>
+    <button class="nav-underline" @onclick="ShowNewPatientForm">New Patient Forms</button>
+</div>
+
+<br />
+
+<div>
+    @if (showBook)
+    {
+        <TheBook />
+    }
+
+    @if (showPatient)
+    {
+        <ThePatient />
+    }
+
+    @if (showNewPatientForm)
+    {
+        <TheNewPatientForms />
+    }
+</div>
+
+
+@code {
+    private bool showBook = true;
+    private bool showPatient = false;
+    private bool showNewPatientForm = false;
+
+    private void ShowBook()
+    {
+        showBook = true;
+        showPatient = false;
+        showNewPatientForm = false;
+    }
+
+    private void ShowPatient()
+    {
+        showBook = false;
+        showPatient = true;
+        showNewPatientForm = false;
+    }   
+    
+    private void ShowNewPatientForm()
+    {
+        showBook = false;
+        showPatient = false;
+        showNewPatientForm = true;
+    }
+}

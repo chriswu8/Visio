@@ -1,0 +1,53 @@
+﻿@using VisionX.Components.Settings
+
+<div class="inner-nav">
+    <button class="nav-underline" @onclick="ShowChatGPT">ChatGPT</button>
+    <button class="nav-underline" @onclick="ShowNotifications">Notifications</button>
+    <button class="nav-underline" @onclick="ShowDashboardTheme">Dashboard Theme</button>
+</div>
+
+<br />
+
+<div>
+    @if (showChatGPT)
+    {
+        <TheChatGPT />
+    }
+
+    @if (showNotifications)
+    {
+        <TheNotifications />
+    }
+
+    @if (showDashboardTheme)
+    {
+        <TheDashboardTheme />
+    }
+</div>
+
+@code {
+    private bool showChatGPT = true;
+    private bool showNotifications = false;
+    private bool showDashboardTheme = false;
+
+    private void ShowChatGPT()
+    {
+        showChatGPT = true;
+        showNotifications = false;
+        showDashboardTheme = false;
+    }
+
+    private void ShowNotifications()
+    {
+        showChatGPT = false;
+        showNotifications = true;
+        showDashboardTheme = false;
+    }
+
+    private void ShowDashboardTheme()
+    {
+        showChatGPT = false;
+        showNotifications = false;
+        showDashboardTheme = true;
+    }
+}

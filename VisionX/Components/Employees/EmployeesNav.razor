@@ -1,0 +1,53 @@
+﻿@using VisionX.Components.Employees
+
+<div class="inner-nav">
+    <button class="nav-underline" @onclick="ShowSignIn">Sign-In</button>
+    <button class="nav-underline" @onclick="ShowSignOut">Sign-Out</button>
+    <button class="nav-underline" @onclick="ShowTotalHours">Total Hours</button>
+</div>
+
+<br />
+
+<div>
+    @if (showSignIn)
+    {
+        <TheSignIn />
+    }
+
+    @if (showSignOut)
+    {
+        <TheSignOut />
+    }
+
+    @if (showTotalHours)
+    {
+        <TheTotalHours />
+    }
+</div>
+
+@code {
+    private bool showSignIn = true;
+    private bool showSignOut = false;
+    private bool showTotalHours = false;
+
+    private void ShowSignIn()
+    {
+        showSignIn = true;
+        showSignOut = false;
+        showTotalHours = false;
+    }
+
+    private void ShowSignOut()
+    {
+        showSignIn = false;
+        showSignOut = true;
+        showTotalHours = false;
+    }
+
+    private void ShowTotalHours()
+    {
+        showSignIn = false;
+        showSignOut = false;
+        showTotalHours = true;
+    }
+}

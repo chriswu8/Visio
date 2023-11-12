@@ -1,0 +1,53 @@
+﻿@using VisionX.Components.EOD
+
+<div class="inner-nav">
+    <button class="nav-underline" @onclick="ShowViewTransactions">View Transactions</button>
+    <button class="nav-underline" @onclick="ShowDownloadReport">Download Report</button>
+    <button class="nav-underline" @onclick="ShowPrintReport">Print Report</button>
+</div>
+
+<br />
+
+<div>
+    @if (showViewTransactions)
+    {
+        <TheViewTransactions />
+    }
+
+    @if (showDownloadReport)
+    {
+        <TheDownloadReport />
+    }
+
+    @if (showPrintReport)
+    {
+        <ThePrintReport />
+    }
+</div>
+
+@code {
+    private bool showViewTransactions = true;
+    private bool showDownloadReport = false;
+    private bool showPrintReport = false;
+
+    private void ShowViewTransactions()
+    {
+        showViewTransactions = true;
+        showDownloadReport = false;
+        showPrintReport = false;
+    }
+
+    private void ShowDownloadReport()
+    {
+        showViewTransactions = false;
+        showDownloadReport = true;
+        showPrintReport = false;
+    }
+
+    private void ShowPrintReport()
+    {
+        showViewTransactions = false;
+        showDownloadReport = false;
+        showPrintReport = true;
+    }
+}
