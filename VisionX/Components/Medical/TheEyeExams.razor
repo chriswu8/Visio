@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Dummy Patient Data -->
+                <!-- Dummy Patient Data. Please replace with database patients-->
                 <tr>
                     <td>1</td>
                     <td>Doe</td>
@@ -206,13 +206,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>OD</td>
+                        <td>OD &nbsp;</td>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
                     </tr>
                     <tr>
-                        <td>OS</td>
+                        <td>OS &nbsp;</td>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
@@ -234,13 +234,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>OD</td>
+                        <td>OD &nbsp;</td>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
                     </tr>
                     <tr>
-                        <td>OS</td>
+                        <td>OS &nbsp;</td>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
                         <td><input type="text" /></td>
@@ -250,13 +250,13 @@
         </div>
         <br />
         <div>
-            <button @onclick="ShowRetinalImages" class="show-retinal-images-button">Show Retinal Images</button>
+            <button @onclick="ShowRetinalImages" class="show-retinal-images-button">Show Ocular Scans</button>
         </div>
 
         @if (showRetinalImages)
         {
             <script>
-                window.open(window.location.origin + "/retinal-images", "_blank");
+                window.open(window.location.origin + "/ocular-scans", "_blank");
             </script>
         }
     </div>
@@ -284,6 +284,8 @@
         cursor: pointer;
         transition: background-color 0.3s, box-shadow 0.3s;
         margin-top: -9vh;
+        margin-right: 1vh;
+
     }
 
         .show-retinal-images-button:hover {

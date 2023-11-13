@@ -250,8 +250,6 @@
     void CloseChatGPT()
     {
         // Emit an event to set showTheChatGPT to false in the parent component
-        // You can use an event callback or another suitable method based on your application structure
-        // For simplicity, I'll use a callback if available, otherwise, you can adjust as needed.
         if (ShowTheChatGPT.HasDelegate)
         {
             ShowTheChatGPT.InvokeAsync(false);

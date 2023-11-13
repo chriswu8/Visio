@@ -1,0 +1,165 @@
+﻿<div class="referral-modal">
+
+    <!-- Patient Info Section -->
+    <div class="patient-info">
+        <div class="patient-info-header">
+            <p class="referral-modal-patient-info">@patientFullName</p>
+            <p class ="referral-modal-patient-info">@patientId</p>
+            <p class="referral-modal-patient-info">@DateTime.Now.ToString("yyyy-MM-dd")</p>
+        </div>
+    </div>
+
+    <!-- Refer Patient To Section -->
+    <div class="refer-section">
+        <div class="refer-section-header">
+            <p>Refer patient to</p>
+        </div>
+        <table>
+            <tr>
+                <td>Physician</td>
+                <td>
+                    <select @bind="selectedPhysician">
+                        @foreach (var physician in physicians)
+                        {
+                            <option>@physician</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Email Template</td>
+                <td>
+                    <select @bind="selectedEmailTemplate">
+                        @foreach (var template in emailTemplates)
+                        {
+                            <option>@template</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Message Preview Section -->
+    <div class="message-preview">
+        <div class="message-preview-header">
+            <p>Message Preview</p>
+        </div>
+        <textarea>@messagePreview</textarea>
+    </div>
+
+    <!-- ReferralModal-Buttons Section -->
+    <div class="referral-modal-buttons">
+        <button @onclick="Cancel" class="cancel-button">Cancel</button>
+        <button @onclick="Send" class="send-button">Send</button>
+    </div>
+
+</div>
+
+<style>
+    .referral-modal {
+        background-color: #f2f2f2;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .referral-modal-patient-info{
+        margin-bottom: 0px;
+    }
+
+    .patient-info-header {
+        text-align: right;
+    }
+
+
+    .refer-section {
+        margin-top: 20px;
+    }
+
+    .refer-section-header {
+        background-color: #ccc;
+        padding: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    .message-preview {
+        margin-top: 20px;
+    }
+
+    .message-preview-header {
+        background-color: #ccc;
+        padding: 10px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100px;
+    }
+
+    .referral-modal-buttons {
+        margin-top: 20px;
+        text-align: right;
+    }
+
+    .cancel-button, .send-button {
+        padding: 10px;
+        margin-left: 10px;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .send-button {
+        background-color: #2ecc71;
+    }
+</style>
+
+
+@code {
+    [Parameter]
+    public EventCallback<bool> ShowTheReferralModal { get; set; }
+    private string patientFullName = "John Doe";
+    private string patientId = "12345";
+    private List<string> physicians = new List<string> { "Retinal Specialist", "Glaucoma Specialist", "Cornea and External Disease Specialist", "Pediatric Ophthalmologist", "Oculoplastic Surgeon", "Neuro-Ophthalmologist", "Uveitis Specialist", "Refractive Surgeon", "Ocular Oncologist", "Ophthalmic Pathologist" };
+    private List<string> emailTemplates = new List<string> { "Retinal Pathology", "Glaucoma Pathology", "Cornea and External Disease", "Child Exam", "Surgery", "Neuro-Ophthalmology", "Uveitis", "Refractive Surgery", "Ocular Oncology", "Ophthalmic Pathology" };
+    private string selectedPhysician = "Retinal Specialist";
+    private string selectedEmailTemplate = "Retinal Pathology";
+    private string messagePreview = "Your message preview goes here...";
+
+    private async Task CloseModal()
+    {
+        await ShowTheReferralModal.InvokeAsync(false);
+    }
+
+
+    private void Cancel()
+    {
+        // Emit event to notify parent
+        if (ShowTheReferralModal.HasDelegate)
+        {
+            ShowTheReferralModal.InvokeAsync(false);
+        }
+
+    }
+
+    private void Send()
+    {
+        // Add send logic
+    }
+
+}
