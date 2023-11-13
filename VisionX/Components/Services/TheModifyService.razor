@@ -1,0 +1,188 @@
+<!-- TheAdd.razor -->
+<div class="service-modal">
+    <div class="left-panel">
+        <p>ServiceID</p><p>Fee</p><p>ServiceDescription</p>
+
+        <!-- Grey box for displaying services -->
+        <div class="service-box">
+            <ul>
+                <li>GEE1 - $100 - Basic Eye Exam</li>
+                <li>CEE1 - $120 - Eye Pressure</li>
+                <li>REE1 - $130 - Glaucoma Screening</li>
+                <li>CLFU - $140 - Cataract Screening </li>
+                <li>VFEE - $150 - Emergency Consultation </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="empty-space"></div> <!-- Empty space between panels -->
+
+    <div class="right-panel">
+ 
+        <!-- ADD A SERVICE BUTTON -->
+        <button class="visionX-button" @onclick="AddAService">Add Service</button>
+
+        <!-- EDIT A SERVICE BUTTON -->
+        <button class="visionX-button" @onclick="EditAService">Edit A Service</button>
+
+        <!-- DELETE A SERVICE BUTTON -->
+        <button class="visionX-button" @onclick="DeleteAService">Delete A Service</button>
+
+        <!-- Commented out Test Button -->
+        @* <button class="visionX-button">TEST</button> *@
+
+        <button class="visionX-button exit-button" @onclick="HideModal">Exit</button>
+    </div>
+
+
+    @if (addAService)
+    {
+        <!-- Modal overlay -->
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheAddNewService OnSavePaymentClicked="HandleAddAServiceSave" OnExitPaymentClicked="HandleAddAServiceExit" />
+        </div>
+    }
+    @if (editAService)
+    {
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheAddNewService OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit" />
+        </div>
+    }
+
+    @if (deleteAService)
+    {
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheAddNewService OnSavePaymentClicked="HandleDeleteAServiceSave" OnExitPaymentClicked="HandleDeleteAServiceExit" />
+        </div>
+                
+     }
+  </div>
+
+<style>
+    .service-modal {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid #fff; 
+        background-color: #f5f5f5; 
+        padding: 20px; 
+    }
+
+    .left-panel {
+        width: 65%;
+    }
+
+    .right-panel {
+        width: 35%;
+    }
+
+        .left-panel p, .right-panel h4 {
+            display: inline;
+            margin: 0;
+            padding: 0 10px;
+        }
+
+    .empty-space {
+        width: 5%; /* Adjust the width as needed */
+    }
+
+    .service-box {
+        background-color: #ccc;
+        padding: 5px;
+    }
+
+        .service-box ul {
+            list-style-type: none;
+        }
+
+        .service-box li {
+            margin-bottom: 10px;
+        }
+
+
+    .exit-button {
+        margin-top: 20px;
+    }
+</style>
+
+
+
+@code {
+    [Parameter] public EventCallback OnExitClicked { get; set; }
+
+    private bool showInvoiceModal; 
+
+
+    private async Task HideModal()
+    {
+        // Emit the OnCancelClicked event
+        await OnExitClicked.InvokeAsync();
+    }
+
+    // =========================================
+
+
+    <!-- ADD A SERVICE BUTTON OPTION (Corresponds to Take a Payment Button) -->
+
+    private bool addAService = false;
+
+    private void AddAService()
+    {
+        addAService = true;
+    }
+
+    private void HandleAddAServiceExit()
+    {
+        addAService = false;
+    }
+
+    // Handle the save action here
+    private void HandleAddAServiceSave()
+    {
+        addAService = false;
+    }
+
+    <!-- EDIT A SERVICE BUTTON OPTION  -->
+
+    private bool editAService = false; 
+
+    private void EditAService()
+    {
+        editAService = true;
+    }
+
+    private void HandleEditAServiceExit()
+    {
+        editAService = false;
+    }
+
+    // Handle the save action here
+    private void HandleEditAServiceSave()
+    {
+        editAService = false;
+    }
+
+
+    <!-- DELETE A SERVICE BUTTON OPTION  -->
+    private bool deleteAService = false;
+
+    private void DeleteAService()
+    {
+        deleteAService = true;
+    }
+
+    private void HandleDeleteAServiceExit()
+    {
+        deleteAService = false;
+    }
+
+    // Handle the save action here
+    private void HandleDeleteAServiceSave()
+    {
+        deleteAService = false;
+    }
+    
+
+}
