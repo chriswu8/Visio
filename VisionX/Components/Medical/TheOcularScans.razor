@@ -1,10 +1,8 @@
 @page "/ocular-scans"
 
 <div class="main-container">
-
     <!-- Left Side -->
     <div class="left-side">
-
         <!-- Top Part -->
         <div class="top-part">
             <button class="filter-button" onclick="zoomIn()">Zoom In</button>
@@ -17,14 +15,16 @@
 
         <!-- Bottom Part -->
         <div class="bottom-part">
-            <!-- This container will hold the retinal photo(s) -->
-            <img src="../wwwroot/OcularScans/DummyPatient/dummyOD.jpg" alt="Retinal Photo" />
+            <img src="@GetImageSource()" alt="Retinal Photo" class="@((isZoomedIn) ? "zoomed-in" : "")" />
+        </div>
+
+        <div class="valueOfselectedYearOffset">
+            @selectedYearOffset
         </div>
     </div>
 
     <!-- Right Side -->
     <div class="right-side">
-
         <!-- Upper Part - Referral Button -->
         <div class="upper-part">
             <button @onclick="ToggleReferralModal" class="referral-button">Referral</button>
@@ -34,26 +34,38 @@
         @if (showReferralModal)
         {
             <div class="the-referral-modal"><TheReferralModal ShowTheReferralModal="ToggleReferralModal" /></div>
-
         }
 
         <!-- Lower Part - Scrollable Section with Image Squares -->
         <div class="lower-part">
             <!-- Date Squares with dates a year apart -->
-            @for (int i = 0; i < 6; i++)
-            {
-                <div class="date-square" @onclick="() => ShowPhotoForDate(i)">
-                    Date: @DateTime.Now.AddYears(-i).ToShortDateString()
-                </div>
-            }
+
+            <button class="date-square" @onclick="() => ShowPhotoForDate(0)">
+                @DateTime.Now.AddYears(-0 * 2).ToShortDateString()
+            </button>
+            <button class="date-square" @onclick="() => ShowPhotoForDate(1)">
+                @DateTime.Now.AddYears(-1 * 2).ToShortDateString()
+            </button>
+            <button class="date-square" @onclick="() => ShowPhotoForDate(2)">
+                @DateTime.Now.AddYears(-2 * 2).ToShortDateString()
+            </button>
+            <button class="date-square" @onclick="() => ShowPhotoForDate(3)">
+                @DateTime.Now.AddYears(-3 * 2).ToShortDateString()
+            </button>
+
         </div>
-
     </div>
-
 </div>
 
 @code {
     private bool showReferralModal = false;
+    private int selectedYearOffset = 0;
+    private bool isZoomedIn = false;
+
+    private void zoomIn()
+    {
+        isZoomedIn = !isZoomedIn;
+    }
 
     private void ToggleReferralModal()
     {
@@ -62,7 +74,25 @@
 
     private void ShowPhotoForDate(int yearsAgo)
     {
-        DateTime selectedDate = DateTime.Now.AddYears(-yearsAgo);
+        selectedYearOffset = yearsAgo;
+    }
+
+    private string GetImageSource()
+    {
+        int selectedYear = DateTime.Now.AddYears(-selectedYearOffset * 2).Year;
+        switch (selectedYear)
+        {
+            case 2017:
+                return "/OcularScans/DummyPatient/retina2017.jpg";
+            case 2019:
+                return "/OcularScans/DummyPatient/retina2019.jpg";
+            case 2021:
+                return "/OcularScans/DummyPatient/retina2021.jpg";
+            case 2023:
+                return "/OcularScans/DummyPatient/retina2023.jpg";
+            default:
+                return string.Empty;
+        }
     }
 }
 <style>
@@ -97,15 +127,19 @@
         height: 88%;
         overflow: hidden;
         position: relative;
-        border-radius: 5px;
-        border: 1px dotted black;
         margin-top: 2vh;
     }
 
-
         .bottom-part img {
-            width: 100%;
-            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-block-color: white;
+            border: 1px solid white;
+            border-radius: 5px;
         }
 
     .right-side {
@@ -114,6 +148,8 @@
         display: flex;
         flex-direction: column;
         background: #555;
+        border-block-color: white;
+        border: 1px solid white;
         border-radius: 5px;
     }
 
@@ -165,7 +201,16 @@
         border-radius: 5px;
         cursor: pointer;
         background: linear-gradient(to bottom, #334d50, #cbcaa5);
+        transition: background 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+        color: white;
     }
+
+        .date-square:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to bottom, #707070, #101010);
+            color: white;
+        }
+
 
     .filter-button {
         background-color: #1A1A1A;
