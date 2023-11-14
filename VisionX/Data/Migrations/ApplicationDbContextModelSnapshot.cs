@@ -22,6 +22,51 @@ namespace VisionX.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("VisionX.Models.Exam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Fee")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Exam", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "REE1",
+                            Description = "Regular Eye Exam",
+                            Fee = 100
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "GEE1",
+                            Description = "General Eye Exam",
+                            Fee = 200
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "YEE1",
+                            Description = "Regular Eye Exam 3",
+                            Fee = 300
+                        });
+                });
+
             modelBuilder.Entity("VisionX.Models.Patient", b =>
                 {
                     b.Property<int>("PatientID")
@@ -78,7 +123,7 @@ namespace VisionX.Data.Migrations
 
                     b.HasKey("PatientID");
 
-                    b.ToTable("Team", (string)null);
+                    b.ToTable("Patient", (string)null);
 
                     b.HasData(
                         new
@@ -90,6 +135,38 @@ namespace VisionX.Data.Migrations
                             Email = "test@mail.com",
                             FirstName = "Edmond",
                             LastName = "Chen",
+                            MiddleName = "Li",
+                            Occupation = "test",
+                            Phone = "233132",
+                            PostalCode = "VA2 34B",
+                            Province = "BC",
+                            ProvincialHealthNumber = "12345"
+                        },
+                        new
+                        {
+                            PatientID = 2,
+                            Address = "123 Test St",
+                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            City = "Richmond",
+                            Email = "test@mail.com",
+                            FirstName = "Chris",
+                            LastName = "Wu",
+                            MiddleName = "Yue",
+                            Occupation = "test",
+                            Phone = "233132",
+                            PostalCode = "VA2 34B",
+                            Province = "BC",
+                            ProvincialHealthNumber = "12345"
+                        },
+                        new
+                        {
+                            PatientID = 3,
+                            Address = "123 Minor st",
+                            BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            City = "Vancouver",
+                            Email = "test@mail.com",
+                            FirstName = "Kris",
+                            LastName = "Ocampo",
                             MiddleName = "Li",
                             Occupation = "test",
                             Phone = "233132",

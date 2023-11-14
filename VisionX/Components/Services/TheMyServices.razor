@@ -1,3 +1,7 @@
+@using VisionX.Models
+@using Microsoft.EntityFrameworkCore
+@inject Data.ApplicationDbContext dbContext
+
 <link rel="stylesheet" href="/css/site.css" />
 
 <div class="service-buttons">
@@ -20,10 +24,10 @@
         
         <tbody>
 
-            @foreach (var service in services)
+            @foreach (var service in examTest)
             {
-                <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(service)">
-                   @*  <td>@service.ServiceID</td> *@
+                @* <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(service)">
+                    <td>@service.ServiceID</td>
 
                     <td>
                         @if (service.IsEditing)
@@ -61,6 +65,9 @@
                     </td>
 
 
+                </tr> *@
+                <tr>
+                    <td>@service.Code</td>
                 </tr>
             }
 
@@ -223,6 +230,13 @@
         new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Test"},
         new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"}
     };
+
+    private List<VisionX.Models.Exam> examTest;
+
+    protected override void OnInitialized()
+    {
+        examTest = dbContext.Exams.ToList();
+    }
 
 
     public class Service

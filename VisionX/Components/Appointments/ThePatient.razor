@@ -52,6 +52,7 @@
             @foreach (var patient in patientsTest)
 
             {
+                <td>@patient.FirstName</td>
                 @* <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
                     @onclick="() => SelectRow(patient)">
                     <td>@patient.PatientID</td>

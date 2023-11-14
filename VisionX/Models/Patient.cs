@@ -5,8 +5,11 @@ namespace VisionX.Models
 {
     public class Patient
     {
-        public int PatientId { get; set; } // Primary Key
-        public string LastName { get; set; }
+
+        // research about attaching images to a patient
+        [Key]
+        public int PatientID { get; set; }
+        public string? LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string Address { get; set; }
