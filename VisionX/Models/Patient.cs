@@ -5,9 +5,8 @@ namespace VisionX.Models
 {
     public class Patient
     {
-        [Key]
-        public int PatientID { get; set; }
-        public string? LastName { get; set; }
+        public int PatientId { get; set; } // Primary Key
+        public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string Address { get; set; }
@@ -20,7 +19,7 @@ namespace VisionX.Models
         public string Email { get; set; }
         public string Occupation { get; set; }
 
-        // public int ExamId { get; set; } // Foreign Key to Exam table
-        // public Exam Exam { get; set; } // Navigation property for the related Exam
+        public int ExamId { get; set; } // Foreign Key to Exam table
+        public Exam Exam { get; set; } // Navigation property for the related Exam
     }
 }

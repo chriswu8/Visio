@@ -1,0 +1,192 @@
+﻿<div class="referral-modal">
+
+    <!-- Patient Info Section -->
+    <div class="patient-info">
+        <div class="patient-info-header">
+            <p class="referral-modal-patient-info">@patientFullName</p>
+            <p class="referral-modal-patient-info">@patientId</p>
+            <p class="referral-modal-patient-info">@DateTime.Now.ToString("yyyy-MM-dd")</p>
+        </div>
+    </div>
+
+    <!-- Refer Patient To Section -->
+    <div class="refer-section">
+        <div class="refer-section-header">
+            <p>Refer patient to</p>
+        </div>
+        <table>
+            <tr>
+                <td>Physician</td>
+                <td>
+                    <select @bind="selectedPhysician">
+                        @foreach (var physician in physicians)
+                        {
+                            <option>@physician</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Email Template</td>
+                <td>
+                    <select @bind="selectedEmailTemplate">
+                        @foreach (var template in emailTemplates)
+                        {
+                            <option>@template</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Message Preview Section -->
+    <div class="message-preview">
+        <div class="message-preview-header">
+            <p>Message Preview</p>
+        </div>
+        <textarea>@emailTemplate</textarea>
+    </div>
+
+    <!-- ReferralModal-Buttons Section -->
+    <div class="referral-modal-buttons">
+        <button @onclick="Cancel" class="cancel-button">Cancel</button>
+        <button @onclick="Send" class="send-button">Send</button>
+    </div>
+
+</div>
+
+<style>
+    .referral-modal {
+        background-color: #f2f2f2;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    .referral-modal-patient-info {
+        margin-bottom: 0px;
+    }
+
+    .patient-info-header {
+        text-align: right;
+    }
+
+
+    .refer-section {
+        margin-top: 20px;
+    }
+
+    .refer-section-header {
+        background-color: #ccc;
+        padding: 10px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    .message-preview {
+        margin-top: 20px;
+    }
+
+    .message-preview-header {
+        background-color: #ccc;
+        padding: 10px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 30vh;
+    }
+
+    .referral-modal-buttons {
+        margin-top: 20px;
+        text-align: right;
+    }
+
+    .cancel-button, .send-button {
+        padding: 10px;
+        margin-left: 10px;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .send-button {
+        background-color: #2ecc71;
+    }
+</style>
+
+
+@code {
+    [Parameter]
+    public EventCallback<bool> ShowTheReferralModal { get; set; }
+    private string patientFullName = "John Doe";
+    private string patientId = "12345";
+    private List<string> physicians = new List<string> { "Retinal Specialist", "Glaucoma Specialist", "Cornea and External Disease Specialist", "Pediatric Ophthalmologist", "Oculoplastic Surgeon", "Neuro-Ophthalmologist", "Uveitis Specialist", "Refractive Surgeon", "Ocular Oncologist", "Ophthalmic Pathologist" };
+    private List<string> emailTemplates = new List<string> { "Retinal Pathology", "Glaucoma Pathology", "Cornea and External Disease", "Child Exam", "Surgery", "Neuro-Ophthalmology", "Uveitis", "Refractive Surgery", "Ocular Oncology", "Ophthalmic Pathology" };
+    private string selectedPhysician = "Retinal Specialist";
+    private string selectedEmailTemplate = "Retinal Pathology";
+    string emailTemplate = @"
+Subject: Referral for Patient Care - Urgent Consultation Required
+
+Dear Dr. [Specialist's Last Name],
+
+I trust this message finds you well. My name is [Your Full Name], and I am a [Your Title] at [Your Clinic/Hospital]. I am reaching out to you with a referral for a patient under our care who requires your specialized expertise in retinal conditions.
+
+Patient Details:
+- Full Name: [Patient's Full Name]
+- Date of Birth: [Patient's Date of Birth]
+- Medical Record Number: [Patient's MRN]
+- Referring Physician: [Your Full Name]
+- Date of Referral: [Date of Referral]
+
+I examined a patient John Doe who presented with signs of retinal pathology and would like to refer this patient to you for a more in-depth examination. I kindly request your prompt review of this case and appreciate any insights or recommendations you may provide. If further diagnostic tests or a face-to-face consultation are deemed necessary, please let us know the most convenient way to proceed.
+
+Please feel free to contact me directly at 604-123-4567 to discuss this referral further or to coordinate any necessary details.
+
+Thank you for your attention to this matter. We look forward to your guidance in providing the best possible care for our patient.
+
+Best regards,
+
+Dr. Chris Wu
+O.D., F.A.A.O.
+bcitoptometry@bcit.ca
+BCIT Optometry 
+";
+
+
+    private async Task CloseModal()
+    {
+        await ShowTheReferralModal.InvokeAsync(false);
+    }
+
+
+    private void Cancel()
+    {
+        // Emit event to notify parent
+        if (ShowTheReferralModal.HasDelegate)
+        {
+            ShowTheReferralModal.InvokeAsync(false);
+        }
+
+    }
+
+    private void Send()
+    {
+        // Add send logic
+    }
+
+}

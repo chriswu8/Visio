@@ -1,0 +1,261 @@
+@page "/TheChatGPT"
+@using OpenAI;
+@using OpenAI.Chat;
+@using OpenAI.Models;
+@inject IConfiguration _configuration
+@inject IJSRuntime _jsRuntime
+
+
+<PageTitle>ChatGPT</PageTitle>
+
+<div class="ChatGPT-Component">
+    <button class="Close-Button" @onclick="CloseChatGPT">&times;</button>
+    <h3 class="ChatGPT-Header">VisionX Bot</h3>
+    <hr />
+    <div id="chatcontainer">
+        @foreach (var item in messages)
+        {
+            <div>
+                @if (item.Role == Role.User)
+                {
+                    <div style="float: right; margin-right: 30px;">
+                        <b>Chris</b>
+                    </div>
+                    <div class="@item.Role.ToString().ToLower()">
+                        <div class="msg">
+                            @item.Prompt
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div style="float: left; margin-left: 20px;">
+                        <b>Bot</b>
+                    </div>
+                    <div class="@item.Role.ToString().ToLower()">
+                        <div class="msg">
+                            @if (item.Prompt != null)
+                            {
+                                @((MarkupString)item.Prompt)
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    @if (!Processing)
+    {
+        <textarea class="ChatGPT-Textarea" rows="5" @bind="prompt" />
+        <br />
+
+        <span>&nbsp;</span>
+
+        <button class="Call-ChatGPT-Button"
+        @onclick="CallChatGPT">
+            Send message
+        </button>
+    }
+    else
+    {
+        <br>
+        <h4>Processing...</h4>
+    }
+    <br /><p style="color:red">@ErrorMessage</p>
+</div>
+
+
+<style>
+    .Close-Button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        background: none;
+        border: none;
+        color: #ccc;
+        cursor: pointer;
+    }
+
+        .Close-Button:hover {
+            color: #666;
+        }
+
+    .ChatGPT-Header {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .ChatGPT-Textarea {
+        border: 1px dashed #888;
+        border-radius: 5px;
+        width: 100%;
+        overflow: auto;
+        background: #f7f7f7;
+        resize: none;
+    }
+
+    .Call-ChatGPT-Button {
+        float: right;
+        background: #19C37D;
+        color: #fff;
+        border: none;
+        border-radius: 5%;
+        padding: 10px 15px;
+        transition: background-color 0.5s, box-shadow 0.3s;
+    }
+
+        .Call-ChatGPT-Button:hover {
+            background: #19C37D;
+            box-shadow: 0 0 10px rgba(170, 233, 207, 0.8);
+            color: #fff;
+        }
+
+    #chatcontainer {
+        height: 50vh;
+        width: 100%;
+        overflow: scroll;
+    }
+
+    /* for speech bubbles */
+    .assistant, .user {
+        position: relative;
+        font-family: arial;
+        font-size: 1.1em;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .user {
+        background: linear-gradient(to right, #e0e0e0, #bcbcbc);
+        color: #000;
+        margin-left: 20%;
+        margin-right: 100px;
+        top: 30%;
+        text-align: right;
+    }
+
+    .assistant {
+        background: #19C37D;
+        color: #fff;
+        margin-left: 100px;
+        margin-right: 20%;
+    }
+
+    .msg {
+        font-size: medium;
+    }
+</style>
+
+@code {
+    string Organization = "";
+    string ApiKey = "";
+    List<MessageSave> messages = new List<MessageSave>();
+    string prompt = "";
+    string ErrorMessage = "";
+    bool Processing = false;
+    int TotalTokens = 0;
+
+    protected override void OnInitialized()
+    {
+        Organization = _configuration["OpenAIServiceOptions:Organization"] ?? "";
+        ApiKey = _configuration["OpenAIServiceOptions:ApiKey"] ?? "";
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await _jsRuntime.InvokeAsync<string>("ScrollToBottom", "chatcontainer");
+        }
+        catch
+        {
+            // do nothing if this fails
+        }
+    }
+
+    public class MessageSave
+    {
+        public string? Prompt { get; set; }
+        public Role Role { get; set; }
+        public int Tokens { get; set; }
+    }
+
+    async Task CallChatGPT()
+    {
+        try
+        {
+            // Set Processing to true to indicate that the method is processing
+            Processing = true;
+            // Call StateHasChanged to refresh the UI
+            StateHasChanged();
+            // Clear any previous error messages
+            ErrorMessage = "";
+            // Create a new OpenAIClient object
+            // with the provided API key and organization
+            var api = new OpenAIClient(new OpenAIAuthentication(ApiKey, Organization));
+            // Create a new list of chatMessages objects and initialize it with the
+            // system's introductory message
+            var chatMessages = new List<Message>();
+            chatMessages.Add(new Message(Role.System, "You are helpful Assistant"));
+            // Add all existing messages to chatMessages
+            foreach (var item in messages)
+            {
+                chatMessages.Add(new Message(item.Role, item.Prompt));
+            }
+            // Add the new message to chatMessages
+            chatMessages.Add(new Message(Role.User, prompt));
+            // Call ChatGPT
+            // Create a new ChatRequest object with the chat prompts and pass
+            // it to the API's GetCompletionAsync method
+            var chatRequest = new ChatRequest(chatMessages);
+            var result = await api.ChatEndpoint.GetCompletionAsync(chatRequest);
+            // Create a new MessageSave object with the user's prompt and other
+            // details and add it to the messages list
+            messages.Add(new MessageSave
+                {
+                    Prompt = prompt,
+                    Role = Role.User,
+                    Tokens = (int)result.Usage.PromptTokens
+                });
+            // Create a new MessageSave object with the response and other details
+            // and add it to the messages list
+            messages.Add(new MessageSave
+                {
+                    Prompt = result.FirstChoice.Message,
+                    Role = Role.Assistant,
+                    Tokens = (int)result.Usage.CompletionTokens
+                });
+            // Update the total number of tokens used by the API
+            TotalTokens = (int)(TotalTokens + result.Usage.TotalTokens);
+        }
+        catch (Exception ex)
+        {
+            // Set ErrorMessage to the exception message if an error occurs
+            ErrorMessage = ex.Message;
+        }
+        finally
+        {
+            // Clear the prompt variable
+            prompt = "";
+            // Set Processing to false to indicate
+            // that the method is done processing
+            Processing = false;
+            // Call StateHasChanged to refresh the UI
+            StateHasChanged();
+        }
+    }
+
+    void CloseChatGPT()
+    {
+        // Emit an event to set showTheChatGPT to false in the parent component
+        if (ShowTheChatGPT.HasDelegate)
+        {
+            ShowTheChatGPT.InvokeAsync(false);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> ShowTheChatGPT { get; set; }
+}

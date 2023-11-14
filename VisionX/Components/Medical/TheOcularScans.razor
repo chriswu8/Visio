@@ -1,0 +1,231 @@
+@page "/ocular-scans"
+
+<div class="main-container">
+    <!-- Left Side -->
+    <div class="left-side">
+        <!-- Top Part -->
+        <div class="top-part">
+            <button class="filter-button" onclick="zoomIn()">Zoom In</button>
+            <button class="filter-button" onclick="zoomOut()">Zoom Out</button>
+            <button class="filter-button" onclick="changeBrightness()">Change Brightness</button>
+            <button class="filter-button" onclick="changeContrast()">Change Contrast</button>
+            <button class="filter-button" onclick="adjustSaturation()">Adjust Saturation</button>
+            <button class="filter-button" onclick="showTwoImages()">Show Two Images</button>
+        </div>
+
+        <!-- Bottom Part -->
+        <div class="bottom-part">
+            <img src="@GetImageSource()" alt="Retinal Photo" class="@((isZoomedIn) ? "zoomed-in" : "")" />
+        </div>
+
+        <div class="valueOfselectedYearOffset">
+            @selectedYearOffset
+        </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="right-side">
+        <!-- Upper Part - Referral Button -->
+        <div class="upper-part">
+            <button @onclick="ToggleReferralModal" class="referral-button">Referral</button>
+            <hr class="white-line" />
+        </div>
+
+        @if (showReferralModal)
+        {
+            <div class="the-referral-modal"><TheReferralModal ShowTheReferralModal="ToggleReferralModal" /></div>
+        }
+
+        <!-- Lower Part - Scrollable Section with Image Squares -->
+        <div class="lower-part">
+            <!-- Date Squares with dates a year apart -->
+
+            <button class="date-square" @onclick="() => ShowPhotoForDate(0)">
+                @DateTime.Now.AddYears(-0 * 2).ToShortDateString()
+            </button>
+            <button class="date-square" @onclick="() => ShowPhotoForDate(1)">
+                @DateTime.Now.AddYears(-1 * 2).ToShortDateString()
+            </button>
+            <button class="date-square" @onclick="() => ShowPhotoForDate(2)">
+                @DateTime.Now.AddYears(-2 * 2).ToShortDateString()
+            </button>
+            <button class="date-square" @onclick="() => ShowPhotoForDate(3)">
+                @DateTime.Now.AddYears(-3 * 2).ToShortDateString()
+            </button>
+
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool showReferralModal = false;
+    private int selectedYearOffset = 0;
+    private bool isZoomedIn = false;
+
+    private void zoomIn()
+    {
+        isZoomedIn = !isZoomedIn;
+    }
+
+    private void ToggleReferralModal()
+    {
+        showReferralModal = !showReferralModal;
+    }
+
+    private void ShowPhotoForDate(int yearsAgo)
+    {
+        selectedYearOffset = yearsAgo;
+    }
+
+    private string GetImageSource()
+    {
+        int selectedYear = DateTime.Now.AddYears(-selectedYearOffset * 2).Year;
+        switch (selectedYear)
+        {
+            case 2017:
+                return "/OcularScans/DummyPatient/retina2017.jpg";
+            case 2019:
+                return "/OcularScans/DummyPatient/retina2019.jpg";
+            case 2021:
+                return "/OcularScans/DummyPatient/retina2021.jpg";
+            case 2023:
+                return "/OcularScans/DummyPatient/retina2023.jpg";
+            default:
+                return string.Empty;
+        }
+    }
+}
+<style>
+    .main-container {
+        display: flex;
+        height: 100vh;
+    }
+
+    .the-referral-modal {
+        position: absolute;
+        top: 17%;
+        left: 50%;
+        transform: translate(20%, -10%);
+        padding: 10px;
+    }
+
+    .left-side {
+        width: 70vw;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        margin-right: 2vw;
+    }
+
+    .top-part {
+        width: 90%;
+        height: 10%;
+        padding: 10px;
+    }
+
+    .bottom-part {
+        height: 88%;
+        overflow: hidden;
+        position: relative;
+        margin-top: 2vh;
+    }
+
+        .bottom-part img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-block-color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+        }
+
+    .right-side {
+        width: 10%;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        background: #555;
+        border-block-color: white;
+        border: 1px solid white;
+        border-radius: 5px;
+    }
+
+    .referral-button {
+        width: 95%;
+        padding: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        background-color: #3498db;
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.4s ease;
+    }
+
+        .referral-button:hover {
+            box-shadow: 0 0 20px rgba(0, 233, 233, 0.2);
+        }
+
+    .white-line {
+        border-top: 1px solid white;
+        width: 100%;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .upper-part {
+        height: 10%;
+        padding: 10px;
+        margin-bottom: 3vh;
+    }
+
+    .lower-part {
+        height: 90%;
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .date-square {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        background: linear-gradient(to bottom, #334d50, #cbcaa5);
+        transition: background 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
+        color: white;
+    }
+
+        .date-square:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to bottom, #707070, #101010);
+            color: white;
+        }
+
+
+    .filter-button {
+        background-color: #1A1A1A;
+        color: white;
+        border: none;
+        padding: 10px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: background-color 0.4s ease;
+    }
+
+        .filter-button:hover {
+            background-color: #494949;
+        }
+
+</style>
