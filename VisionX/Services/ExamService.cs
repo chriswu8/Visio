@@ -20,5 +20,24 @@ namespace VisionX.Services
         {
             return _context.Exams.ToList();
         }
+
+        public void AddExam(Exam exam)
+        {
+            _context.Exams.Add(exam);
+            _context.SaveChanges();
+        }
+
+        public void DeleteExam(int examId)
+    {
+        var examToDelete = _context.Exams.Find(examId);
+
+        if (examToDelete != null)
+        {
+            _context.Exams.Remove(examToDelete);
+            _context.SaveChanges();
+        }
+        // Optionally, you can handle a case where the exam is not found.
+    }
+
     }
 }

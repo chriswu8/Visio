@@ -253,12 +253,12 @@
             <button @onclick="ShowRetinalImages" class="show-retinal-images-button">Show Ocular Scans</button>
         </div>
 
-        @* @if (showRetinalImages)
+         @if (showRetinalImages)
         {
-            <script>
+            <script suppress-error="BL9992">
                 window.open(window.location.origin + "/ocular-scans", "_blank");
             </script>
-        } *@
+        } 
     </div>
 </div>
 

@@ -1,18 +1,24 @@
+@inject VisionX.Services.ExamService ExamService
+@using VisionX.Models
+@inject Microsoft.JSInterop.IJSRuntime JSRuntime
+
+
 <!-- TheAddNewService.razor -->
 <div class="payment-modal">
     <div class="left-payment-panel">
 
         <h4 class="small-text">ServiceID of new Service</h4>
-        <input type="text" class="input-field" placeholder="Enter Service ID" />
+        <input type="text" class="input-field" placeholder="Enter Service ID" id="serviceIdInput" @bind="SelectedExam.Id" />
 
 
         <h4 class="small-text">Service Fee requried</h4>
-        <input type="text" class="input-field" placeholder="Enter Service Fee" />
+        <input type="text" class="input-field" placeholder="Enter Service Fee" id="serviceFeeInput" @bind="SelectedExam.Fee"/>
 
         <h4 class="small-text">Service Description required</h4>
-        <input type="text" class="input-field" placeholder="Enter details of new Service " />
+        <input type="text" class="input-field" placeholder="Enter details of new Service "
+            id="serviceDescriptionInput" @bind="SelectedExam.Description"/>
 
-        @*       <div class="payment-type">
+        @* <div class="payment-type">
         <h4 class="small-text">Payment Type</h4>
         <select class="input-field">
         <option value="credit">Credit Card</option>
@@ -55,7 +61,7 @@
         </div>
 
         <div class="buttons">
-            <button class="visionX-button payment-save-button">Save</button>
+            <button class="visionX-button payment-save-button" @onclick="SaveService">Save</button>
             <button class="visionX-button payment-exit-button" @onclick="HidePaymentModal">Exit</button>
         </div>
     </div>
@@ -128,7 +134,8 @@
         gap: 125px;
     }
 
-    .left-column, .right-column {
+    .left-column,
+    .right-column {
         width: 35%;
     }
 
@@ -138,20 +145,51 @@
     }
 
     .payment-save-button {
-        margin-right: 10px; /* Add some spacing between the buttons */
+        margin-right: 10px;
+        /* Add some spacing between the buttons */
     }
-
 </style>
 
- @code {
+@code {
     [Parameter] public EventCallback OnExitPaymentClicked { get; set; }
     [Parameter] public EventCallback OnSavePaymentClicked { get; set; }
-
+    
+    [Parameter]
+    public VisionX.Models.Exam SelectedExam { get; set; } = new VisionX.Models.Exam();
     private bool showPaymentModal;
 
-   private async Task HidePaymentModal()
+    private ElementReference serviceIdInput;
+    private ElementReference serviceFeeInput;
+    private ElementReference serviceDescriptionInput;
+
+
+    private async Task HidePaymentModal()
     {
         //Emit the OnCancelClicked event
         await OnExitPaymentClicked.InvokeAsync();
-   } 
+    }
+
+
+    private async Task SaveService()
+    {
+        string serviceId = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('serviceIdInput').value");
+        string serviceFee = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('serviceFeeInput').value");
+        string serviceDescription = await JSRuntime.InvokeAsync<string>("eval",
+        "document.getElementById('serviceDescriptionInput').value");
+
+        // Create a new exam object using the user-entered values
+        Exam newExam = new Exam
+            {
+
+                Code = serviceId,
+                Fee = Int32.Parse(serviceFee),
+                Description = serviceDescription
+            };
+
+        // Use ExamService to add the new exam
+        ExamService.AddExam(newExam);
+
+        // Emit the OnSavePaymentClicked event
+        await OnSavePaymentClicked.InvokeAsync();
+    }
 }

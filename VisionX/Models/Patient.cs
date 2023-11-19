@@ -22,6 +22,9 @@ namespace VisionX.Models
         public string Email { get; set; }
         public string Occupation { get; set; }
 
+        public bool IsSelected { get; set; }
+        public bool IsEditing { get; set; }
+
         // public int ExamId { get; set; } // Foreign Key to Exam table
         // public Exam Exam { get; set; } // Navigation property for the related Exam
     }

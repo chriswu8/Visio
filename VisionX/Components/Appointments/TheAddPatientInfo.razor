@@ -1,41 +1,41 @@
 ﻿@inject VisionX.Services.PatientService PatientService
+@using VisionX.Models
 @inject Microsoft.JSInterop.IJSRuntime JSRuntime
-
 
 <div class="patient-info">
     <div class="input-row">
         <div class="input-label last-name-div">Last Name:</div>
-        <input id="lastNameInput" class="input-field last-name-input" type="text" @bind="SelectedPatient.LastName"  />
+        <input id="lastNameInput" class="input-field last-name-input" type="text" />
     </div>
     <div class="input-row">
         <div class="input-label first-name-div">First Name:</div>
-        <input id="firstNameInput" class="input-field first-name-input" type="text" @bind="SelectedPatient.FirstName" />
+        <input id="firstNameInput" class="input-field first-name-input" type="text" />
     </div>
     <div class="info-columns">
         <div class="left-column">
             <div class="input-row">
                 <div class="input-label">Address:</div>
-                <input id="addressInput" class="input-field" type="text" @bind="SelectedPatient.Address" />
+                <input id="addressInput" class="input-field" type="text" />
             </div>
             <div class="input-row">
                 <div class="input-label">City:</div>
-                <input id="cityInput" class="input-field" type="text" @bind="SelectedPatient.City" />
+                <input id="cityInput" class="input-field" type="text" />
             </div>
             <div class="input-row">
                 <div class="input-label">Birthday Date:</div>
-                <input id="birthDateInput" class="input-field" type="date" @bind="SelectedPatient.BirthDate" />
+                <input id="birthDateInput" class="input-field" type="date" />
             </div>
             <div class="input-row">
                 <div class="input-label">Phone:</div>
-                <input id="phoneInput" class="input-field" type="tel" @bind="SelectedPatient.Phone" />
+                <input id="phoneInput" class="input-field" type="tel" />
             </div>
             <div class="input-row">
                 <div class="input-label">E-mail:</div>
-                <input id="emailInput" class="input-field" type="email" @bind="SelectedPatient.Email" />
+                <input id="emailInput" class="input-field" type="email" />
             </div>
             <div class="input-row">
                 <div class="input-label">Occupation:</div>
-                <input id="occupationInput" class="input-field" type="text" @bind="SelectedPatient.Occupation" />
+                <input id="occupationInput" class="input-field" type="text" />
             </div>
             <div class="input-row">
                 <div class="input-label">Last Visit:</div>
@@ -49,20 +49,19 @@
         <div class="right-column">
             <div class="input-row middle-name-row">
                 <div class="input-label middle-name-div">Middle Name:</div>
-                <input id="middleNameInput" class="input-field middle-name-input" type="text"
-                    @bind="SelectedPatient.MiddleName" />
+                <input id="middleNameInput" class="input-field middle-name-input" type="text" />
             </div>
             <div class="input-row">
                 <div class="input-label">Province:</div>
-                <input id="provinceInput" class="input-field" type="text" @bind="SelectedPatient.Province" />
+                <input id="provinceInput" class="input-field" type="text" />
             </div>
             <div class="input-row">
                 <div class="input-label">Postal Code:</div>
-                <input id="postalCodeInput" class="input-field" type="text" @bind="SelectedPatient.PostalCode" />
+                <input id="postalCodeInput" class="input-field" type="text" />
             </div>
             <div class="input-row">
                 <div class="input-label">PHN:</div>
-                <input id="phnInput" class="input-field" type="text" @bind="SelectedPatient.ProvincialHealthNumber" />
+                <input id="phnInput" class="input-field" type="text" />
             </div>
             <div class="input-row">
                 <div class="input-label">Insurance:</div>
@@ -75,7 +74,7 @@
         </div>
     </div>
     <div class="buttons">
-        <button class="save-button-info-save" @onclick="OnSave">Save</button>
+        <button class="save-button-info-save" @onclick="OnSave">Add Patient</button>
         <button class="cancel-button-info-save" @onclick="OnCancel">Cancel</button>
     </div>
 </div>
@@ -189,16 +188,58 @@
     [Parameter]
     public VisionX.Models.Patient SelectedPatient { get; set; } = new VisionX.Models.Patient();
 
-    @* [Parameter] 
-     public bool PatientEdit { get; set; } *@
+    @* [Parameter]
+public bool PatientEdit { get; set; } *@
 
 
     // Event handlers
     private async Task OnSave()
     {
         // Emit the OnSaveClicked event
-        await PatientService.UpdatePatientAsync(SelectedPatient);
-        await OnSaveClicked.InvokeAsync();
+        @* await PatientService.UpdatePatientAsync(SelectedPatient);
+await OnSaveClicked.InvokeAsync(); *@
+
+        string lastNameInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('lastNameInput').value");
+        string firstNameInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('firstNameInput').value");
+        string addressInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('addressInput').value");
+        string cityInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('cityInput').value");
+        string birthDateInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('birthDateInput').value");
+        string phoneInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('phoneInput').value");
+        string emailInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('emailInput').value");
+        string occupationInput = await JSRuntime.InvokeAsync<string>("eval",
+        "document.getElementById('occupationInput').value");
+        string lastVisitInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('lastVisitInput').value");
+        string firstVisitInput = await JSRuntime.InvokeAsync<string>("eval",
+        "document.getElementById('firstVisitInput').value");
+        string middleNameInput = await JSRuntime.InvokeAsync<string>("eval",
+        "document.getElementById('middleNameInput').value");
+        string provinceInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('provinceInput').value");
+        string postalCodeInput = await JSRuntime.InvokeAsync<string>("eval",
+        "document.getElementById('postalCodeInput').value");
+        string phnInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('phnInput').value");
+        string insuranceInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('insuranceInput').value");
+        string miscInput = await JSRuntime.InvokeAsync<string>("eval", "document.getElementById('miscInput').value");
+
+        Patient patient = new Patient()
+            {
+                LastName = lastNameInput,
+                FirstName = firstNameInput,
+                MiddleName = middleNameInput,
+                Address = addressInput,
+                Province = provinceInput,
+                City = cityInput,
+                PostalCode = postalCodeInput,
+                ProvincialHealthNumber = phnInput,
+                Phone = phoneInput,
+                Email = emailInput,
+                Occupation = occupationInput,
+                IsSelected = false,
+                IsEditing = false
+            };
+
+        PatientService.AddPatientAsync(patient);
+
+        OnSaveClicked.InvokeAsync();
     }
 
     private async Task OnCancel()

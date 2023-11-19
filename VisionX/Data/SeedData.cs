@@ -13,6 +13,7 @@ namespace VisionX.Data
             );
 
             modelBuilder.Entity<Exam>().HasData(GetExams());
+            modelBuilder.Entity<Appointment>().HasData(GetAppointments());
 
         }
         public static List<Patient> GetPatients()
@@ -31,6 +32,8 @@ namespace VisionX.Data
                 Phone = "233132",
                 Email = "test@mail.com",
                 Occupation = "test",
+                IsSelected = false,
+                IsEditing = false
             },
             new Patient() {
                 PatientID = 2,
@@ -45,6 +48,8 @@ namespace VisionX.Data
                 Phone = "233132",
                 Email = "test@mail.com",
                 Occupation = "test",
+                IsSelected = false,
+                IsEditing = false
             },
             new Patient() {
                 PatientID = 3,
@@ -59,6 +64,8 @@ namespace VisionX.Data
                 Phone = "233132",
                 Email = "test@mail.com",
                 Occupation = "test",
+                IsSelected = false,
+                IsEditing = false
             }
         };
 
@@ -89,6 +96,23 @@ namespace VisionX.Data
         };
 
             return services;
+        }
+
+        public static List<Appointment> GetAppointments()
+        {
+            List<Appointment> appointments = new List<Appointment>() {
+            new Appointment() {
+                ID = 1,
+                PatientID = 1,
+                ExamID = 1,
+                Month = "January",
+                Day = "21",
+                Year = "2023",
+                Time = "9:00"
+            }
+        };
+
+            return appointments;
         }
     }
 }

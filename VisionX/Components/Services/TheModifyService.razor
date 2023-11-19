@@ -1,3 +1,6 @@
+@using VisionX.Models
+@inject Data.ApplicationDbContext dbContext
+
 <!-- TheAdd.razor -->
 <div class="service-modal">
     <div class="left-panel">
@@ -6,11 +9,15 @@
         <!-- Grey box for displaying services -->
         <div class="service-box">
             <ul>
-                <li>GEE1 - $100 - Basic Eye Exam</li>
+                @foreach(var indivExam in examList) 
+            {
+                <li>@indivExam.Code - @indivExam.Fee -</li>
+            }
+                @* <li>GEE1 - $100 - Basic Eye Exam</li>
                 <li>CEE1 - $120 - Eye Pressure</li>
                 <li>REE1 - $130 - Glaucoma Screening</li>
                 <li>CLFU - $140 - Cataract Screening </li>
-                <li>VFEE - $150 - Emergency Consultation </li>
+                <li>VFEE - $150 - Emergency Consultation </li> *@
             </ul>
         </div>
     </div>
@@ -127,6 +134,15 @@
     <!-- ADD A SERVICE BUTTON OPTION (Corresponds to Take a Payment Button) -->
 
     private bool addAService = false;
+
+    private List<VisionX.Models.Exam> examList;
+
+    protected override void OnInitialized()
+    {
+        examList = dbContext.Exams.ToList();
+    }
+
+
 
     private void AddAService()
     {

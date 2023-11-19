@@ -11,8 +11,11 @@
         {
             @for (int minute = 0; minute < 60; minute += 20)
             {
-                <tr class="appointment-row">
-                    <td>@hour.ToString("00"):@minute.ToString("00")</td>
+                var capturedHour = hour;
+                var capturedMinute = minute;
+
+                <tr class="appointment-row" @onclick="() => HandleRowClick(capturedHour, capturedMinute)">
+                    <td>@capturedHour.ToString("00"):@capturedMinute.ToString("00")</td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -55,3 +58,18 @@
         text-align: center;
     }
 </style>
+
+@code {
+    [Parameter]
+    public EventCallback<(int, int)> OnRowClick { get; set; }
+
+    [Parameter]
+    public (int, int) SelectedTime { get; set; }
+
+    private void HandleRowClick(int hour, int minute)
+    {
+        // Handle the row click, you can use 'hour' and 'minute' as needed
+        //Console.WriteLine($"Row clicked. Time: {hour.ToString("00")}:{minute.ToString("00")}");
+        OnRowClick.InvokeAsync((hour, minute));
+    }
+}

@@ -1,5 +1,6 @@
 @using VisionX.Models
 @using Microsoft.EntityFrameworkCore
+@inject VisionX.Services.ExamService ExamService
 @inject Data.ApplicationDbContext dbContext
 
 <link rel="stylesheet" href="/css/site.css" />
@@ -14,59 +15,67 @@
     <table>
         <thead>
             <tr class="header-row">
+                <th colspan="2">Actions</th>
                 <th>ServiceID</th>
                 <th>Fee</th>
                 <th>ServiceDescription</th>
-               
+
             </tr>
         </thead>
-        @* Links the Services ID to the database data based off of the implementation from ThePatient.razor  *@
-        
+        @* Links the Services ID to the database data based off of the implementation from ThePatient.razor *@
+
         <tbody>
 
             @foreach (var service in examTest)
             {
-                @* <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(service)">
-                    <td>@service.ServiceID</td>
+                @* <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" :
+            "")" @onclick="() => SelectRow(service)">
+            <td>@service.ServiceID</td>
 
-                    <td>
-                        @if (service.IsEditing)
-                        {
-                            <input @bind="service.ServiceID" />
-                        }
-                        else
-                        {
-                            @service.ServiceID
-                         
-                        }
-                    </td>
+            <td>
+            @if (service.IsEditing)
+            {
+            <input @bind="service.ServiceID" />
+            }
+            else
+            {
+            @service.ServiceID
 
-
-                    <td>
-                        @if (service.IsEditing)
-                        {
-                            <input @bind="service.Fee" />
-                        }
-                        else
-                        {
-                            @service.Fee
-                        }
-                    </td>
-
-                    <td>
-                        @if (service.IsEditing)
-                        {
-                            <input @bind="service.ServiceDescription" />
-                        }
-                        else
-                        {
-                            @service.ServiceDescription
-                        }
-                    </td>
+            }
+            </td>
 
 
-                </tr> *@
+            <td>
+            @if (service.IsEditing)
+            {
+            <input @bind="service.Fee" />
+            }
+            else
+            {
+            @service.Fee
+            }
+            </td>
+
+            <td>
+            @if (service.IsEditing)
+            {
+            <input @bind="service.ServiceDescription" />
+            }
+            else
+            {
+            @service.ServiceDescription
+            }
+            </td>
+
+
+            </tr> *@
                 <tr>
+                    <td>
+                        <button @onclick="() => EditAService(service)">Edit</button>
+                    </td>
+                    <td>
+                        <button @onclick="() => DeleteAService(service)">Delete</button>
+                    </td>
                     <td>@service.Code</td>
                 </tr>
             }
@@ -81,6 +90,13 @@
         <div class="modal-overlay">
             <!-- TheModifyService (Services) modal component -->
             <TheModifyService OnExitClicked="HandleExit" />
+        </div>
+    }
+    else if (editAService)
+    {
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheAddNewService OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit" SelectedExam="selectedExam" />
         </div>
     }
 
@@ -101,11 +117,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000; /* Adjust z-index as needed */
+        z-index: 1000;
+        /* Adjust z-index as needed */
     }
 
     .modal-container {
-        transform: scale(0.9); /* Adjust the scale factor as needed */
+        transform: scale(0.9);
+        /* Adjust the scale factor as needed */
         transform-origin: center;
         transition: transform 0.3s;
     }
@@ -148,7 +166,8 @@
     }
 
 
-    th, td {
+    th,
+    td {
         border: 1px solid #ccc;
         padding: 8px;
         text-align: center;
@@ -195,10 +214,10 @@
         transition: background-color 0.3s, color 0.3s;
     }
 
-        .service-button:hover {
-            background-color: #666;
-            color: #fff;
-        }
+    .service-button:hover {
+        background-color: #666;
+        color: #fff;
+    }
 
     .service-buttons {
         display: flex;
@@ -213,7 +232,7 @@
     private bool modifyService = false;
     //ModifyService
     private void ModifyService()
-    {   // modif
+    { // modif
         modifyService = true;
     }
 
@@ -224,18 +243,42 @@
         modifyService = false;
     }
 
+    private bool editAService = false;
+
+    private VisionX.Models.Exam selectedExam;
+
+    private void EditAService(VisionX.Models.Exam exam)
+    {
+        selectedExam = exam;
+        editAService = true;
+    }
+
+    private void DeleteAService(VisionX.Models.Exam exam) {
+        ExamService.DeleteExam(exam.Id);
+    }
 
     private List<Service> services = new List<Service>
-    {
-        new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Test"},
-        new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"}
-    };
+{
+new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Test"},
+new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"}
+};
 
     private List<VisionX.Models.Exam> examTest;
 
     protected override void OnInitialized()
     {
         examTest = dbContext.Exams.ToList();
+    }
+
+    private void HandleEditAServiceExit()
+    {
+        editAService = false;
+    }
+
+    // Handle the save action here
+    private void HandleEditAServiceSave()
+    {
+        editAService = false;
     }
 
 
@@ -261,4 +304,3 @@
     }
 
 }
-

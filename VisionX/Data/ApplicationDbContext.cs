@@ -16,15 +16,18 @@ namespace VisionX.Data
         public DbSet<Patient>? Patients { get; set; }
 
         public DbSet<Exam>? Exams { get; set; }
+        public DbSet<Appointment>? Appointments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.Entity<Patient>().Property(m => m.PatientID).IsRequired();
             builder.Entity<Exam>().Property(m => m.Id).IsRequired();
+            builder.Entity<Appointment>().Property(m => m.ID).IsRequired();
 
             builder.Entity<Patient>().ToTable("Patient");
             builder.Entity<Exam>().ToTable("Exam");
+            builder.Entity<Appointment>().ToTable("Appointment");
             
             builder.Seed();
         }

@@ -1,22 +1,28 @@
-﻿<div class="three-columns">
+﻿@inject VisionX.Services.AppointmentService AppointmentService
+@using VisionX.Models
+
+
+<div class="three-columns">
     <!-- Left Column -->
     <div class="column">
-        <button class="today-button" @onclick="ShowModalPage">Today</button>
-        <button class="tomorrow-button">Tomorrow</button>
+        <button class="today-button" @onclick="() => ScheduleTime(0)">Today</button>
+        <button class="tomorrow-button" @onclick="() => ScheduleTime(1)">Tomorrow</button>
         <br /><br />
         <div class="left-buttons">
-            <button class="sub-button wk-button">1 wk today</button>
-            <button class="sub-button wk-button">2 wk today</button>
+            <button id="btn1WeekToday" class="sub-button wk-button" @onclick="() => ScheduleTime(7)">1 wk
+                today</button>
+            <button id="btn2WeeksToday" class="sub-button wk-button" @onclick="() => ScheduleTime(14)">2 wk
+                today</button>
         </div>
         <br />
         <div class="left-buttons no-gap">
-            <button class="sub-button mo-button">1 mo today</button>
-            <button class="sub-button mo-button">3 mo today</button>
-            <button class="sub-button mo-button wide">6 mo today</button>
+            <button class="sub-button mo-button" @onclick="() => ScheduleTime(30)">1 mo today</button>
+            <button class="sub-button mo-button" @onclick="() => ScheduleTime(90)">3 mo today</button>
+            <button class="sub-button mo-button wide" @onclick="() => ScheduleTime(180)">6 mo today</button>
         </div>
         <br /><br />
-        <button class="year-button">1yr today</button>
-        <button class="year-button">2yr today</button>
+        <button class="year-button" @onclick="() => ScheduleTime(365)">1yr today</button>
+        <button class="year-button" @onclick="() => ScheduleTime(730)">2yr today</button>
     </div>
 
     <!-- Middle Column -->
@@ -34,7 +40,7 @@
         <button class="month-button">November</button>
         <button class="month-button">December</button>
     </div>
-    
+
     <!-- Right Column -->
     <div class="column">
         <button class="right-button">2023</button>
@@ -90,19 +96,63 @@
                 <div class="calendar-day">31</div>
             </div>
         </div>
-    </div>  
-    @if (showModalPage)
-    {
-        <div style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
-            <ThePage />
+    </div>
+
+    <div style=" center; align-items: center; width: 100%; height: 100%;">
+        <ThePage TimeInString="@timeInString" Month="@month" Day="@day" Year="@year"/>
+        <div class="centered-appointment-section">
+            <div class="appointment-section">
+                <div class="appointments-table">
+                    <table class="appointments-table">
+                        <tr class="header-row">
+                            <td class="header-cell">Time</td>
+                            <td class="header-cell">Patient</td>
+                            <td class="header-cell">Service</td>
+                            <td class="header-cell">Contact</td>
+                        </tr>
+
+                        @for (int hour = 9; hour <= 16; hour++)
+                        {
+                            @for (int minute = 0; minute < 60; minute += 20)
+                            {
+
+                                var capturedHour = hour;
+                                var capturedMinute = minute;
+                                var combinedTime = $"{capturedHour}:{capturedMinute.ToString("00")}";
+
+                                <tr class="appointment-row @GetRowClass(combinedTime)"
+                                    @onclick="() => HandleRowClick(combinedTime)">
+                                    <td>@combinedTime</td>
+
+                                    @foreach (var appointment in appointmentsWithDetails)
+                                    {
+                                        @if (appointment.Time == combinedTime)
+                                        {
+                                            <td>@appointment.Patient.FirstName</td>
+                                            <td>@($"{appointment.Year}-{appointment.Month}-{appointment.Day} {appointment.Time}")</td>
+                                            <td>@appointment.Exam.Description</td>
+                                        }
+                                        
+                                    }
+                                </tr>
+                            }
+                        }
+
+
+
+                    </table>
+                </div>
+            </div>
         </div>
-    }
+    </div>
+
+
+
 
 </div>
 
 
 <style>
-
     .three-columns {
         display: flex;
         justify-content: space-between;
@@ -111,14 +161,16 @@
     .column {
         flex: 1;
         padding: 10px;
-        border-right: 1px solid #ccc; 
+        border-right: 1px solid #ccc;
     }
 
     .column:last-child {
         border-right: none;
     }
 
-    .today-button, .tomorrow-button, .year-button {
+    .today-button,
+    .tomorrow-button,
+    .year-button {
         min-block-size: 11vh;
     }
 
@@ -126,12 +178,18 @@
         margin-bottom: 5vh;
     }
 
-    .wk-button, .mo-button {
+    .wk-button,
+    .mo-button {
         min-block-size: 9vh;
     }
 
-    .today-button, .tomorrow-button,
-    .wk-button, .mo-button, .year-button, .month-button, .right-button{
+    .today-button,
+    .tomorrow-button,
+    .wk-button,
+    .mo-button,
+    .year-button,
+    .month-button,
+    .right-button {
         background-color: #f0f0f0;
         border: none;
         color: #333;
@@ -144,7 +202,7 @@
     }
 
     .right-button {
-    min-block-size: 10vh;
+        min-block-size: 10vh;
     }
 
     .left-buttons {
@@ -169,22 +227,22 @@
     }
 
     .calendar {
-        background-color: #f0f0f0; 
-        border: 1px solid #ccc; 
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
         padding: 10px;
-        margin-top: 20px; 
+        margin-top: 20px;
     }
 
     .calendar-header {
         text-align: center;
         font-weight: bold;
-        background-color: #333; 
-        color: #fff; 
+        background-color: #333;
+        color: #fff;
     }
 
     .calendar-header-day {
-        background-color: #333; 
-        color: #fff; 
+        background-color: #333;
+        color: #fff;
     }
 
     .calendar-days {
@@ -198,7 +256,61 @@
         background-color: #f0f0f0;
         border: 1px solid #ccc;
         padding: 5px;
-        color: #333; 
+        color: #333;
+    }
+
+    .centered-appointment-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: calc(100% - 60px);
+    }
+
+    .appointment-section {
+        background-color: #f0f0f0;
+        width: 30vw;
+        height: 67vh;
+        overflow-y: auto;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .appointments-table {
+        width: 100%;
+        gap: 10px;
+        z-index: 1;
+    }
+
+    .header-row {
+        background-color: #ccc;
+        font-weight: bold;
+    }
+
+    .highlighted-row {
+        background-color: grey;
+        /* Add any other styling you want for the highlighted row */
+    }
+
+    .header-cell {
+        padding: 8px;
+        text-align: center;
+    }
+
+    .appointment-row:hover {
+        background-color: grey;
+        transition: background-color 0.5s ease;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
     }
 
 
@@ -208,20 +320,69 @@
     .month-button:hover,
     .right-button:hover,
     .wk-button:hover,
-    .mo-button:hover, 
+    .mo-button:hover,
     .calendar-day:hover {
-        background-color: #666; 
-        color: #fff; /* Text color on hover */
-        transition: background-color 0.3s, color 0.3s; 
+        background-color: #666;
+        color: #fff;
+        /* Text color on hover */
+        transition: background-color 0.3s, color 0.3s;
     }
-
-
-
 </style>
 
 
 @code {
     private bool showModalPage = false;
+
+    private string clickedRow = string.Empty;
+
+
+    //private DateTime selectedTime;
+
+    private DateTime selectedDateTime;
+    private string timeInString;
+    private string month;
+    private string day;
+    private string year;
+
+    private List<Appointment> appointmentsWithDetails;
+
+    protected override void OnInitialized()
+    {
+        // Call the GetAppointmentsWithDetails method when the component is initialized
+        appointmentsWithDetails = AppointmentService.GetAppointmentsWithDetails();
+    }
+
+    private void ScheduleTime(int dateInTheFuture)
+    {
+        DateTime currentDate = DateTime.Now;
+        selectedDateTime = currentDate.AddDays(dateInTheFuture);
+    }
+
+    private void HandleRowClick(string combinedTime)
+    {
+        clickedRow = combinedTime;
+        // Handle the row click, you can use 'hour' and 'minute' as needed
+        Console.WriteLine(combinedTime);
+        //Console.WriteLine(selectedDateTime.ToString("yyyy-MM-dd"));
+        @* this.combinedTime = combinedTime; *@
+        string selectedYear = selectedDateTime.Year.ToString();
+        string selectedMonth = selectedDateTime.Month.ToString("00");
+        string selectedDay = selectedDateTime.Day.ToString("00");
+        @* Console.WriteLine(selectedYear);
+        Console.WriteLine(selectedMonth);
+        Console.WriteLine(selectedDay); *@
+        this.year = selectedYear;
+        this.month = selectedMonth;
+        this.day = selectedDay;
+        this.timeInString = combinedTime;
+        //this.selectedDateTime = selectedDateTime.ToString("yyyy-MM-dd");
+        //OnRowClick.InvokeAsync((hour, minute));
+    }
+
+    private string GetRowClass(string combinedTime)
+    {
+        return combinedTime == clickedRow ? "highlighted-row" : string.Empty;
+    }
 
     private void ShowModalPage()
     {

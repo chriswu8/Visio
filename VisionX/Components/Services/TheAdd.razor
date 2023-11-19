@@ -1,24 +1,40 @@
+@using VisionX.Models
+@inject Data.ApplicationDbContext dbContext
+
+
 <!-- TheAdd.razor -->
 <div class="service-modal">
     <div class="left-panel">
-        <p>ServiceID</p><p>Fee</p><p>ServiceDescription</p>
+        <p>ServiceID</p>
+        <p>Fee</p>
+        <p>ServiceDescription</p>
 
         <!-- Grey box for displaying services -->
         <div class="service-box">
-            <ul>
-                <li>GEE1 - $100 - Basic Eye Exam</li>
-                <li>CEE1 - $120 - Eye Pressure</li>
-                <li>REE1 - $130 - Glaucoma Screening</li>
-                <li>CLFU - $140 - Cataract Screening </li>
-                <li>VFEE - $150 - Emergency Consultation </li>
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <!-- Add more headers if needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var indivExam in examList)
+                    {
+                        <tr>
+                            <td>@indivExam.Code</td>
+                            <!-- Add more columns if needed -->
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 
     <div class="empty-space"></div> <!-- Empty space between panels -->
 
     <div class="right-panel">
- 
+
         <!-- ADD A SERVICE BUTTON -->
         <button class="visionX-button" @onclick="AddAService">Add Service</button>
 
@@ -29,14 +45,14 @@
     </div>
 
 
-    @if (addAService)
+    @* @if (addAService)
     {
         <!-- Modal overlay -->
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
             <TheAddNewService OnSavePaymentClicked="HandleAddAServiceSave" OnExitPaymentClicked="HandleAddAServiceExit" />
         </div>
-    }
+    } *@
 
 </div>
 
@@ -44,9 +60,9 @@
     .service-modal {
         display: flex;
         justify-content: space-between;
-        border: 1px solid #fff; 
-        background-color: #f5f5f5; 
-        padding: 20px; 
+        border: 1px solid #fff;
+        background-color: #f5f5f5;
+        padding: 20px;
     }
 
     .left-panel {
@@ -57,14 +73,16 @@
         width: 35%;
     }
 
-        .left-panel p, .right-panel h4 {
-            display: inline;
-            margin: 0;
-            padding: 0 10px;
-        }
+    .left-panel p,
+    .right-panel h4 {
+        display: inline;
+        margin: 0;
+        padding: 0 10px;
+    }
 
     .empty-space {
-        width: 5%; /* Adjust the width as needed */
+        width: 5%;
+        /* Adjust the width as needed */
     }
 
     .service-box {
@@ -72,13 +90,13 @@
         padding: 5px;
     }
 
-        .service-box ul {
-            list-style-type: none;
-        }
+    .service-box ul {
+        list-style-type: none;
+    }
 
-        .service-box li {
-            margin-bottom: 10px;
-        }
+    .service-box li {
+        margin-bottom: 10px;
+    }
 
 
     .exit-button {
@@ -91,7 +109,14 @@
 @code {
     [Parameter] public EventCallback OnExitClicked { get; set; }
 
-    private bool showInvoiceModal; 
+    private bool showInvoiceModal;
+
+    private List<VisionX.Models.Exam> examList;
+
+    protected override void OnInitialized()
+    {
+        examList = dbContext.Exams.ToList();
+    }
 
 
     private async Task HideModal()
@@ -100,7 +125,7 @@
         await OnExitClicked.InvokeAsync();
     }
 
-    // =========================================
+        // =========================================
 
 
     <!-- ADD A SERVICE BUTTON OPTION (Corresponds to Take a Payment Button) -->
