@@ -105,7 +105,7 @@ namespace VisionX.Data
                 ID = 1,
                 PatientID = 1,
                 ServiceID = 1,
-                Month = "January",
+                Month = "1",
                 Day = "21",
                 Year = "2023",
                 Time = "9:00"
