@@ -23,7 +23,7 @@ namespace VisionX.Services
             // Use Include to include related entities (Patient and Exam)
             return _context.Appointments
                 .Include(appointment => appointment.Patient)
-                .Include(appointment => appointment.Exam)
+                .Include(appointment => appointment.Service)
                 .ToList();
         }
 

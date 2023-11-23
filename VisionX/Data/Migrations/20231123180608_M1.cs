@@ -14,21 +14,6 @@ namespace VisionX.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Exam",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Fee = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Exam", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Patient",
                 columns: table => new
                 {
@@ -55,6 +40,21 @@ namespace VisionX.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Service",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fee = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Service", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Appointment",
                 columns: table => new
                 {
@@ -65,31 +65,21 @@ namespace VisionX.Data.Migrations
                     Year = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Time = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PatientID = table.Column<int>(type: "int", nullable: true),
-                    ExamID = table.Column<int>(type: "int", nullable: true)
+                    ServiceID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointment", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Appointment_Exam_ExamID",
-                        column: x => x.ExamID,
-                        principalTable: "Exam",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Appointment_Patient_PatientID",
                         column: x => x.PatientID,
                         principalTable: "Patient",
                         principalColumn: "PatientID");
-                });
-
-            migrationBuilder.InsertData(
-                table: "Exam",
-                columns: new[] { "Id", "Code", "Description", "Fee" },
-                values: new object[,]
-                {
-                    { 1, "REE1", "Regular Eye Exam", 100 },
-                    { 2, "GEE1", "General Eye Exam", 200 },
-                    { 3, "YEE1", "Regular Eye Exam 3", 300 }
+                    table.ForeignKey(
+                        name: "FK_Appointment_Service_ServiceID",
+                        column: x => x.ServiceID,
+                        principalTable: "Service",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -103,19 +93,29 @@ namespace VisionX.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Appointment",
-                columns: new[] { "ID", "Day", "ExamID", "Month", "PatientID", "Time", "Year" },
-                values: new object[] { 1, "21", 1, "January", 1, "9:00", "2023" });
+                table: "Service",
+                columns: new[] { "Id", "Code", "Description", "Fee" },
+                values: new object[,]
+                {
+                    { 1, "REE1", "Regular Eye Exam", 100 },
+                    { 2, "GEE1", "General Eye Exam", 200 },
+                    { 3, "YEE1", "Regular Eye Exam 3", 300 }
+                });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Appointment_ExamID",
+            migrationBuilder.InsertData(
                 table: "Appointment",
-                column: "ExamID");
+                columns: new[] { "ID", "Day", "Month", "PatientID", "ServiceID", "Time", "Year" },
+                values: new object[] { 1, "21", "January", 1, 1, "9:00", "2023" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointment_PatientID",
                 table: "Appointment",
                 column: "PatientID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointment_ServiceID",
+                table: "Appointment",
+                column: "ServiceID");
         }
 
         /// <inheritdoc />
@@ -125,10 +125,10 @@ namespace VisionX.Data.Migrations
                 name: "Appointment");
 
             migrationBuilder.DropTable(
-                name: "Exam");
+                name: "Patient");
 
             migrationBuilder.DropTable(
-                name: "Patient");
+                name: "Service");
         }
     }
 }

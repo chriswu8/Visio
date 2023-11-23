@@ -7,33 +7,33 @@ using VisionX.Models;
 
 namespace VisionX.Services
 {
-    public class ExamService
+    public class ServicesService
     {
         private readonly ApplicationDbContext _context;
 
-        public ExamService(ApplicationDbContext context)
+        public ServicesService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public List<Exam> GetAllExams()
+        public List<Service> GetAllServices()
         {
-            return _context.Exams.ToList();
+            return _context.Services.ToList();
         }
 
-        public void AddExam(Exam exam)
+        public void AddExam(Service service)
         {
-            _context.Exams.Add(exam);
+            _context.Services.Add(service);
             _context.SaveChanges();
         }
 
-        public void DeleteExam(int examId)
+        public void DeleteExam(int serviceId)
     {
-        var examToDelete = _context.Exams.Find(examId);
+        var serviceToDelete = _context.Services.Find(serviceId);
 
-        if (examToDelete != null)
+        if (serviceToDelete != null)
         {
-            _context.Exams.Remove(examToDelete);
+            _context.Services.Remove(serviceToDelete);
             _context.SaveChanges();
         }
         // Optionally, you can handle a case where the exam is not found.

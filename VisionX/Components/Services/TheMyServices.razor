@@ -1,6 +1,6 @@
 @using VisionX.Models
 @using Microsoft.EntityFrameworkCore
-@inject VisionX.Services.ExamService ExamService
+@inject VisionX.Services.ServicesService ServicesService
 @inject Data.ApplicationDbContext dbContext
 
 <link rel="stylesheet" href="/css/site.css" />
@@ -26,7 +26,7 @@
 
         <tbody>
 
-            @foreach (var service in examTest)
+            @foreach (var service in servicesTest)
             {
                 @* <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" :
             "")" @onclick="() => SelectRow(service)">
@@ -245,16 +245,16 @@
 
     private bool editAService = false;
 
-    private VisionX.Models.Exam selectedExam;
+    private VisionX.Models.Service selectedService;
 
-    private void EditAService(VisionX.Models.Exam exam)
+    private void EditAService(VisionX.Models.Service service)
     {
-        selectedExam = exam;
+        selectedService = service;
         editAService = true;
     }
 
-    private void DeleteAService(VisionX.Models.Exam exam) {
-        ExamService.DeleteExam(exam.Id);
+    private void DeleteAService(VisionX.Models.Service service) {
+        ServicesService.DeleteExam(service.Id);
     }
 
     private List<Service> services = new List<Service>
@@ -263,11 +263,11 @@ new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Te
 new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"}
 };
 
-    private List<VisionX.Models.Exam> examTest;
+    private List<VisionX.Models.Service> servicesTest;
 
     protected override void OnInitialized()
     {
-        examTest = dbContext.Exams.ToList();
+        servicesTest = dbContext.Services.ToList();
     }
 
     private void HandleEditAServiceExit()

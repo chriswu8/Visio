@@ -1,4 +1,4 @@
-@inject VisionX.Services.ExamService ExamService
+@inject VisionX.Services.ServicesService ServicesService
 @using VisionX.Models
 @inject Microsoft.JSInterop.IJSRuntime JSRuntime
 
@@ -8,15 +8,15 @@
     <div class="left-payment-panel">
 
         <h4 class="small-text">ServiceID of new Service</h4>
-        <input type="text" class="input-field" placeholder="Enter Service ID" id="serviceIdInput" @bind="SelectedExam.Id" />
+        <input type="text" class="input-field" placeholder="Enter Service ID" id="serviceIdInput" @bind="SelectedService.Id" />
 
 
         <h4 class="small-text">Service Fee requried</h4>
-        <input type="text" class="input-field" placeholder="Enter Service Fee" id="serviceFeeInput" @bind="SelectedExam.Fee"/>
+        <input type="text" class="input-field" placeholder="Enter Service Fee" id="serviceFeeInput" @bind="SelectedService.Fee"/>
 
         <h4 class="small-text">Service Description required</h4>
         <input type="text" class="input-field" placeholder="Enter details of new Service "
-            id="serviceDescriptionInput" @bind="SelectedExam.Description"/>
+            id="serviceDescriptionInput" @bind="SelectedService.Description"/>
 
         @* <div class="payment-type">
         <h4 class="small-text">Payment Type</h4>
@@ -155,7 +155,7 @@
     [Parameter] public EventCallback OnSavePaymentClicked { get; set; }
     
     [Parameter]
-    public VisionX.Models.Exam SelectedExam { get; set; } = new VisionX.Models.Exam();
+    public VisionX.Models.Service SelectedService { get; set; } = new VisionX.Models.Service();
     private bool showPaymentModal;
 
     private ElementReference serviceIdInput;
@@ -178,7 +178,7 @@
         "document.getElementById('serviceDescriptionInput').value");
 
         // Create a new exam object using the user-entered values
-        Exam newExam = new Exam
+        Service newService = new Service
             {
 
                 Code = serviceId,
@@ -187,7 +187,7 @@
             };
 
         // Use ExamService to add the new exam
-        ExamService.AddExam(newExam);
+        ServicesService.AddExam(newService);
 
         // Emit the OnSavePaymentClicked event
         await OnSavePaymentClicked.InvokeAsync();

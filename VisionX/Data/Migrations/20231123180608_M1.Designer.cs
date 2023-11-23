@@ -12,7 +12,7 @@ using VisionX.Data;
 namespace VisionX.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231119045004_M1")]
+    [Migration("20231123180608_M1")]
     partial class M1
     {
         /// <inheritdoc />
@@ -36,13 +36,13 @@ namespace VisionX.Data.Migrations
                     b.Property<string>("Day")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ExamID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Month")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PatientID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServiceID")
                         .HasColumnType("int");
 
                     b.Property<string>("Time")
@@ -53,9 +53,9 @@ namespace VisionX.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ExamID");
-
                     b.HasIndex("PatientID");
+
+                    b.HasIndex("ServiceID");
 
                     b.ToTable("Appointment", (string)null);
 
@@ -64,56 +64,11 @@ namespace VisionX.Data.Migrations
                         {
                             ID = 1,
                             Day = "21",
-                            ExamID = 1,
                             Month = "January",
                             PatientID = 1,
+                            ServiceID = 1,
                             Time = "9:00",
                             Year = "2023"
-                        });
-                });
-
-            modelBuilder.Entity("VisionX.Models.Exam", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Fee")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Exam", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "REE1",
-                            Description = "Regular Eye Exam",
-                            Fee = 100
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "GEE1",
-                            Description = "General Eye Exam",
-                            Fee = 200
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Code = "YEE1",
-                            Description = "Regular Eye Exam 3",
-                            Fee = 300
                         });
                 });
 
@@ -238,19 +193,64 @@ namespace VisionX.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("VisionX.Models.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Fee")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Service", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "REE1",
+                            Description = "Regular Eye Exam",
+                            Fee = 100
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "GEE1",
+                            Description = "General Eye Exam",
+                            Fee = 200
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "YEE1",
+                            Description = "Regular Eye Exam 3",
+                            Fee = 300
+                        });
+                });
+
             modelBuilder.Entity("VisionX.Models.Appointment", b =>
                 {
-                    b.HasOne("VisionX.Models.Exam", "Exam")
-                        .WithMany()
-                        .HasForeignKey("ExamID");
-
                     b.HasOne("VisionX.Models.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientID");
 
-                    b.Navigation("Exam");
+                    b.HasOne("VisionX.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceID");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("Service");
                 });
 #pragma warning restore 612, 618
         }

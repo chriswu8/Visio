@@ -12,7 +12,7 @@ namespace VisionX.Data
                 GetPatients()
             );
 
-            modelBuilder.Entity<Exam>().HasData(GetExams());
+            modelBuilder.Entity<Service>().HasData(GetServices());
             modelBuilder.Entity<Appointment>().HasData(GetAppointments());
 
         }
@@ -72,7 +72,7 @@ namespace VisionX.Data
             return patients;
         }
 
-        public static List<Service> GetExams()
+        public static List<Service> GetServices()
         {
             List<Service> services = new List<Service>() {
             new Service() {
@@ -104,7 +104,7 @@ namespace VisionX.Data
             new Appointment() {
                 ID = 1,
                 PatientID = 1,
-                ExamID = 1,
+                ServiceID = 1,
                 Month = "January",
                 Day = "21",
                 Year = "2023",

@@ -19,10 +19,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var indivExam in examList)
+                    @foreach (var service in serviceList)
                     {
                         <tr>
-                            <td>@indivExam.Code</td>
+                            <td>@service.Code</td>
                             <!-- Add more columns if needed -->
                         </tr>
                     }
@@ -111,11 +111,11 @@
 
     private bool showInvoiceModal;
 
-    private List<VisionX.Models.Exam> examList;
+    private List<VisionX.Models.Service> serviceList;
 
     protected override void OnInitialized()
     {
-        examList = dbContext.Exams.ToList();
+        serviceList = dbContext.Services.ToList();
     }
 
 

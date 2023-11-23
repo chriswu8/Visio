@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<ExamService>();
+builder.Services.AddScoped<ServicesService>();
 builder.Services.AddScoped<PatientService>();
 builder.Services.AddScoped<AppointmentService>();
 

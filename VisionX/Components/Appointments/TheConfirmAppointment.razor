@@ -18,9 +18,9 @@
         <div class="right-column">
             <span>Exam:</span>
             <select @onchange="HandleExamSelection">
-                @foreach (var indivExam in examList)
+                @foreach (var service in serviceList)
                 {
-                    <option value="@indivExam.Id">@indivExam.Id @indivExam.Code - $@indivExam.Fee</option>
+                    <option value="@service.Id">@service.Code</option>
                     <!-- Modify the value and text based on your Exam model -->
                 }
             </select>
@@ -84,14 +84,14 @@
     [Parameter] public string Year { get; set; }
     [Parameter] public string TimeInString { get; set; }
     [Parameter] public VisionX.Models.Patient SelectedPatientModel { get; set; }
-    private List<VisionX.Models.Exam> examList;
-    private int selectedExamId;
+    private List<VisionX.Models.Service> serviceList;
+    private int selectedServiceId;
 
     private void HandleExamSelection(ChangeEventArgs e)
     {
         if (int.TryParse(e.Value.ToString(), out var result))
         {
-            selectedExamId = result;
+            selectedServiceId = result;
         }
         else
         {
@@ -101,18 +101,18 @@
 
     protected override void OnInitialized()
     {
-        examList = dbContext.Exams.ToList();
+        serviceList = dbContext.Services.ToList();
     }
 
     // Event handlers
     private async Task OnSave()
     {
-        Console.WriteLine(Month);
+        @* Console.WriteLine(Month);
         Console.WriteLine(Day);
         Console.WriteLine(Year);
         Console.WriteLine(TimeInString);
         Console.WriteLine(SelectedPatientModel.PatientID);
-        Console.WriteLine(selectedExamId);
+        Console.WriteLine(selectedExamId); *@
         // Emit the OnSaveClicked event
         var newAppointment = new VisionX.Models.Appointment
             {
@@ -121,7 +121,7 @@
                 Year = Year,
                 Time = TimeInString,
                 PatientID = SelectedPatientModel.PatientID,
-                ExamID = selectedExamId
+                ServiceID = selectedServiceId
             };
 
         await appointmentService.AddAppointmentAsync(newAppointment);

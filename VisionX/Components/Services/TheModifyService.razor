@@ -9,9 +9,9 @@
         <!-- Grey box for displaying services -->
         <div class="service-box">
             <ul>
-                @foreach(var indivExam in examList) 
+                @foreach(var service in servicesList) 
             {
-                <li>@indivExam.Code - @indivExam.Fee -</li>
+                <li>@service.Fee -</li>
             }
                 @* <li>GEE1 - $100 - Basic Eye Exam</li>
                 <li>CEE1 - $120 - Eye Pressure</li>
@@ -135,11 +135,11 @@
 
     private bool addAService = false;
 
-    private List<VisionX.Models.Exam> examList;
+    private List<VisionX.Models.Service> servicesList;
 
     protected override void OnInitialized()
     {
-        examList = dbContext.Exams.ToList();
+        servicesList = dbContext.Services.ToList();
     }
 
 
