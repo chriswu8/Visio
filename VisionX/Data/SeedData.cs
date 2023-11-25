@@ -14,6 +14,7 @@ namespace VisionX.Data
 
             modelBuilder.Entity<Service>().HasData(GetServices());
             modelBuilder.Entity<Appointment>().HasData(GetAppointments());
+            modelBuilder.Entity<Product>().HasData(GetProducts());
 
         }
         public static List<Patient> GetPatients()
@@ -113,6 +114,37 @@ namespace VisionX.Data
         };
 
             return appointments;
+        }
+
+        public static List<Product> GetProducts()
+        {
+            List<Product> products = new List<Product>() {
+                new Product() {
+                    ID = 1,
+                    Manufacturer = "Ray Ban",
+                    Type = "Sunglasses",
+                    ModelNumber = "RB3558",
+                    Fee = 100
+                },
+                new Product() {
+                    ID = 2,
+                    Manufacturer = "Ray Ban",
+                    Type = "Aviator Sunglasses",
+                    ModelNumber = "RB3025",
+                    Fee = 150
+                },
+                new Product() {
+                    ID = 3,
+                    Manufacturer = "Ray Ban",
+                    Type = "Wayfarer Sunglasses",
+                    ModelNumber = "RB2140",
+                    Fee = 120
+                },
+
+        };
+
+            return products;
+
         }
     }
 }

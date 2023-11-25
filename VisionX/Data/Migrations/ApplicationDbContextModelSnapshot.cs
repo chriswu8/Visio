@@ -190,6 +190,57 @@ namespace VisionX.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("VisionX.Models.Product", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int?>("Fee")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Manufacturer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModelNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Product", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Fee = 100,
+                            Manufacturer = "Ray Ban",
+                            ModelNumber = "RB3558",
+                            Type = "Sunglasses"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Fee = 150,
+                            Manufacturer = "Ray Ban",
+                            ModelNumber = "RB3025",
+                            Type = "Aviator Sunglasses"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Fee = 120,
+                            Manufacturer = "Ray Ban",
+                            ModelNumber = "RB2140",
+                            Type = "Wayfarer Sunglasses"
+                        });
+                });
+
             modelBuilder.Entity("VisionX.Models.Service", b =>
                 {
                     b.Property<int>("Id")

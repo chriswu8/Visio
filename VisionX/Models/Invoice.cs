@@ -1,11 +1,15 @@
-﻿namespace VisionX.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VisionX.Models
 {
     public class Invoice
     {
+        [Key]
         public int ID { get; set; }
-        public int patientID { get; set; }
-        public int serviceID { get; set; }
-        public int fee { get; set; }
-        public float totalPaid { get; set; }
+        public int ServiceID { get; set; }
+        public int ProductID {get; set;}
+        public string? Month { get; set; }
+        public string? Day { get; set; }
+        public string? Year { get; set; }
     }
 }

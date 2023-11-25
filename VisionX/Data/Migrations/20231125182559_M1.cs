@@ -40,6 +40,22 @@ namespace VisionX.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModelNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fee = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Service",
                 columns: table => new
                 {
@@ -93,6 +109,16 @@ namespace VisionX.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Product",
+                columns: new[] { "ID", "Fee", "Manufacturer", "ModelNumber", "Type" },
+                values: new object[,]
+                {
+                    { 1, 100, "Ray Ban", "RB3558", "Sunglasses" },
+                    { 2, 150, "Ray Ban", "RB3025", "Aviator Sunglasses" },
+                    { 3, 120, "Ray Ban", "RB2140", "Wayfarer Sunglasses" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Service",
                 columns: new[] { "Id", "Code", "Description", "Fee" },
                 values: new object[,]
@@ -123,6 +149,9 @@ namespace VisionX.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Appointment");
+
+            migrationBuilder.DropTable(
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Patient");
