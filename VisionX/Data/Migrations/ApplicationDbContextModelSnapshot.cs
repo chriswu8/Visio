@@ -69,6 +69,206 @@ namespace VisionX.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("VisionX.Models.Exam", b =>
+                {
+                    b.Property<int>("ExamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExamId"));
+
+                    b.Property<string>("BloodPressure")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Complaint")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CorrectedAxis")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CorrectedCyliner")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CorrectedSphere")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExamDay")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExamMonth")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExamTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExamYear")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EyeDrops")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GlaucomaFamilyHistory")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("HasGlaucoma")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HistoryOfCancer")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfCataracts")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfDiabetes")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfHIV")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfHeartProblems")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfKidneyDisease")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfMacularDegeneration")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfNeuromuscularDisease")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfRetinalDetachment")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfStroke")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfThyroid")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("HistoryOfTuberculosis")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LifeStage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sex")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UncorrectedAxis")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UncorrectedCyliner")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UncorrectedSphere")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ExamId");
+
+                    b.ToTable("Exam");
+
+                    b.HasData(
+                        new
+                        {
+                            ExamId = 1,
+                            BloodPressure = "Normal",
+                            Complaint = "",
+                            CorrectedAxis = "na",
+                            CorrectedCyliner = "na",
+                            CorrectedSphere = "na",
+                            ExamDay = "1",
+                            ExamMonth = "1",
+                            ExamTime = "11",
+                            ExamYear = "2011",
+                            EyeDrops = "",
+                            GlaucomaFamilyHistory = "None",
+                            HasGlaucoma = false,
+                            HistoryOfCancer = false,
+                            HistoryOfCataracts = false,
+                            HistoryOfDiabetes = false,
+                            HistoryOfHIV = false,
+                            HistoryOfHeartProblems = false,
+                            HistoryOfKidneyDisease = false,
+                            HistoryOfMacularDegeneration = false,
+                            HistoryOfNeuromuscularDisease = false,
+                            HistoryOfRetinalDetachment = false,
+                            HistoryOfStroke = false,
+                            HistoryOfThyroid = false,
+                            HistoryOfTuberculosis = false,
+                            LifeStage = "Young adulthood",
+                            Sex = "Male",
+                            UncorrectedAxis = "na",
+                            UncorrectedCyliner = "na",
+                            UncorrectedSphere = "0.00"
+                        },
+                        new
+                        {
+                            ExamId = 2,
+                            BloodPressure = "Normal",
+                            Complaint = "",
+                            CorrectedAxis = "na",
+                            CorrectedCyliner = "na",
+                            CorrectedSphere = "na",
+                            ExamDay = "2",
+                            ExamMonth = "2",
+                            ExamTime = "10:00AM",
+                            ExamYear = "2022",
+                            EyeDrops = "",
+                            GlaucomaFamilyHistory = "None",
+                            HasGlaucoma = false,
+                            HistoryOfCancer = false,
+                            HistoryOfCataracts = false,
+                            HistoryOfDiabetes = false,
+                            HistoryOfHIV = false,
+                            HistoryOfHeartProblems = false,
+                            HistoryOfKidneyDisease = false,
+                            HistoryOfMacularDegeneration = false,
+                            HistoryOfNeuromuscularDisease = false,
+                            HistoryOfRetinalDetachment = false,
+                            HistoryOfStroke = false,
+                            HistoryOfThyroid = false,
+                            HistoryOfTuberculosis = false,
+                            LifeStage = "Young adulthood",
+                            Sex = "Male",
+                            UncorrectedAxis = "na",
+                            UncorrectedCyliner = "na",
+                            UncorrectedSphere = "0.00"
+                        },
+                        new
+                        {
+                            ExamId = 3,
+                            BloodPressure = "Normal",
+                            Complaint = "",
+                            CorrectedAxis = "na",
+                            CorrectedCyliner = "na",
+                            CorrectedSphere = "na",
+                            ExamMonth = "3",
+                            ExamTime = "13:00",
+                            ExamYear = "2013",
+                            EyeDrops = "",
+                            GlaucomaFamilyHistory = "None",
+                            HasGlaucoma = false,
+                            HistoryOfCancer = false,
+                            HistoryOfCataracts = false,
+                            HistoryOfDiabetes = false,
+                            HistoryOfHIV = false,
+                            HistoryOfHeartProblems = false,
+                            HistoryOfKidneyDisease = false,
+                            HistoryOfMacularDegeneration = false,
+                            HistoryOfNeuromuscularDisease = false,
+                            HistoryOfRetinalDetachment = false,
+                            HistoryOfStroke = false,
+                            HistoryOfThyroid = false,
+                            HistoryOfTuberculosis = false,
+                            LifeStage = "Young adulthood",
+                            Sex = "Male",
+                            UncorrectedAxis = "na",
+                            UncorrectedCyliner = "na",
+                            UncorrectedSphere = "0.00"
+                        });
+                });
+
             modelBuilder.Entity("VisionX.Models.Patient", b =>
                 {
                     b.Property<int>("PatientID")
@@ -91,6 +291,9 @@ namespace VisionX.Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -131,6 +334,8 @@ namespace VisionX.Data.Migrations
 
                     b.HasKey("PatientID");
 
+                    b.HasIndex("ExamId");
+
                     b.ToTable("Patient", (string)null);
 
                     b.HasData(
@@ -141,6 +346,7 @@ namespace VisionX.Data.Migrations
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Vancouver",
                             Email = "test@mail.com",
+                            ExamId = 1,
                             FirstName = "Edmond",
                             IsEditing = false,
                             IsSelected = false,
@@ -159,6 +365,7 @@ namespace VisionX.Data.Migrations
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Richmond",
                             Email = "test@mail.com",
+                            ExamId = 2,
                             FirstName = "Chris",
                             IsEditing = false,
                             IsSelected = false,
@@ -177,6 +384,7 @@ namespace VisionX.Data.Migrations
                             BirthDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             City = "Vancouver",
                             Email = "test@mail.com",
+                            ExamId = 3,
                             FirstName = "Kris",
                             IsEditing = false,
                             IsSelected = false,
@@ -274,7 +482,7 @@ namespace VisionX.Data.Migrations
                         {
                             Id = 2,
                             Code = "GEE1",
-                            Description = "General Eye Exam",
+                            Description = "Glaucoma Eye Exam",
                             Fee = 200
                         },
                         new
@@ -299,6 +507,17 @@ namespace VisionX.Data.Migrations
                     b.Navigation("Patient");
 
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("VisionX.Models.Patient", b =>
+                {
+                    b.HasOne("VisionX.Models.Exam", "Exam")
+                        .WithMany()
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
                 });
 #pragma warning restore 612, 618
         }
