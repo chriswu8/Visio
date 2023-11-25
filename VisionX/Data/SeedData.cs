@@ -8,14 +8,123 @@ namespace VisionX.Data
         // this is an extension method to the ModelBuilder class
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Patient>().HasData(
-                GetPatients()
-            );
+            modelBuilder.Entity<Patient>().HasData(GetPatients());
 
             modelBuilder.Entity<Service>().HasData(GetServices());
             modelBuilder.Entity<Appointment>().HasData(GetAppointments());
+            modelBuilder.Entity<Exam>().HasData(GetExams());
 
         }
+
+        public static List<Exam> GetExams()
+        {
+            List<Exam> exams = new List<Exam>()
+            {
+                new Exam() {
+                ExamId = 1,
+                ExamMonth = "1",
+                ExamDay = "1",
+                ExamYear = "2011",
+                ExamTime = "11",
+                Complaint = "",
+                EyeDrops = "",
+                HistoryOfCancer = false,
+                HistoryOfCataracts = false,
+                HistoryOfDiabetes = false,
+                HistoryOfHeartProblems = false,
+                HistoryOfHIV = false,
+                HistoryOfKidneyDisease = false,
+                HistoryOfMacularDegeneration = false,
+                HistoryOfRetinalDetachment = false,
+                HistoryOfStroke = false,
+                HistoryOfThyroid = false,
+                HistoryOfTuberculosis = false,
+                HistoryOfNeuromuscularDisease = false,
+                UncorrectedSphere = "0.00",
+                UncorrectedCyliner = "na",
+                UncorrectedAxis = "na",
+                CorrectedSphere = "na",
+                CorrectedCyliner = "na",
+                CorrectedAxis = "na",
+
+                Sex = "Male",
+                LifeStage = "Young adulthood",
+                BloodPressure = "Normal",
+                GlaucomaFamilyHistory = "None",
+                HasGlaucoma = false
+                },
+
+                new Exam() {
+                ExamId = 2,
+                ExamMonth = "2",
+                ExamDay = "2",
+                ExamYear = "2022",
+                ExamTime = "10:00AM",
+                Complaint = "",
+                EyeDrops = "",
+                HistoryOfCancer = false,
+                HistoryOfCataracts = false,
+                HistoryOfDiabetes = false,
+                HistoryOfHeartProblems = false,
+                HistoryOfHIV = false,
+                HistoryOfKidneyDisease = false,
+                HistoryOfMacularDegeneration = false,
+                HistoryOfRetinalDetachment = false,
+                HistoryOfStroke = false,
+                HistoryOfThyroid = false,
+                HistoryOfTuberculosis = false,
+                HistoryOfNeuromuscularDisease = false,
+                UncorrectedSphere = "0.00",
+                UncorrectedCyliner = "na",
+                UncorrectedAxis = "na",
+                CorrectedSphere = "na",
+                CorrectedCyliner = "na",
+                CorrectedAxis = "na",
+
+                Sex = "Male",
+                LifeStage = "Young adulthood",
+                BloodPressure = "Normal",
+                GlaucomaFamilyHistory = "None",
+                HasGlaucoma = false
+                },
+
+                new Exam() {
+                ExamId = 3,
+                ExamMonth = "3",
+                ExamYear = "2013",
+                ExamTime = "13:00",
+                Complaint = "",
+                EyeDrops = "",
+                HistoryOfCancer = false,
+                HistoryOfCataracts = false,
+                HistoryOfDiabetes = false,
+                HistoryOfHeartProblems = false,
+                HistoryOfHIV = false,
+                HistoryOfKidneyDisease = false,
+                HistoryOfMacularDegeneration = false,
+                HistoryOfRetinalDetachment = false,
+                HistoryOfStroke = false,
+                HistoryOfThyroid = false,
+                HistoryOfTuberculosis = false,
+                HistoryOfNeuromuscularDisease = false,
+                UncorrectedSphere = "0.00",
+                UncorrectedCyliner = "na",
+                UncorrectedAxis = "na",
+                CorrectedSphere = "na",
+                CorrectedCyliner = "na",
+                CorrectedAxis = "na",
+
+                Sex = "Male",
+                LifeStage = "Young adulthood",
+                BloodPressure = "Normal",
+                GlaucomaFamilyHistory = "None",
+                HasGlaucoma = false
+                },
+            };
+            return exams;
+        }
+
+
         public static List<Patient> GetPatients()
         {
             List<Patient> patients = new List<Patient>() {
@@ -33,7 +142,8 @@ namespace VisionX.Data
                 Email = "test@mail.com",
                 Occupation = "test",
                 IsSelected = false,
-                IsEditing = false
+                IsEditing = false,
+                ExamId = 1
             },
             new Patient() {
                 PatientID = 2,
@@ -49,7 +159,8 @@ namespace VisionX.Data
                 Email = "test@mail.com",
                 Occupation = "test",
                 IsSelected = false,
-                IsEditing = false
+                IsEditing = false,
+                ExamId = 2
             },
             new Patient() {
                 PatientID = 3,
@@ -65,7 +176,8 @@ namespace VisionX.Data
                 Email = "test@mail.com",
                 Occupation = "test",
                 IsSelected = false,
-                IsEditing = false
+                IsEditing = false,
+                ExamId = 3
             }
         };
 
@@ -85,7 +197,7 @@ namespace VisionX.Data
                 Id = 2,
                 Fee = 200,
                 Code = "GEE1",
-                Description = "General Eye Exam"
+                Description = "Glaucoma Eye Exam"
             },
             new Service() {
                 Id = 3,
@@ -94,7 +206,6 @@ namespace VisionX.Data
                 Description = "Regular Eye Exam 3"
             }
         };
-
             return services;
         }
 
@@ -111,7 +222,6 @@ namespace VisionX.Data
                 Time = "9:00"
             }
         };
-
             return appointments;
         }
     }
