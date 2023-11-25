@@ -61,7 +61,7 @@ namespace VisionX.Data.Migrations
                         {
                             ID = 1,
                             Day = "21",
-                            Month = "January",
+                            Month = "1",
                             PatientID = 1,
                             ServiceID = 1,
                             Time = "9:00",

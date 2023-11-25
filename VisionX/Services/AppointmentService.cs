@@ -58,6 +58,27 @@ namespace VisionX.Services
             await _context.SaveChangesAsync();
         }
 
+        public List<Appointment> SearchAppointmentByDate(string year, string month, string day)
+        {
+            // Parse the strings into integers
+            // if (int.TryParse(year, out int parsedYear) &&
+            //     int.TryParse(month, out int parsedMonth) &&
+            //     int.TryParse(day, out int parsedDay))
+            // {
+            //     // Create a DateTime object based on the parsed values
+            //     var targetDate = new DateTime(parsedYear, parsedMonth, parsedDay);
+
+            return _context.Appointments
+                .Where(appt => appt.Year == year && appt.Month == month && appt.Day == day)
+                .ToList();
+            // }
+            // else
+            // {
+            //     // Handle the case where parsing fails
+            //     throw new ArgumentException("Invalid date parameters");
+            // }
+        }
+
 
 
     }

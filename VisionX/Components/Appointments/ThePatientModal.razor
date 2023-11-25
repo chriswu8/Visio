@@ -421,6 +421,8 @@
         protected override void OnInitialized()
     {
         patientsTest = dbContext.Patients.ToList();
+        selectedPatientModel = patientsTest[0];
+        @* patientsTest[0].IsSelected = true; *@
     }
 
     private void ShowConfirmAppointmentModal()
@@ -490,12 +492,12 @@
 
     private void SelectRow(VisionX.Models.Patient patient)
     {
-        @* foreach (var p in patients)
+        foreach (var p in patientsTest)
         {
             p.IsSelected = false;
         }
 
-        patient.IsSelected = !patient.IsSelected;
+        @* patient.IsSelected = !patient.IsSelected;
 
         if (patient.IsSelected)
         {

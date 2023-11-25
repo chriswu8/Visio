@@ -28,16 +28,17 @@ namespace VisionX.Services
         }
 
         public void DeleteExam(int serviceId)
-    {
-        var serviceToDelete = _context.Services.Find(serviceId);
-
-        if (serviceToDelete != null)
         {
-            _context.Services.Remove(serviceToDelete);
-            _context.SaveChanges();
+            var serviceToDelete = _context.Services.Find(serviceId);
+
+            if (serviceToDelete != null)
+            {
+                _context.Services.Remove(serviceToDelete);
+                _context.SaveChanges();
+            }
+            // Optionally, you can handle a case where the exam is not found.
         }
-        // Optionally, you can handle a case where the exam is not found.
-    }
+
 
     }
 }

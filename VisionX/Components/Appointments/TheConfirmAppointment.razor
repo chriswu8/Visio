@@ -28,7 +28,7 @@
     </div>
     <div class="button-bar">
         <button class="visionX-button" @onclick="OnSave">Save</button>
-        <button class="visionX-button" @onclick="OnConfirmAppointmentCancelClicked">Cancel</button>
+        <button class="visionX-button" @onclick="OnConfirmAppointmentCancel">Cancel</button>
     </div>
 </div>
 <style>
@@ -102,6 +102,7 @@
     protected override void OnInitialized()
     {
         serviceList = dbContext.Services.ToList();
+        selectedServiceId = serviceList[0].Id;
     }
 
     // Event handlers
@@ -114,6 +115,7 @@
         Console.WriteLine(SelectedPatientModel.PatientID);
         Console.WriteLine(selectedExamId); *@
         // Emit the OnSaveClicked event
+        //Console.WriteLine(selectedServiceId);
         var newAppointment = new VisionX.Models.Appointment
             {
                 Month = Month,

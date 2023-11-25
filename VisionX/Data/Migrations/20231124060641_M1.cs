@@ -105,7 +105,7 @@ namespace VisionX.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Appointment",
                 columns: new[] { "ID", "Day", "Month", "PatientID", "ServiceID", "Time", "Year" },
-                values: new object[] { 1, "21", "January", 1, 1, "9:00", "2023" });
+                values: new object[] { 1, "21", "1", 1, 1, "9:00", "2023" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointment_PatientID",

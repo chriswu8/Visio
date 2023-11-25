@@ -5,24 +5,31 @@
 <div class="three-columns">
     <!-- Left Column -->
     <div class="column">
-        <button class="today-button" @onclick="() => ScheduleTime(0)">Today</button>
-        <button class="tomorrow-button" @onclick="() => ScheduleTime(1)">Tomorrow</button>
+        <button class="today-button @(selectedInterval == 0 ? "selected" : "")"
+            @onclick="() => ScheduleTime(0)">Today</button>
+        <button class="tomorrow-button @(selectedInterval == 1 ? "selected" : "")"
+            @onclick="() => ScheduleTime(1)">Tomorrow</button>
         <br /><br />
         <div class="left-buttons">
-            <button id="btn1WeekToday" class="sub-button wk-button" @onclick="() => ScheduleTime(7)">1 wk
-                today</button>
-            <button id="btn2WeeksToday" class="sub-button wk-button" @onclick="() => ScheduleTime(14)">2 wk
-                today</button>
+            <button id="btn1WeekToday" class="sub-button wk-button @(selectedInterval == 7 ? "selected" : "")"
+                @onclick="() => ScheduleTime(7)">1 wk today</button>
+            <button id="btn2WeeksToday" class="sub-button wk-button @(selectedInterval == 14 ? "selected" : "")"
+                @onclick="() => ScheduleTime(14)">2 wk today</button>
         </div>
         <br />
         <div class="left-buttons no-gap">
-            <button class="sub-button mo-button" @onclick="() => ScheduleTime(30)">1 mo today</button>
-            <button class="sub-button mo-button" @onclick="() => ScheduleTime(90)">3 mo today</button>
-            <button class="sub-button mo-button wide" @onclick="() => ScheduleTime(180)">6 mo today</button>
+            <button class="sub-button mo-button @(selectedInterval == 30 ? "selected" : "")"
+                @onclick="() => ScheduleTime(30)">1 mo today</button>
+            <button class="sub-button mo-button @(selectedInterval == 90 ? "selected" : "")"
+                @onclick="() => ScheduleTime(90)">3 mo today</button>
+            <button class="sub-button mo-button wide @(selectedInterval == 180 ? "selected" : "")"
+                @onclick="() => ScheduleTime(180)">6 mo today</button>
         </div>
         <br /><br />
-        <button class="year-button" @onclick="() => ScheduleTime(365)">1yr today</button>
-        <button class="year-button" @onclick="() => ScheduleTime(730)">2yr today</button>
+        <button class="year-button @(selectedInterval == 365 ? "selected" : "")" @onclick="() => ScheduleTime(365)">1yr
+            today</button>
+        <button class="year-button @(selectedInterval == 730 ? "selected" : "")" @onclick="() => ScheduleTime(730)">2yr
+            today</button>
     </div>
 
     <!-- Middle Column -->
@@ -49,57 +56,59 @@
 
         <!-- Dumb method, perhaps replace w/ api??? -->
         <div class="calendar">
-            <div class="calendar-header">December 2023</div>
+            @* <div class="calendar-header">December 2023</div>
             <div class="calendar-days">
-                <div class="calendar-day calendar-header-day">Sun</div>
-                <div class="calendar-day calendar-header-day">Mon</div>
-                <div class="calendar-day calendar-header-day">Tue</div>
-                <div class="calendar-day calendar-header-day">Wed</div>
-                <div class="calendar-day calendar-header-day">Thu</div>
-                <div class="calendar-day calendar-header-day">Fri</div>
-                <div class="calendar-day calendar-header-day">Sat</div>
-                <div class="calendar-day"></div>
-                <div class="calendar-day"></div>
-                <div class="calendar-day"></div>
-                <div class="calendar-day"></div>
-                <div class="calendar-day"></div>
-                <div class="calendar-day">1</div>
-                <div class="calendar-day">2</div>
-                <div class="calendar-day">3</div>
-                <div class="calendar-day">4</div>
-                <div class="calendar-day">5</div>
-                <div class="calendar-day">6</div>
-                <div class="calendar-day">7</div>
-                <div class="calendar-day">8</div>
-                <div class="calendar-day">9</div>
-                <div class="calendar-day">10</div>
-                <div class="calendar-day">11</div>
-                <div class="calendar-day">12</div>
-                <div class="calendar-day">13</div>
-                <div class="calendar-day">14</div>
-                <div class="calendar-day">15</div>
-                <div class="calendar-day">16</div>
-                <div class="calendar-day">17</div>
-                <div class="calendar-day">18</div>
-                <div class="calendar-day">19</div>
-                <div class="calendar-day">20</div>
-                <div class="calendar-day">21</div>
-                <div class="calendar-day">22</div>
-                <div class="calendar-day">23</div>
-                <div class="calendar-day">24</div>
-                <div class="calendar-day">25</div>
-                <div class="calendar-day">26</div>
-                <div class="calendar-day">27</div>
-                <div class="calendar-day">28</div>
-                <div class="calendar-day">29</div>
-                <div class="calendar-day">30</div>
-                <div class="calendar-day">31</div>
-            </div>
+            <div class="calendar-day calendar-header-day">Sun</div>
+            <div class="calendar-day calendar-header-day">Mon</div>
+            <div class="calendar-day calendar-header-day">Tue</div>
+            <div class="calendar-day calendar-header-day">Wed</div>
+            <div class="calendar-day calendar-header-day">Thu</div>
+            <div class="calendar-day calendar-header-day">Fri</div>
+            <div class="calendar-day calendar-header-day">Sat</div>
+            <div class="calendar-day"></div>
+            <div class="calendar-day"></div>
+            <div class="calendar-day"></div>
+            <div class="calendar-day"></div>
+            <div class="calendar-day"></div>
+            <div class="calendar-day">1</div>
+            <div class="calendar-day">2</div>
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day">5</div>
+            <div class="calendar-day">6</div>
+            <div class="calendar-day">7</div>
+            <div class="calendar-day">8</div>
+            <div class="calendar-day">9</div>
+            <div class="calendar-day">10</div>
+            <div class="calendar-day">11</div>
+            <div class="calendar-day">12</div>
+            <div class="calendar-day">13</div>
+            <div class="calendar-day">14</div>
+            <div class="calendar-day">15</div>
+            <div class="calendar-day">16</div>
+            <div class="calendar-day">17</div>
+            <div class="calendar-day">18</div>
+            <div class="calendar-day">19</div>
+            <div class="calendar-day">20</div>
+            <div class="calendar-day">21</div>
+            <div class="calendar-day">22</div>
+            <div class="calendar-day">23</div>
+            <div class="calendar-day">24</div>
+            <div class="calendar-day">25</div>
+            <div class="calendar-day">26</div>
+            <div class="calendar-day">27</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">29</div>
+            <div class="calendar-day">30</div>
+            <div class="calendar-day">31</div>
+            </div> *@
+            <p>View all </p>
+            <input type="date" data-date-inline-picker="true" @bind="calendarDate" @oninput="HandleDateSelection" />
         </div>
     </div>
 
     <div style=" center; align-items: center; width: 100%; height: 100%;">
-        <ThePage TimeInString="@timeInString" Month="@month" Day="@day" Year="@year"/>
+        <ThePage TimeInString="@timeInString" Month="@month" Day="@day" Year="@year" />
         <div class="centered-appointment-section">
             <div class="appointment-section">
                 <div class="appointments-table">
@@ -123,16 +132,20 @@
                                 <tr class="appointment-row @GetRowClass(combinedTime)"
                                     @onclick="() => HandleRowClick(combinedTime)">
                                     <td>@combinedTime</td>
-
-                                    @foreach (var appointment in appointmentsWithDetails)
+                                    @if (appointmentForDay != null)
                                     {
-                                        @if (appointment.Time == combinedTime)
+                                        @foreach (var appointment in appointmentForDay)
                                         {
-                                            <td>@appointment.Patient.FirstName</td>
-                                            <td>@($"{appointment.Year}-{appointment.Month}-{appointment.Day} {appointment.Time}")</td>
-                                            <td>@appointment.Service.Description</td>
+                                            @if (appointment != null)
+                                            {
+                                                @if (appointment.Time == combinedTime)
+                                                {
+                                                    <td>@appointment.Patient.FirstName</td>
+                                                    <td>@($"{appointment.Year}-{appointment.Month}-{appointment.Day} {appointment.Time}")</td>
+                                                    <td>@appointment.Service.Description</td>
+                                                }
+                                            }
                                         }
-                                        
                                     }
                                 </tr>
                             }
@@ -245,6 +258,14 @@
         color: #fff;
     }
 
+    .selected {
+        background-color: red;
+        /* Set your desired highlight color */
+        color: white;
+        /* Set the text color to be visible on the highlighted background */
+        /* Add any other styles for the highlighted state */
+    }
+
     .calendar-days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
@@ -335,27 +356,37 @@
 
     private string clickedRow = string.Empty;
 
+    private int selectedInterval = 0;
 
     //private DateTime selectedTime;
 
-    private DateTime selectedDateTime;
+    private DateTime selectedDateTime = DateTime.Now;
+    private DateTime calendarDate = DateTime.Now;
     private string timeInString;
     private string month;
     private string day;
     private string year;
 
     private List<Appointment> appointmentsWithDetails;
+    private List<Appointment> appointmentForDay;
+
 
     protected override void OnInitialized()
     {
         // Call the GetAppointmentsWithDetails method when the component is initialized
         appointmentsWithDetails = AppointmentService.GetAppointmentsWithDetails();
+        @* appointmentForDay = HandleDateSelection(DateTime.Now); *@
+        HandleDateSelection(DateTime.Now);
     }
 
     private void ScheduleTime(int dateInTheFuture)
     {
         DateTime currentDate = DateTime.Now;
         selectedDateTime = currentDate.AddDays(dateInTheFuture);
+        selectedInterval = dateInTheFuture;
+        HandleDateSelectionLeftCol(selectedDateTime);
+        Console.WriteLine(selectedDateTime);
+        //HandleDateSelection(selectedInterval);
     }
 
     private void HandleRowClick(string combinedTime)
@@ -369,8 +400,8 @@
         string selectedMonth = selectedDateTime.Month.ToString("00");
         string selectedDay = selectedDateTime.Day.ToString("00");
         @* Console.WriteLine(selectedYear);
-        Console.WriteLine(selectedMonth);
-        Console.WriteLine(selectedDay); *@
+Console.WriteLine(selectedMonth);
+Console.WriteLine(selectedDay); *@
         this.year = selectedYear;
         this.month = selectedMonth;
         this.day = selectedDay;
@@ -387,5 +418,39 @@
     private void ShowModalPage()
     {
         showModalPage = true;
+    }
+
+    private void HandleDateSelectionLeftCol(DateTime calendarDate)
+    {
+
+        string selectedYear = calendarDate.Year.ToString();
+        string selectedMonth = calendarDate.Month.ToString("d2");
+        string selectedDay = calendarDate.Day.ToString("d2");
+        appointmentForDay = AppointmentService.SearchAppointmentByDate(selectedYear,
+        selectedMonth, selectedDay);
+    }
+
+    private void HandleDateSelection(DateTime calendarDate)
+    {
+
+        string selectedYear = DateTime.Now.Year.ToString();
+        string selectedMonth = DateTime.Now.Month.ToString("d2");
+        string selectedDay = DateTime.Now.Day.ToString("d2");
+        appointmentForDay = AppointmentService.SearchAppointmentByDate(selectedYear,
+        selectedMonth, selectedDay);
+    }
+
+    private void HandleDateSelection(ChangeEventArgs e)
+    {
+        // Parse the selected date from the input
+        if (DateTime.TryParse(e.Value.ToString(), out DateTime calendarDate))
+        {
+            // Handle the selected date as needed
+            @* Console.WriteLine("Selected Date: " + calendarDate.ToString("yyyy-MM-dd"));
+Console.WriteLine(calendarDate.Year.ToString()) *@
+            appointmentForDay = AppointmentService.SearchAppointmentByDate(calendarDate.Year.ToString(),
+            calendarDate.Month.ToString("d2"), calendarDate.Day.ToString("d2"));
+
+        }
     }
 }
