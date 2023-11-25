@@ -11,7 +11,7 @@
             <ul>
                 @foreach(var service in servicesList) 
             {
-                <li>@service.Fee -</li>
+                <li> @service.Code - @service.Fee - @service.Description</li>
             }
                 @* <li>GEE1 - $100 - Basic Eye Exam</li>
                 <li>CEE1 - $120 - Eye Pressure</li>
