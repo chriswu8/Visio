@@ -26,8 +26,10 @@ namespace VisionX.Models
         public bool IsEditing { get; set; }
 
         public int ExamId { get; set; } // Foreign Key to Exam table
-        
+        public int InvoiceId { get; set; }
+
         [ForeignKey("ExamId")]
         public Exam Exam { get; set; } // Navigation property for the related Exam
+        
     }
 }

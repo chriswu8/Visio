@@ -12,11 +12,7 @@ using VisionX.Data;
 namespace VisionX.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<< HEAD:VisionX/Data/Migrations/20231125182559_M1.Designer.cs
-    [Migration("20231125182559_M1")]
-=======
-    [Migration("20231125181758_M1")]
->>>>>>> 7b488a301771417feb75a561b06c5e6ce1bb0e75:VisionX/Data/Migrations/20231125181758_M1.Designer.cs
+    [Migration("20231125193613_M1")]
     partial class M1
     {
         /// <inheritdoc />
@@ -276,6 +272,68 @@ namespace VisionX.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("VisionX.Models.Invoice", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Day")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Fee")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Month")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PatientID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServiceID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Year")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PatientID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("ServiceID");
+
+                    b.ToTable("Invoice", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 2,
+                            Day = "14",
+                            Fee = 100,
+                            Month = "12",
+                            PatientID = 1,
+                            ServiceID = 1,
+                            Year = "2023"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Day = "14",
+                            Fee = 100,
+                            Month = "12",
+                            PatientID = 1,
+                            ProductID = 1,
+                            Year = "2023"
+                        });
+                });
+
             modelBuilder.Entity("VisionX.Models.Patient", b =>
                 {
                     b.Property<int>("PatientID")
@@ -305,6 +363,9 @@ namespace VisionX.Data.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsEditing")
                         .HasColumnType("bit");
@@ -355,6 +416,7 @@ namespace VisionX.Data.Migrations
                             Email = "test@mail.com",
                             ExamId = 1,
                             FirstName = "Edmond",
+                            InvoiceId = 1,
                             IsEditing = false,
                             IsSelected = false,
                             LastName = "Chen",
@@ -374,6 +436,7 @@ namespace VisionX.Data.Migrations
                             Email = "test@mail.com",
                             ExamId = 2,
                             FirstName = "Chris",
+                            InvoiceId = 2,
                             IsEditing = false,
                             IsSelected = false,
                             LastName = "Wu",
@@ -393,6 +456,7 @@ namespace VisionX.Data.Migrations
                             Email = "test@mail.com",
                             ExamId = 3,
                             FirstName = "Kris",
+                            InvoiceId = 3,
                             IsEditing = false,
                             IsSelected = false,
                             LastName = "Ocampo",
@@ -512,6 +576,27 @@ namespace VisionX.Data.Migrations
                         .HasForeignKey("ServiceID");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("VisionX.Models.Invoice", b =>
+                {
+                    b.HasOne("VisionX.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientID");
+
+                    b.HasOne("VisionX.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID");
+
+                    b.HasOne("VisionX.Models.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceID");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Product");
 
                     b.Navigation("Service");
                 });

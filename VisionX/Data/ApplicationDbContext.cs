@@ -18,7 +18,8 @@ namespace VisionX.Data
 
         public DbSet<Service>? Services { get; set; }
         public DbSet<Appointment>? Appointments { get; set; }
-        public DbSet<Product>? Products {get; set;}
+        public DbSet<Product>? Products { get; set; }
+        public DbSet<Invoice>? Invoices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,12 +28,15 @@ namespace VisionX.Data
             builder.Entity<Service>().Property(m => m.Id).IsRequired();
             builder.Entity<Appointment>().Property(m => m.ID).IsRequired();
             builder.Entity<Product>().Property(m => m.ID).IsRequired();
+            builder.Entity<Invoice>().Property(m => m.ID).IsRequired();
 
             builder.Entity<Patient>().ToTable("Patient");
             builder.Entity<Service>().ToTable("Service");
             builder.Entity<Appointment>().ToTable("Appointment");
             builder.Entity<Product>().ToTable("Product");
-            
+            builder.Entity<Invoice>().ToTable("Invoice");
+
+
             builder.Seed();
         }
 

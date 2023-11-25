@@ -14,6 +14,7 @@ namespace VisionX.Data
             modelBuilder.Entity<Appointment>().HasData(GetAppointments());
             modelBuilder.Entity<Product>().HasData(GetProducts());
             modelBuilder.Entity<Exam>().HasData(GetExams());
+            modelBuilder.Entity<Invoice>().HasData(GetInvoice());
 
         }
 
@@ -144,7 +145,8 @@ namespace VisionX.Data
                 Occupation = "test",
                 IsSelected = false,
                 IsEditing = false,
-                ExamId = 1
+                ExamId = 1,
+                InvoiceId = 1
             },
             new Patient() {
                 PatientID = 2,
@@ -161,7 +163,8 @@ namespace VisionX.Data
                 Occupation = "test",
                 IsSelected = false,
                 IsEditing = false,
-                ExamId = 2
+                ExamId = 2,
+                InvoiceId = 2
             },
             new Patient() {
                 PatientID = 3,
@@ -178,7 +181,8 @@ namespace VisionX.Data
                 Occupation = "test",
                 IsSelected = false,
                 IsEditing = false,
-                ExamId = 3
+                ExamId = 3,
+                InvoiceId = 3
             }
         };
 
@@ -254,6 +258,36 @@ namespace VisionX.Data
         };
 
             return products;
+
+        }
+
+        public static List<Invoice> GetInvoice()
+        {
+            List<Invoice> invoices = new List<Invoice>() {
+                new Invoice() {
+                    ID = 2,
+                    Month = "12",
+                    Day = "14",
+                    Year = "2023",
+                    Fee = 100,
+                    ServiceID = 1,
+                    ProductID = null,
+                    PatientID = 1
+                },
+                new Invoice() {
+                    ID = 3,
+                    Month = "12",
+                    Day = "14",
+                    Year = "2023",
+                    Fee = 100,
+                    ServiceID = null,
+                    ProductID = 1,
+                    PatientID = 1
+                }
+
+        };
+
+            return invoices;
 
         }
     }

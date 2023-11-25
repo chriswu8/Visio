@@ -55,6 +55,22 @@ namespace VisionX.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModelNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fee = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Service",
                 columns: table => new
                 {
@@ -89,51 +105,18 @@ namespace VisionX.Data.Migrations
                     Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsSelected = table.Column<bool>(type: "bit", nullable: false),
                     IsEditing = table.Column<bool>(type: "bit", nullable: false),
-                    ExamId = table.Column<int>(type: "int", nullable: false)
+                    ExamId = table.Column<int>(type: "int", nullable: false),
+                    InvoiceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Patient", x => x.PatientID);
-<<<<<<< HEAD:VisionX/Data/Migrations/20231125182559_M1.cs
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModelNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Fee = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Service",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Fee = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Service", x => x.Id);
-=======
                     table.ForeignKey(
                         name: "FK_Patient_Exam_ExamId",
                         column: x => x.ExamId,
                         principalTable: "Exam",
                         principalColumn: "ExamId",
                         onDelete: ReferentialAction.Cascade);
->>>>>>> 7b488a301771417feb75a561b06c5e6ce1bb0e75:VisionX/Data/Migrations/20231125181758_M1.cs
                 });
 
             migrationBuilder.CreateTable(
@@ -159,6 +142,40 @@ namespace VisionX.Data.Migrations
                         principalColumn: "PatientID");
                     table.ForeignKey(
                         name: "FK_Appointment_Service_ServiceID",
+                        column: x => x.ServiceID,
+                        principalTable: "Service",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Invoice",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PatientID = table.Column<int>(type: "int", nullable: true),
+                    Month = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Day = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Year = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fee = table.Column<int>(type: "int", nullable: true),
+                    ServiceID = table.Column<int>(type: "int", nullable: true),
+                    ProductID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Invoice", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Invoice_Patient_PatientID",
+                        column: x => x.PatientID,
+                        principalTable: "Patient",
+                        principalColumn: "PatientID");
+                    table.ForeignKey(
+                        name: "FK_Invoice_Product_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Product",
+                        principalColumn: "ID");
+                    table.ForeignKey(
+                        name: "FK_Invoice_Service_ServiceID",
                         column: x => x.ServiceID,
                         principalTable: "Service",
                         principalColumn: "Id");
@@ -196,18 +213,27 @@ namespace VisionX.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Patient",
-                columns: new[] { "PatientID", "Address", "BirthDate", "City", "Email", "ExamId", "FirstName", "IsEditing", "IsSelected", "LastName", "MiddleName", "Occupation", "Phone", "PostalCode", "Province", "ProvincialHealthNumber" },
+                columns: new[] { "PatientID", "Address", "BirthDate", "City", "Email", "ExamId", "FirstName", "InvoiceId", "IsEditing", "IsSelected", "LastName", "MiddleName", "Occupation", "Phone", "PostalCode", "Province", "ProvincialHealthNumber" },
                 values: new object[,]
                 {
-                    { 1, "123 Main st", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Vancouver", "test@mail.com", 1, "Edmond", false, false, "Chen", "Li", "test", "233132", "VA2 34B", "BC", "12345" },
-                    { 2, "123 Test St", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Richmond", "test@mail.com", 2, "Chris", false, false, "Wu", "Yue", "test", "233132", "VA2 34B", "BC", "12345" },
-                    { 3, "123 Minor st", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Vancouver", "test@mail.com", 3, "Kris", false, false, "Ocampo", "Li", "test", "233132", "VA2 34B", "BC", "12345" }
+                    { 1, "123 Main st", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Vancouver", "test@mail.com", 1, "Edmond", 1, false, false, "Chen", "Li", "test", "233132", "VA2 34B", "BC", "12345" },
+                    { 2, "123 Test St", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Richmond", "test@mail.com", 2, "Chris", 2, false, false, "Wu", "Yue", "test", "233132", "VA2 34B", "BC", "12345" },
+                    { 3, "123 Minor st", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Vancouver", "test@mail.com", 3, "Kris", 3, false, false, "Ocampo", "Li", "test", "233132", "VA2 34B", "BC", "12345" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Appointment",
                 columns: new[] { "ID", "Day", "Month", "PatientID", "ServiceID", "Time", "Year" },
                 values: new object[] { 1, "21", "1", 1, 1, "9:00", "2023" });
+
+            migrationBuilder.InsertData(
+                table: "Invoice",
+                columns: new[] { "ID", "Day", "Fee", "Month", "PatientID", "ProductID", "ServiceID", "Year" },
+                values: new object[,]
+                {
+                    { 2, "14", 100, "12", 1, null, 1, "2023" },
+                    { 3, "14", 100, "12", 1, 1, null, "2023" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointment_PatientID",
@@ -217,6 +243,21 @@ namespace VisionX.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Appointment_ServiceID",
                 table: "Appointment",
+                column: "ServiceID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoice_PatientID",
+                table: "Invoice",
+                column: "PatientID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoice_ProductID",
+                table: "Invoice",
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoice_ServiceID",
+                table: "Invoice",
                 column: "ServiceID");
 
             migrationBuilder.CreateIndex(
@@ -232,10 +273,13 @@ namespace VisionX.Data.Migrations
                 name: "Appointment");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Invoice");
 
             migrationBuilder.DropTable(
                 name: "Patient");
+
+            migrationBuilder.DropTable(
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Service");
