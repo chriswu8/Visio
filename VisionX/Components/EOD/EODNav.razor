@@ -115,7 +115,7 @@
         <strong>Total: @examTest.Sum(service => service.Fee).ToString("C")</strong>
     </div>
 
-    <a @onclick="ExportAsPdf">Export as PDF</a>
+    <button  @onclick="ExportAsPdf">Export as PDF</button>
 }
 
 @* <div class="dropdown">
@@ -157,13 +157,24 @@ new Service { Patient = "Jane Doe", Date = DateTime.Now.AddDays(-1), ServiceID =
     {
         selectedOption = e.Value.ToString();
     }
-    @* This is the end of the section that contains the above code for the dropdown menu *@
+    @* End of the section that contains the above code for the dropdown menu *@
+
+    
 
     async Task ExportAsPdf()
     {
-        // Implement your PDF export functionality here
-        // You'll typically need to use a library to convert the HTML table to PDF
-        // The table's id ("data-table") can be used to select it
+        @* // Get the HTML content of the page
+        string htmlContent = await JSRuntime.InvokeAsync<string>("getHtmlContent");
+
+        // Send the HTML content to the server
+        var response = await Http.PostAsJsonAsync("/api/pdf", new { HtmlContent = htmlContent });
+
+        // Download the PDF
+        if (response.IsSuccessStatusCode)
+        {
+            var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+            await JSRuntime.InvokeVoidAsync("downloadPdf", pdfBytes);
+        } *@
     }
 
     public class Service
