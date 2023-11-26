@@ -227,7 +227,13 @@
             </script>
         }
 
-        <div><button class="save-button" @onclick="SaveMedicalInfo">Save</button></div>
+        <div class="confirmation-button-container">
+            @if (showSavedConfirmationMessage)
+            {
+                <div class="confirmation-message">Saved successfully!</div>
+            }
+            <button class="save-button" @onclick="SaveMedicalInfo">Save</button>
+        </div>
     </div>
 
 </div>
@@ -354,9 +360,22 @@
         color: white;
     }
 
+    .confirmation-button-container {
+        display: flex;
+        align-items: center;
+        float: right;
+    }
+
+    .confirmation-message {
+        margin-right: 25px;
+        margin-bottom: 10px;
+        margin-top: auto;
+        color: rgb(12, 153, 12);
+    }
 </style>
 @code {
     private bool showRetinalImages = false;
+    private bool showSavedConfirmationMessage = false;
     private VisionX.Models.Patient selectedPatientModel;
     private List<VisionX.Models.Patient> patientList;
 
@@ -364,6 +383,20 @@
     {
         dbContext.Patients.Update(selectedPatientModel);
         dbContext.SaveChanges();
+        ShowConfirmationMessage();
+    }
+
+    private void ShowConfirmationMessage()
+    {
+        showSavedConfirmationMessage = true;
+        StateHasChanged(); 
+
+        InvokeAsync(async () =>
+        {
+            await Task.Delay(3000);
+            showSavedConfirmationMessage = false;
+            StateHasChanged(); 
+        });
     }
 
     private void ShowRetinalImages()
