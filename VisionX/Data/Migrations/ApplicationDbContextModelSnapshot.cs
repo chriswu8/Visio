@@ -110,8 +110,8 @@ namespace VisionX.Data.Migrations
                     b.Property<string>("GlaucomaFamilyHistory")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("HasGlaucoma")
-                        .HasColumnType("bit");
+                    b.Property<string>("HasGlaucoma")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HistoryOfCancer")
                         .HasColumnType("bit");
@@ -172,7 +172,7 @@ namespace VisionX.Data.Migrations
                         new
                         {
                             ExamId = 1,
-                            BloodPressure = "Normal",
+                            BloodPressure = "Hypertensive Crisis",
                             Complaint = "",
                             CorrectedAxis = "na",
                             CorrectedCyliner = "na",
@@ -182,8 +182,8 @@ namespace VisionX.Data.Migrations
                             ExamTime = "11",
                             ExamYear = "2011",
                             EyeDrops = "",
-                            GlaucomaFamilyHistory = "None",
-                            HasGlaucoma = false,
+                            GlaucomaFamilyHistory = "Maternal Parent",
+                            HasGlaucoma = "Yes",
                             HistoryOfCancer = false,
                             HistoryOfCataracts = false,
                             HistoryOfDiabetes = false,
@@ -196,8 +196,8 @@ namespace VisionX.Data.Migrations
                             HistoryOfStroke = false,
                             HistoryOfThyroid = false,
                             HistoryOfTuberculosis = false,
-                            LifeStage = "Young adulthood",
-                            Sex = "Male",
+                            LifeStage = "Senior",
+                            Sex = "Female",
                             UncorrectedAxis = "na",
                             UncorrectedCyliner = "na",
                             UncorrectedSphere = "0.00"
@@ -216,7 +216,7 @@ namespace VisionX.Data.Migrations
                             ExamYear = "2022",
                             EyeDrops = "",
                             GlaucomaFamilyHistory = "None",
-                            HasGlaucoma = false,
+                            HasGlaucoma = "No",
                             HistoryOfCancer = false,
                             HistoryOfCataracts = false,
                             HistoryOfDiabetes = false,
@@ -248,7 +248,7 @@ namespace VisionX.Data.Migrations
                             ExamYear = "2013",
                             EyeDrops = "",
                             GlaucomaFamilyHistory = "None",
-                            HasGlaucoma = false,
+                            HasGlaucoma = "No",
                             HistoryOfCancer = false,
                             HistoryOfCataracts = false,
                             HistoryOfDiabetes = false,

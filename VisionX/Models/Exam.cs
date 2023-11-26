@@ -36,7 +36,7 @@
         public string? LifeStage { get; set; }
         public string? BloodPressure { get; set; }
         public string? GlaucomaFamilyHistory { get; set; }
-        public bool? HasGlaucoma { get; set; }
+        public string? HasGlaucoma { get; set; }
 
 
 

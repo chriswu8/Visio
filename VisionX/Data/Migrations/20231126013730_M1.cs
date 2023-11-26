@@ -47,7 +47,7 @@ namespace VisionX.Data.Migrations
                     LifeStage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BloodPressure = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GlaucomaFamilyHistory = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HasGlaucoma = table.Column<bool>(type: "bit", nullable: true)
+                    HasGlaucoma = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -186,9 +186,9 @@ namespace VisionX.Data.Migrations
                 columns: new[] { "ExamId", "BloodPressure", "Complaint", "CorrectedAxis", "CorrectedCyliner", "CorrectedSphere", "ExamDay", "ExamMonth", "ExamTime", "ExamYear", "EyeDrops", "GlaucomaFamilyHistory", "HasGlaucoma", "HistoryOfCancer", "HistoryOfCataracts", "HistoryOfDiabetes", "HistoryOfHIV", "HistoryOfHeartProblems", "HistoryOfKidneyDisease", "HistoryOfMacularDegeneration", "HistoryOfNeuromuscularDisease", "HistoryOfRetinalDetachment", "HistoryOfStroke", "HistoryOfThyroid", "HistoryOfTuberculosis", "LifeStage", "Sex", "UncorrectedAxis", "UncorrectedCyliner", "UncorrectedSphere" },
                 values: new object[,]
                 {
-                    { 1, "Normal", "", "na", "na", "na", "1", "1", "11", "2011", "", "None", false, false, false, false, false, false, false, false, false, false, false, false, false, "Young adulthood", "Male", "na", "na", "0.00" },
-                    { 2, "Normal", "", "na", "na", "na", "2", "2", "10:00AM", "2022", "", "None", false, false, false, false, false, false, false, false, false, false, false, false, false, "Young adulthood", "Male", "na", "na", "0.00" },
-                    { 3, "Normal", "", "na", "na", "na", null, "3", "13:00", "2013", "", "None", false, false, false, false, false, false, false, false, false, false, false, false, false, "Young adulthood", "Male", "na", "na", "0.00" }
+                    { 1, "Hypertensive Crisis", "", "na", "na", "na", "1", "1", "11", "2011", "", "Maternal Parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, "Senior", "Female", "na", "na", "0.00" },
+                    { 2, "Normal", "", "na", "na", "na", "2", "2", "10:00AM", "2022", "", "None", "No", false, false, false, false, false, false, false, false, false, false, false, false, "Young adulthood", "Male", "na", "na", "0.00" },
+                    { 3, "Normal", "", "na", "na", "na", null, "3", "13:00", "2013", "", "None", "No", false, false, false, false, false, false, false, false, false, false, false, false, "Young adulthood", "Male", "na", "na", "0.00" }
                 });
 
             migrationBuilder.InsertData(

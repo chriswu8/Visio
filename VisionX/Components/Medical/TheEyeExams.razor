@@ -1,120 +1,34 @@
+@using VisionX.Models
+@using Microsoft.EntityFrameworkCore
+@inject Data.ApplicationDbContext dbContext
+@inject VisionX.Services.PatientService _patientService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
 <div style="display: flex; width: 100%">
     <!-- Left Side -->
     <div class="left-patient-column" style="width: 35%">
         <label for="search">Search:</label>
         <input type="text" id="search" style="width: 75%" />
         <br /><br />
-        <table style="width: 100%">
+        <table class="exam-patient-table" style="width: 100%">
             <thead>
                 <tr>
-                    <th>Patient Id</th>
+                    <th>PHN</th>
                     <th>Last Name</th>
                     <th>First Name</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Dummy Patient Data. Please replace with database patients-->
-                <tr>
-                    <td>1</td>
-                    <td>Doe</td>
-                    <td>John</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Smith</td>
-                    <td>Jane</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Lee</td>
-                    <td>Tom</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Kim</td>
-                    <td>Amy</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Ng</td>
-                    <td>Chris</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Jones</td>
-                    <td>Mike</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>Chan</td>
-                    <td>Lisa</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>Tan</td>
-                    <td>Ben</td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td>Wong</td>
-                    <td>Anna</td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>Lin</td>
-                    <td>Paul</td>
-                </tr>
-                <tr>
-                    <td>11</td>
-                    <td>Miller</td>
-                    <td>Sara</td>
-                </tr>
-                <tr>
-                    <td>12</td>
-                    <td>Brown</td>
-                    <td>Mark</td>
-                </tr>
-                <tr>
-                    <td>13</td>
-                    <td>Nguyen</td>
-                    <td>Alice</td>
-                </tr>
-                <tr>
-                    <td>14</td>
-                    <td>Patel</td>
-                    <td>Raj</td>
-                </tr>
-                <tr>
-                    <td>15</td>
-                    <td>Williams</td>
-                    <td>Emily</td>
-                </tr>
-                <tr>
-                    <td>16</td>
-                    <td>Wang</td>
-                    <td>Kevin</td>
-                </tr>
-                <tr>
-                    <td>17</td>
-                    <td>Garcia</td>
-                    <td>Mia</td>
-                </tr>
-                <tr>
-                    <td>18</td>
-                    <td>Anderson</td>
-                    <td>Jake</td>
-                </tr>
-                <tr>
-                    <td>19</td>
-                    <td>Chen</td>
-                    <td>Lily</td>
-                </tr>
-                <tr>
-                    <td>20</td>
-                    <td>Johnson</td>
-                    <td>Chris</td>
-                </tr>
-
+                @foreach (var patient in patientList)
+                {
+                    <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
+                        @onclick="() => SelectRow(patient)">
+                        <td>@patient.ProvincialHealthNumber</td>
+                        <td>@patient.FirstName</td>
+                        <td>@patient.LastName</td>
+                        <!-- Add other columns similarly -->
+                    </tr>
+                }
             </tbody>
         </table>
         <div>
@@ -156,7 +70,6 @@
                     <input type="checkbox" id="diabetes" />
                     <label for="diabetes">Diabetes</label>
                 </div>
-                <!-- Add similar blocks for other conditions -->
                 <div style="width: 33%">
                     <input type="checkbox" id="heartProblems" />
                     <label for="heartProblems">Heart Problems</label>
@@ -253,24 +166,53 @@
                 </table>
             </div>
         </div>
-        <div class="glaucoma-section">
-            <table class="glaucoma-table">
-                <tr>
-                    <th><span class="glaucoma-header-label">Life Stage</span></th>
-                    <th><span class="glaucoma-header-label">Sex</span></th>
-                    <th><span class="glaucoma-header-label">Blood Pressure</span></th>
-                    <th><span class="glaucoma-header-label">Glaucoma History</span></th>
-                    <th><span class="glaucoma-header-label">Has Glaucoma</span></th>
-                </tr>
-                <tr>
-                    <td><input type="text" id="lifeStage" /></td>
-                    <td><input type="text" id="sex" /></td>
-                    <td><input type="text" id="bloodPressure" /></td>
-                    <td><input type="text" id="glaucomaHistory" /></td>
-                    <td><input type="text" id="hasGlaucoma" /></td>
-                </tr>
-            </table>
-        </div>
+        <td>
+            Life Stage
+            <select id="lifeStage">
+                <option value="Infant">Infant</option>
+                <option value="Toddler">Toddler</option>
+                <option value="Childhood">Childhood</option>
+                <option value="Adolescence">Adolescence</option>
+                <option value="Young adulthood">Young adulthood</option>
+                <option value="Middle adulthood">Middle adulthood</option>
+                <option value="Senior">Senior</option>
+            </select>
+
+        </td>
+        <td>
+            Sex
+            <select id="sex">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </td>
+        <td>
+            Blood Pressure
+            <select id="bloodPressure">
+                <option value="Normal">Normal</option>
+                <option value="Elevated">Elevated</option>
+                <option value="High (stage 1)">High (stage 1)</option>
+                <option value="High (stage 2)">High (stage 2)</option>
+                <option value="Hypertensive Crisis">Hypertensive Crisis</option>
+            </select>
+
+        </td>
+        <td>
+            Glaucoma History
+            <select id="glaucomaHistory">
+                <option value="None">None</option>
+                <option value="Maternal Parent">Maternal Parent</option>
+                <option value="Paternal Parent">Paternal Parent</option>
+            </select>
+        </td>
+        <td>
+            Has Glaucoma
+            <select id="hasGlaucoma">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </td>
+
 
 
 
@@ -374,32 +316,36 @@
         box-sizing: border-box;
     }
 
-    .glaucoma-header-label {
-        font-weight: normal;
-    }
-
-    .glaucoma-table input[type="text"] {
-        display: block;
-        width: 8vw;
-        margin: 0;
-        padding: 4px;
-        box-sizing: border-box;
-    }
-
-    .glaucoma-table {
-        border-collapse: separate;
-        border-spacing: 5px;
-    }
-
-    .glaucoma-table th,
-    .glaucoma-table td {
-        padding-right: 8px;
+    td select {
+        width: calc(100% - 20px);
+        margin-bottom: 10px;
     }
 </style>
 @code {
     private bool showRetinalImages = false;
+    private VisionX.Models.Patient selectedPatientModel;
+    private List<VisionX.Models.Patient> patientList;
+
     private void ShowRetinalImages()
     {
         showRetinalImages = true;
+    }
+
+    protected override void OnInitialized()
+    {
+        patientList = dbContext.Patients.ToList();
+        selectedPatientModel = patientList[0];
+    }
+
+    private void SelectRow(VisionX.Models.Patient patient)
+    {
+        foreach (var p in patientList)
+        {
+            p.IsSelected = false;
+        }
+
+        patient.IsSelected = !patient.IsSelected;
+        Console.WriteLine(patient.PatientID);
+        selectedPatientModel = patient;
     }
 }

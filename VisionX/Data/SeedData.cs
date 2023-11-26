@@ -49,11 +49,11 @@ namespace VisionX.Data
                 CorrectedCyliner = "na",
                 CorrectedAxis = "na",
 
-                Sex = "Male",
-                LifeStage = "Young adulthood",
-                BloodPressure = "Normal",
-                GlaucomaFamilyHistory = "None",
-                HasGlaucoma = false
+                Sex = "Female",
+                LifeStage = "Senior",
+                BloodPressure = "Hypertensive Crisis",
+                GlaucomaFamilyHistory = "Maternal Parent",
+                HasGlaucoma = "Yes"
                 },
 
                 new Exam() {
@@ -87,7 +87,7 @@ namespace VisionX.Data
                 LifeStage = "Young adulthood",
                 BloodPressure = "Normal",
                 GlaucomaFamilyHistory = "None",
-                HasGlaucoma = false
+                HasGlaucoma = "No"
                 },
 
                 new Exam() {
@@ -120,7 +120,7 @@ namespace VisionX.Data
                 LifeStage = "Young adulthood",
                 BloodPressure = "Normal",
                 GlaucomaFamilyHistory = "None",
-                HasGlaucoma = false
+                HasGlaucoma = "No"
                 },
             };
             return exams;
