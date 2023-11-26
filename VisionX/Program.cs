@@ -12,6 +12,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<ServicesService>();
 builder.Services.AddScoped<PatientService>();
 builder.Services.AddScoped<AppointmentService>();
+builder.Services.AddScoped<InvoiceService>();
+builder.Services.AddScoped<ProductService>();
 
 string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(
