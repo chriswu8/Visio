@@ -48,5 +48,23 @@ namespace VisionX.Services
             }
             // Optionally, you can handle a case where the product is not found.
         }
+
+        public void UpdateProduct(Product updatedProduct)
+        {
+            var existingProduct = _context.Products.Find(updatedProduct.ID);
+
+            if (existingProduct != null)
+            {
+                // Update the properties of the existing product with the values from the updated product.
+                existingProduct.Manufacturer = updatedProduct.Manufacturer;
+                existingProduct.ModelNumber = updatedProduct.ModelNumber;
+                existingProduct.Fee = updatedProduct.Fee;
+                existingProduct.Type = updatedProduct.Type;
+                // Add other properties as needed.
+
+                _context.SaveChanges();
+            }
+            // Optionally, you can handle a case where the product is not found.
+        }
     }
 }

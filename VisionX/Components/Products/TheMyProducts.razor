@@ -1,13 +1,13 @@
 @using VisionX.Models
 @using Microsoft.EntityFrameworkCore
-@inject VisionX.Services.ServicesService ServicesService
+@inject VisionX.Services.ProductService ProductService
 @inject Data.ApplicationDbContext dbContext
 
 <link rel="stylesheet" href="/css/site.css" />
 
 <div class="service-buttons">
     <div class="service-buttons2">
-        <button class="service-button" @onclick="ModifyService">Modify Service</button>
+        <button class="service-button" @onclick="AddProduct">Add Product</button>
     </div>
 </div>
 
@@ -16,9 +16,10 @@
         <thead>
             <tr class="header-row">
                 <th colspan="2">Actions</th>
-                <th>ServiceID</th>
+                <th>Manufacturer</th>
+                <th>Model Number</th>
+                <th>Type</th>
                 <th>Fee</th>
-                <th>ServiceDescription</th>
 
             </tr>
         </thead>
@@ -26,7 +27,7 @@
 
         <tbody>
 
-            @foreach (var service in servicesTest)
+            @foreach (var product in productsTest)
             {
                 @* <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" :
             "")" @onclick="() => SelectRow(service)">
@@ -71,12 +72,16 @@
             </tr> *@
                 <tr>
                     <td>
-                        <button @onclick="() => EditAService(service)">Edit</button>
+                        <button @onclick="() => EditAService(product)">Edit</button>
                     </td>
                     <td>
-                        <button @onclick="() => DeleteAService(service)">Delete</button>
+                        <button @onclick="() => DeleteAService(product)">Delete</button>
                     </td>
-                    <td>@service.Code</td>
+                    @* <td>@service.Code</td> *@
+                    <td>@product.Manufacturer</td>
+                    <td>@product.ModelNumber</td>
+                    <td>@product.Type</td>
+                    <td>@product.Fee</td>
                 </tr>
             }
 
@@ -84,19 +89,22 @@
 
     </table>
     <!--modifyService-->
-    @if (modifyService)
+    @if (addAProduct)
     {
         <!-- Modal overlay -->
         <div class="modal-overlay">
             <!-- TheModifyService (Services) modal component -->
-            <TheModifyService OnExitClicked="HandleExit" />
+            @* <TheModifyProduct OnExitClicked="HandleExit" /> *@
+            @* <TheAddNewPayment /> *@
+            <TheAddNewProduct OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit"/>
         </div>
     }
-    else if (editAService)
+    else if (editAProduct)
     {
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
-            <TheAddNewService OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit" SelectedExam="selectedExam" />
+            <TheEditNewProduct OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit"
+                SelectedProduct="selectedProduct" />
         </div>
     }
 
@@ -229,32 +237,36 @@
 
 @code {
     // modifyService
-    private bool modifyService = false;
+    private bool modifyProduct = false;
+    private bool addAProduct = false;
     //ModifyService
-    private void ModifyService()
+    private void AddProduct()
     { // modif
-        modifyService = true;
+        addAProduct = true;
     }
 
     private void HandleExit()
     {
         // Handle the save action here
 
-        modifyService = false;
+        modifyProduct = false;
     }
 
-    private bool editAService = false;
+    private bool editAProduct = false;
 
-    private VisionX.Models.Service selectedService;
+    private VisionX.Models.Product selectedProduct;
 
-    private void EditAService(VisionX.Models.Service service)
+    private void EditAService(VisionX.Models.Product product)
     {
-        selectedService = service;
-        editAService = true;
+        @* selectedService = service;
+editAService = true; *@
+        selectedProduct = product;
+        editAProduct = true;
     }
 
-    private void DeleteAService(VisionX.Models.Service service) {
-        ServicesService.DeleteExam(service.Id);
+    private void DeleteAService(VisionX.Models.Product product)
+    {
+        @* ServicesService.DeleteExam(service.Id); *@
     }
 
     private List<Service> services = new List<Service>
@@ -263,22 +275,22 @@ new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Te
 new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"}
 };
 
-    private List<VisionX.Models.Service> servicesTest;
+    private List<VisionX.Models.Product> productsTest;
 
     protected override void OnInitialized()
     {
-        servicesTest = dbContext.Services.ToList();
+        productsTest = dbContext.Products.ToList();
     }
 
     private void HandleEditAServiceExit()
     {
-        editAService = false;
+        editAProduct = false;
     }
 
     // Handle the save action here
     private void HandleEditAServiceSave()
     {
-        editAService = false;
+        editAProduct = false;
     }
 
 
@@ -301,6 +313,17 @@ new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"
         }
 
         service.IsSelected = !service.IsSelected;
+    }
+
+    private void HandleAddAServiceExit()
+    {
+        addAProduct = false;
+    }
+
+    // Handle the save action here
+    private void HandleAddAServiceSave()
+    {
+        addAProduct = false;
     }
 
 }

@@ -29,11 +29,11 @@
         <!-- ADD A SERVICE BUTTON -->
         <button class="visionX-button" @onclick="AddAService">Add Service</button>
 
-        <!-- EDIT A SERVICE BUTTON -->
+        @* <!-- EDIT A SERVICE BUTTON -->
         <button class="visionX-button" @onclick="EditAService">Edit A Service</button>
 
         <!-- DELETE A SERVICE BUTTON -->
-        <button class="visionX-button" @onclick="DeleteAService">Delete A Service</button>
+        <button class="visionX-button" @onclick="DeleteAService">Delete A Service</button> *@
 
         <!-- Commented out Test Button -->
         @* <button class="visionX-button">TEST</button> *@
@@ -50,7 +50,7 @@
             <TheAddNewService OnSavePaymentClicked="HandleAddAServiceSave" OnExitPaymentClicked="HandleAddAServiceExit" />
         </div>
     }
-    @if (editAService)
+    @* @if (editAService)
     {
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
@@ -65,7 +65,7 @@
             <TheAddNewService OnSavePaymentClicked="HandleDeleteAServiceSave" OnExitPaymentClicked="HandleDeleteAServiceExit" />
         </div>
                 
-     }
+     } *@
   </div>
 
 <style>
