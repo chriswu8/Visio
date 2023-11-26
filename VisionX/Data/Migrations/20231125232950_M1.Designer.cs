@@ -12,7 +12,7 @@ using VisionX.Data;
 namespace VisionX.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231125193613_M1")]
+    [Migration("20231125232950_M1")]
     partial class M1
     {
         /// <inheritdoc />
