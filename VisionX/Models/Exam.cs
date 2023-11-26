@@ -9,7 +9,7 @@
         public string? ExamTime { get; set; }
         public string? Complaint { get; set; }
         public string? EyeDrops { get; set; }
-        public bool HistoryOfCancer { get; set; }
+        public bool? HistoryOfCancer { get; set; }
         public bool? HistoryOfCataracts { get; set; }
         public bool? HistoryOfDiabetes { get; set; }
         public bool? HistoryOfHeartProblems { get; set; }
@@ -36,7 +36,7 @@
         public string? LifeStage { get; set; }
         public string? BloodPressure { get; set; }
         public string? GlaucomaFamilyHistory { get; set; }
-        public bool? HasGlaucoma { get; set; }
+        public string? HasGlaucoma { get; set; }
 
 
 

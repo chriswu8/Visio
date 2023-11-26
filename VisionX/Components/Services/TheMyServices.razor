@@ -69,7 +69,7 @@
 
 
             </tr> *@
-                <tr>
+                <tr class="servicesTable-background">
                     <td>
                         <button @onclick="() => EditAService(service)">Edit</button>
                     </td>
@@ -77,6 +77,8 @@
                         <button @onclick="() => DeleteAService(service)">Delete</button>
                     </td>
                     <td>@service.Code</td>
+                    <td>@service.Fee</td>
+                    <td>@service.Description</td>
                 </tr>
             }
 
@@ -107,6 +109,11 @@
 @* CSS Styling *@
 
 <style>
+
+    .servicesTable-background {
+    background-color: white;
+    }
+
     .modal-overlay {
         position: fixed;
         top: 0;

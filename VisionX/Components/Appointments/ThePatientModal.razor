@@ -1,5 +1,6 @@
 ﻿@using VisionX.Models
 @using Microsoft.EntityFrameworkCore
+@using VisionX.Services
 @inject Data.ApplicationDbContext dbContext
 @inject VisionX.Services.PatientService _patientService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
@@ -31,16 +32,19 @@
             <button class="book-button">Delete</button>
         </div>
         <div class="patient-buttons2">
-            @if (selectedPatient != null && ShouldRenderBookGEE1Button(selectedPatient.Sex, DetermineLifeStage(selectedPatient.BirthDate), selectedPatient.BloodPressure, selectedPatient.GlaucomaHistory, selectedPatient.HasGlaucoma))
+            @if (selectedPatientModel != null && ShouldRenderBookGEE1Button(selectedPatientModel.Sex, DetermineLifeStage(selectedPatientModel.BirthDate), selectedPatientModel.BloodPressure, selectedPatientModel.GlaucomaHistory, selectedPatientModel.HasGlaucoma))
+            
+            @* @if (true) *@
             {
                 <button class="glaucoma-button" @onclick="ShowConfirmAppointmentModal">Book GEE1</button>
             }
-@*             <button class="book-button">View Invoice</button> *@
+
             <button class="book-button" @onclick="ShowConfirmAppointmentModal">Schedule Patient</button>
         </div>
     </div>
 
     <div class="patient-table">
+        <div style="overflow-x: auto;">
         <table>
             <thead>
                 <tr class="header-row">
@@ -58,7 +62,7 @@
                     <th>Postal Code</th>
                     <th>Birth Date</th>
                     <th>PHN</th>
-                    <th>ExamID</th>
+                    @* <th>ExamID</th> *@
                 </tr>
             </thead>
             <tbody>
@@ -66,165 +70,26 @@
             {
                 <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
                     @onclick="() => SelectRow(patient)">
-                    @* <td>
-                        <button @onclick="() => EditPatient(patient)">Edit</button>
-                    </td>
-                    <td>
-                        <button @onclick="() => DeletePatient(patient)">Delete</button>
-                    </td> *@
+                            <td>@patient.PatientID</td>
                     <td>@patient.FirstName</td>
                     <td>@patient.LastName</td>
-                    <!-- Add other columns similarly -->
+                    <td>@patient.MiddleName</td>
+                    <td>@patient.Sex</td>
+                    <td>@patient.BloodPressure</td>
+                    <td>@patient.GlaucomaHistory</td>
+                    <td>@patient.HasGlaucoma</td>
+                    <td>@patient.Address</td>
+                    <td>@patient.Province</td>
+                    <td>@patient.City</td>
+                    <td> @patient.PostalCode</td>
+                    <td>@patient.BirthDate</td>
+                    <td>@patient.ProvincialHealthNumber</td>
+                    @* <td>@patient.Phone</td> *@
                 </tr>
             }
-                @* @foreach (var patient in patients)
-                {
-                    <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(patient)">
-                        <td>@patient.PatientID</td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.LastName" />
-                            }
-                            else
-                            {
-                                @patient.LastName
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.FirstName" />
-                            }
-                            else
-                            {
-                                @patient.FirstName
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.MiddleName" />
-                            }
-                            else
-                            {
-                                @patient.MiddleName
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.Sex" />
-                            }
-                            else
-                            {
-                                @patient.Sex
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.BloodPressure" />
-                            }
-                            else
-                            {
-                                @patient.BloodPressure
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.GlaucomaHistory" />
-                            }
-                            else
-                            {
-                                @patient.GlaucomaHistory
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.HasGlaucoma" />
-                            }
-                            else
-                            {
-                                @patient.HasGlaucoma
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.Address" />
-                            }
-                            else
-                            {
-                                @patient.Address
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.Province" />
-                            }
-                            else
-                            {
-                                @patient.Province
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.City" />
-                            }
-                            else
-                            {
-                                @patient.City
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.PostalCode" />
-                            }
-                            else
-                            {
-                                @patient.PostalCode
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.BirthDate" />
-                            }
-                            else
-                            {
-                                @patient.BirthDate
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.PHN" />
-                            }
-                            else
-                            {
-                                @patient.PHN
-                            }
-                        </td>
-                        <td>
-                            @if (patient.IsEditing)
-                            {
-                                <input @bind="patient.ImageID" />
-                            }
-                            else
-                            {
-                                @patient.ImageID
-                            }
-                        </td>
-                    </tr>
-                } *@
             </tbody>
         </table>
+        </div>
 
         @if (showPatientInfo)
         {
@@ -425,6 +290,7 @@
         @* patientsTest[0].IsSelected = true; *@
     }
 
+
     private void ShowConfirmAppointmentModal()
     {
         showConfirmAppointment = true;
@@ -555,6 +421,12 @@
     private bool ShouldRenderBookGEE1Button(string sex, string lifeStage, string bloodPressure, string familyHistory, string hasGlaucoma)
     {
         double sexValue, lifeStageValue, bloodPressureValue, familyHistoryValue, hasGlaucomaValue;
+        Console.WriteLine("sex: " + sex);
+        Console.WriteLine("lifeStage: " + lifeStage);
+        Console.WriteLine("bloodPressure: " + bloodPressure);
+        Console.WriteLine("familyHistory: " + familyHistory);
+        Console.WriteLine("hasGlaucoma: " + hasGlaucoma);
+
 
         // Define values based on the provided conditions
         sexValue = sex == "Male" ? 0.4 : 0.6;
@@ -647,6 +519,8 @@
         if (DateTime.TryParse(birthDate, out parsedBirthDate))
         {
             int age = DateTime.Now.Year - parsedBirthDate.Year;
+
+            Console.WriteLine("Age: " + age);
 
             if (age >= 0 && age <= 2)
             {

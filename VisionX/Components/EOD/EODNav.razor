@@ -1,4 +1,4 @@
-﻿@using VisionX.Components.EOD
+﻿﻿@using VisionX.Components.EOD
 
 <div class="inner-nav">
     <button class="nav-underline" @onclick="ShowViewTransactions">View Transactions</button>
@@ -25,10 +25,166 @@
     }
 </div>
 
+
+<div>
+    <select @onchange="HandleSelectionChange" style="width: 400px; height: 50px; margin-bottom: 20px;">
+        <option value="">Select an option</option>
+
+        <!-- Today is the first and default option -->
+        <option value="Today">Today</option>
+
+        <!-- Month Options are posted below  -->
+
+        @* December 2023 to January 2023 *@
+        <option value="December 2023">December 2023</option>
+        <option value="November 2023">November 2023</option>
+        <option value="October 2023">October 2023</option>
+        <option value="September 2023">September 2023</option>
+        <option value="August 2023">August 2023</option>
+        <option value="July 2023">July 2023</option>
+        <option value="June 2023">June 2023</option>
+        <option value="May 2023">May 2023</option>
+        <option value="April 2023">April 2023</option>
+        <option value="March 2023">March 2023</option>
+        <option value="February 2023">February 2023</option>
+        <option value="January 2023">January 2023</option>
+
+        @* December 2022 to January 2022 *@
+        <option value="December 2022">December 2022</option>
+        <option value="November 2022">November 2022</option>
+        <option value="October 2022">October 2022</option>
+        <option value="September 2022">September 2022</option>
+        <option value="August 2022">August 2022</option>
+        <option value="July 2022">July 2022</option>
+        <option value="June 2022">June 2022</option>
+        <option value="May 2022">May 2022</option>
+        <option value="April 2022">April 2022</option>
+        <option value="March 2022">March 2022</option>
+        <option value="February 2022">February 2022</option>
+        <option value="January 2022">January 2022</option>
+
+    </select>
+</div>
+
+@if (!string.IsNullOrEmpty(selectedOption))
+{
+    <h1>@selectedOption</h1>
+
+    <table id="data-table" style="margin-top: 20px; margin-bottom: 20px;">
+        <thead class="options-table">
+            <tr class="header-row">
+                <th>Patient</th>
+                <th>Date</th>
+                <th>ServiceID</th>
+                <th>ProductID</th>
+                <th>Fee</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var service in examTest)
+            {
+                <!-- Populate table rows here -->
+                <tr class="servicesTable-background">
+
+                    @* Patient *@
+                    @* <td>patient info</td> *@
+                    <td>@service.Patient</td>
+
+                    @* Date *@
+                    @* <td>date info</td> *@
+                    <td>@service.Date.ToShortDateString()</td>
+
+                    @* ServiceID *@
+                    @* <td>serviceID info</td> *@
+                    <td>@service.ServiceID</td>
+
+                    @* ProductID *@
+                    @* <td>productID info</td> *@
+                    <td>@service.ProductID</td>
+
+                    @* Fee *@
+                    @* <td>$Fee info</td> *@
+                    <td>@service.Fee.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px; margin-bottom: 20px;">
+        <strong>Total: @examTest.Sum(service => service.Fee).ToString("C")</strong>
+    </div>
+
+    <button  @onclick="ExportAsPdf">Export as PDF</button>
+}
+
+@* <div class="dropdown">
+<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+aria-haspopup="true" aria-expanded="false">
+Select an option
+</button>
+<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+<a class="dropdown-item" href="#">Option 1</a>
+<a class="dropdown-item" href="#">Option 2</a>
+<div class="dropdown-divider"></div>
+<div class="dropdown-submenu">
+<a class="dropdown-item dropdown-toggle" href="#">More options</a>
+<div class="dropdown-menu">
+<a class="dropdown-item" href="#">Sub-option 1</a>
+<a class="dropdown-item" href="#">Sub-option 2</a>
+</div>
+</div>
+</div>
+</div> *@
+
 @code {
     private bool showViewTransactions = true;
     private bool showDownloadReport = false;
     private bool showPrintReport = false;
+
+    @* This section contains the code for the dropdown menu *@
+    string selectedOption = "";
+    @* List<Service> examTest = new List<Service>(); *@
+    List<Service> examTest = new List<Service>
+{
+new Service { Patient = "John Doe", Date = DateTime.Now, ServiceID = 1, ProductID = 101, Fee = 200.50m },
+new Service { Patient = "Jane Doe", Date = DateTime.Now.AddDays(-1), ServiceID = 2, ProductID = 102, Fee = 300.75m },
+// Add more mock data here
+};
+
+
+    void HandleSelectionChange(ChangeEventArgs e)
+    {
+        selectedOption = e.Value.ToString();
+    }
+    @* End of the section that contains the above code for the dropdown menu *@
+
+    
+
+    async Task ExportAsPdf()
+    {
+        @* // Get the HTML content of the page
+        string htmlContent = await JSRuntime.InvokeAsync<string>("getHtmlContent");
+
+        // Send the HTML content to the server
+        var response = await Http.PostAsJsonAsync("/api/pdf", new { HtmlContent = htmlContent });
+
+        // Download the PDF
+        if (response.IsSuccessStatusCode)
+        {
+            var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+            await JSRuntime.InvokeVoidAsync("downloadPdf", pdfBytes);
+        } *@
+    }
+
+    public class Service
+    {
+        public string Patient { get; set; }
+        public DateTime Date { get; set; }
+        public int ServiceID { get; set; }
+        public int ProductID { get; set; }
+        public decimal Fee { get; set; }
+    }
 
     private void ShowViewTransactions()
     {
@@ -50,4 +206,59 @@
         showDownloadReport = false;
         showPrintReport = true;
     }
+
+    @* private List<Service> services = new List<Service>
+{
+new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Test"},
+new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"}
+};
+
+private List<VisionX.Models.Exam> examTest;
+protected override void OnInitialized()
+{
+examTest = dbContext.Exams.ToList();
+} *@
 }
+
+
+@* CSS Styling *@
+
+<style>
+    tr {
+        background-color: #f0f0f0;
+        /* Light grey */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .header-row {
+        background-color: #333;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    @* .even-row {
+        background-color: #f0f0f0;
+        color: #000;
+    }
+
+    .odd-row {
+        background-color: #d0d0d0;
+    }
+
+    .selected-row {
+        background-color: red;
+        color: white;
+    } *@
+    
+</style>

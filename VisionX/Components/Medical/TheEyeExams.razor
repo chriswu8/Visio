@@ -1,141 +1,60 @@
+@using VisionX.Models
+@using Microsoft.EntityFrameworkCore
+@inject Data.ApplicationDbContext dbContext
+@inject VisionX.Services.PatientService _patientService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
 <div style="display: flex; width: 100%">
     <!-- Left Side -->
-    <div style="width: 35%">
+    <div class="left-patient-column" style="width: 35%">
         <label for="search">Search:</label>
         <input type="text" id="search" style="width: 75%" />
         <br /><br />
-        <table style="width: 100%">
+        <table class="exam-patient-table" style="width: 100%">
             <thead>
                 <tr>
-                    <th>Patient Id</th>
+                    <th>PHN</th>
                     <th>Last Name</th>
                     <th>First Name</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Dummy Patient Data. Please replace with database patients-->
-                <tr>
-                    <td>1</td>
-                    <td>Doe</td>
-                    <td>John</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Smith</td>
-                    <td>Jane</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Lee</td>
-                    <td>Tom</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Kim</td>
-                    <td>Amy</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Ng</td>
-                    <td>Chris</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Jones</td>
-                    <td>Mike</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>Chan</td>
-                    <td>Lisa</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>Tan</td>
-                    <td>Ben</td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td>Wong</td>
-                    <td>Anna</td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>Lin</td>
-                    <td>Paul</td>
-                </tr>
-                <tr>
-                    <td>11</td>
-                    <td>Miller</td>
-                    <td>Sara</td>
-                </tr>
-                <tr>
-                    <td>12</td>
-                    <td>Brown</td>
-                    <td>Mark</td>
-                </tr>
-                <tr>
-                    <td>13</td>
-                    <td>Nguyen</td>
-                    <td>Alice</td>
-                </tr>
-                <tr>
-                    <td>14</td>
-                    <td>Patel</td>
-                    <td>Raj</td>
-                </tr>
-                <tr>
-                    <td>15</td>
-                    <td>Williams</td>
-                    <td>Emily</td>
-                </tr>
-                <tr>
-                    <td>16</td>
-                    <td>Wang</td>
-                    <td>Kevin</td>
-                </tr>
-                <tr>
-                    <td>17</td>
-                    <td>Garcia</td>
-                    <td>Mia</td>
-                </tr>
-                <tr>
-                    <td>18</td>
-                    <td>Anderson</td>
-                    <td>Jake</td>
-                </tr>
-                <tr>
-                    <td>19</td>
-                    <td>Chen</td>
-                    <td>Lily</td>
-                </tr>
-                <tr>
-                    <td>20</td>
-                    <td>Johnson</td>
-                    <td>Chris</td>
-                </tr>
-
+                @foreach (var patient in patientList)
+                {
+                    <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
+                        @onclick="() => SelectRow(patient)">
+                        <td>@patient.ProvincialHealthNumber</td>
+                        <td>@patient.FirstName</td>
+                        <td>@patient.LastName</td>
+                    </tr>
+                }
             </tbody>
         </table>
+        <div>
+            <button @onclick="ShowRetinalImages" class="show-retinal-images-button">Show Ocular Scans</button>
+        </div>
     </div>
 
     <!-- Right Side -->
     <div style="width: 75%">
         <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
             <label for="examDate">Exam Date:</label> &nbsp;
-            <input type="date" id="examDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            @* TODO: bind to modified Patient db schema / model*@
+            <input type="date" id="examDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" />  
             <label for="chiefComplaint">Chief Complaint:</label>&nbsp;
-            <textarea type="text" id="chiefComplaint" rows="6" cols="50"></textarea>
+            <textarea type="text" id="chiefComplaint" rows="6" cols="50"
+                @bind="selectedPatientModel.Complaint"></textarea>
         </div>
         <br />
         <div class="symptoms-div">
             <label for="symptoms">Symptoms:</label>
-            <input type="text" id="symptoms" />
+            @* TODO: bind to Symptoms in db schema / model *@
+            <input type="text" id="symptoms"  @bind="selectedPatientModel.Symptoms"/>
         </div>
         <br />
         <div>
             <label for="eyeDrops">Eye Drops:</label>
-            <input type="text" id="eyeDrops" />
+            <input type="text" id="eyeDrops" @bind="selectedPatientModel.EyeDrops"/>
         </div>
         <br />
         <div>
@@ -153,7 +72,6 @@
                     <input type="checkbox" id="diabetes" />
                     <label for="diabetes">Diabetes</label>
                 </div>
-                <!-- Add similar blocks for other conditions -->
                 <div style="width: 33%">
                     <input type="checkbox" id="heartProblems" />
                     <label for="heartProblems">Heart Problems</label>
@@ -193,72 +111,120 @@
             </div>
         </div>
         <br />
-        <div>
-            <label for="visualAcuity">Uncorrected Visual Acuity:</label>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Sphere</th>
-                        <th>Cylinder</th>
-                        <th>Axis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>OD &nbsp;</td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                    </tr>
-                    <tr>
-                        <td>OS &nbsp;</td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="visual-acuity-container">
+            <div class="visual-acuity">
+                <label class="VA-label" for="visualAcuity">Uncorrected Visual Acuity:</label>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Sphere</th>
+                            <th>Cylinder</th>
+                            <th>Axis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="OD">OD &nbsp;</td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                        </tr>
+                        <tr>
+                            <td class="OS">OS &nbsp;</td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br />
+            <div class="visual-acuity">
+                <label class="VA-label" for="visualAcuity">Corrected Visual Acuity:</label>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Sphere</th>
+                            <th>Cylinder</th>
+                            <th>Axis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="OD">OD &nbsp;</td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                        </tr>
+                        <tr>
+                            <td class="OS">OS &nbsp;</td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <br />
-        <div>
-            <label for="visualAcuity">Corrected Visual Acuity:</label>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Sphere</th>
-                        <th>Cylinder</th>
-                        <th>Axis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>OD &nbsp;</td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                    </tr>
-                    <tr>
-                        <td>OS &nbsp;</td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <br />
-        <div>
-            <button @onclick="ShowRetinalImages" class="show-retinal-images-button">Show Ocular Scans</button>
-        </div>
+        <td>
+            Life Stage
+            <select id="lifeStage">
+                <option value="Infant">Infant</option>
+                <option value="Toddler">Toddler</option>
+                <option value="Childhood">Childhood</option>
+                <option value="Adolescence">Adolescence</option>
+                <option value="Young adulthood">Young adulthood</option>
+                <option value="Middle adulthood">Middle adulthood</option>
+                <option value="Senior">Senior</option>
+            </select>
 
-         @if (showRetinalImages)
+        </td>
+        <td>
+            Sex
+            <select id="sex">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+        </td>
+        <td>
+            Blood Pressure
+            <select id="bloodPressure">
+                <option value="Normal">Normal</option>
+                <option value="Elevated">Elevated</option>
+                <option value="High (stage 1)">High (stage 1)</option>
+                <option value="High (stage 2)">High (stage 2)</option>
+                <option value="Hypertensive Crisis">Hypertensive Crisis</option>
+            </select>
+
+        </td>
+        <td>
+            Glaucoma History
+            <select id="glaucomaHistory">
+                <option value="None">None</option>
+                <option value="Maternal parent">Maternal parent</option>
+                <option value="Paternal parent">Paternal parent</option>
+            </select>
+        </td>
+        <td>
+            Has Glaucoma
+            <select id="hasGlaucoma">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </td>
+
+
+
+
+
+        @if (showRetinalImages)
         {
             <script suppress-error="BL9992">
                 window.open(window.location.origin + "/ocular-scans", "_blank");
             </script>
-        } 
+        }
     </div>
 </div>
 
@@ -273,33 +239,121 @@
     }
 
     .show-retinal-images-button {
-        float: right;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-        background-color: #3498db; 
-        color: #fff;
-        border: none;
         padding: 10px 15px;
         font-size: 14px;
+        border: none;
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s, box-shadow 0.3s;
-        margin-top: -9vh;
-        margin-right: 1vh;
-
+        background-color: #3498db;
+        color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        outline: none;
+        margin-left: 15vw;
+        position: fixed;
+        bottom: 1vh;
+        margin-bottom: 1vh;
     }
 
-        .show-retinal-images-button:hover {
-            background-color: #2980b9; 
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-        }
+    .show-retinal-images-button:hover {
+        background-color: #2980b9;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .show-retinal-images-button:active {
+        transform: translateY(1px);
+    }
+
+    .left-patient-column {
+        height: 72vh;
+        width: 100%;
+        overflow-y: auto;
+        display: block;
+        margin-right: 1vw;
+    }
+
+    #search {
+        position: sticky;
+        background-color: #fff;
+        z-index: 999;
+    }
+
+    .visual-acuity-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-start;
+        height: 20vh;
+        margin: 0;
+    }
 
 
+    .visual-acuity {
+        flex: 1;
+        transform: scale(0.6);
+        transform-origin: top left;
+        width: 45%;
+        box-sizing: border-box;
+    }
+
+    .VA-label {
+        margin-bottom: 1vh;
+    }
+
+    .OD,
+    .OS,
+    .VA-label {
+        font-size: 1.5rem;
+    }
+
+    td {
+        vertical-align: top;
+    }
+
+    td input[type="text"] {
+        display: block;
+        width: 12vw;
+        margin: 0;
+        padding: 4px;
+        box-sizing: border-box;
+    }
+
+    td select {
+        width: calc(100% - 20px);
+        margin-bottom: 10px;
+    }
+
+    .selected-row {
+        background-color: red;
+        color: white;
+        /* Adjust text color for visibility if needed */
+    }
 </style>
 @code {
     private bool showRetinalImages = false;
+    private VisionX.Models.Patient selectedPatientModel;
+    private List<VisionX.Models.Patient> patientList;
+
     private void ShowRetinalImages()
     {
         showRetinalImages = true;
     }
-}
 
+    protected override void OnInitialized()
+    {
+        patientList = dbContext.Patients.ToList();
+        selectedPatientModel = patientList[0];
+    }
+
+    private void SelectRow(VisionX.Models.Patient patient)
+    {
+        foreach (var p in patientList)
+        {
+            p.IsSelected = false;
+        }
+
+        patient.IsSelected = !patient.IsSelected;
+        Console.WriteLine(patient.PatientID);
+        selectedPatientModel = patient;
+    }
+}
