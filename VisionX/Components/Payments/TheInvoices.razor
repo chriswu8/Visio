@@ -1,3 +1,9 @@
+@using VisionX.Models
+@using Microsoft.EntityFrameworkCore
+@inject Data.ApplicationDbContext dbContext
+@inject VisionX.Services.PatientService _patientService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
 <link rel="stylesheet" href="/css/site.css" />
 
 <div class="patient-controls">
@@ -38,11 +44,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var patient in patients)
+            @foreach (var patient in patientsTest)
             {
-                <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(patient)">
+                <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
+                    @onclick="() => SelectRow(patient)">
                     <td>@patient.PatientID</td>
-                    <td>
+                    @* <td>@patient.FirstName</td> *@
+                    @* <td>
                         @if (patient.IsEditing)
                         {
                             <input @bind="patient.LastName" />
@@ -51,7 +59,7 @@
                         {
                             @patient.LastName
                         }
-                    </td>
+                    </td> *@
                     <td>
                         @if (patient.IsEditing)
                         {
@@ -62,7 +70,7 @@
                             @patient.FirstName
                         }
                     </td>
-                    <td>
+                    @* <td>
                         @if (patient.IsEditing)
                         {
                             <input @bind="patient.MiddleName" />
@@ -171,7 +179,7 @@
                         {
                             @patient.ImageID
                         }
-                    </td>
+                    </td> *@
                 </tr>
             }
         </tbody>
@@ -182,14 +190,13 @@
         <!-- Modal overlay -->
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
-            <TheInvoice OnExitClicked="HandleExit" />
+            <TheInvoice OnExitClicked="HandleExit" SelectedPatient="@selectedPatient"/>
         </div>
     }
 
 </div>
 
 <style>
-
     .modal-overlay {
         position: fixed;
         top: 0;
@@ -200,11 +207,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000; /* Adjust z-index as needed */
+        z-index: 1000;
+        /* Adjust z-index as needed */
     }
 
     .modal-container {
-        transform: scale(0.9); /* Adjust the scale factor as needed */
+        transform: scale(0.9);
+        /* Adjust the scale factor as needed */
         transform-origin: center;
         transition: transform 0.3s;
     }
@@ -219,6 +228,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .row-hover:hover {
+        background-color: #c0c0c0;
+        /* Add your desired background color for the hover effect */
     }
 
     .modal-content {
@@ -245,33 +259,33 @@
         margin-top: 2em;
     }
 
-        .search-bar input[type="text"] {
-            /* Style the search input */
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 23vw;
-        }
+    .search-bar input[type="text"] {
+        /* Style the search input */
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 23vw;
+    }
 
     .buttons-top {
         display: flex;
         gap: 10px;
     }
 
-        .buttons-top button {
-            padding: 5px 10px;
-            background-color: #f0f0f0;
-            border: none;
-            color: #333;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
+    .buttons-top button {
+        padding: 5px 10px;
+        background-color: #f0f0f0;
+        border: none;
+        color: #333;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
 
-            .buttons-top button:hover {
-                background-color: #666;
-                color: #fff;
-            }
+    .buttons-top button:hover {
+        background-color: #666;
+        color: #fff;
+    }
 
     .patient-table {
         margin-top: 10px;
@@ -282,7 +296,8 @@
         border-collapse: collapse;
     }
 
-    th, td {
+    th,
+    td {
         border: 1px solid #ccc;
         padding: 8px;
         text-align: center;
@@ -324,10 +339,10 @@
         transition: background-color 0.3s, color 0.3s;
     }
 
-        .book-button:hover {
-            background-color: #666;
-            color: #fff;
-        }
+    .book-button:hover {
+        background-color: #666;
+        color: #fff;
+    }
 
     .header-row {
         background-color: #333;
@@ -338,8 +353,6 @@
     .search-input {
         margin-left: 3em;
     }
-
-
 </style>
 
 @code {
@@ -357,23 +370,38 @@
         showInvoice = false;
     }
 
-        private List<Patient> patients = new List<Patient>
-    {
-        new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "1990-01-01", PHN = "9812714728", Phone = "123-456-7890", Email = "johndoe@example.com", Occupation = "Engineer", ImageID = "VXE1" },
-        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-15", PHN = "9843926834", Phone = "987-654-3210", Email = "janesmith@example.com", Occupation = "Doctor", ImageID = "VXE2" }
-    };
+    private List<Patient> patients = new List<Patient>
+{
+new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Address = "123 Main St",
+Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "1990-01-01", PHN = "9812714728", Phone =
+"123-456-7890", Email = "johndoe@example.com", Occupation = "Engineer", ImageID = "VXE1" },
+new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Address = "456 Elm St",
+Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-15", PHN = "9843926834", Phone =
+"987-654-3210", Email = "janesmith@example.com", Occupation = "Doctor", ImageID = "VXE2" }
+};
 
     private int nextPatientID = 3;
     private bool isEditing = false;
 
-    private void SelectRow(Patient patient)
+    private List<VisionX.Models.Patient> patientsTest;
+
+    private VisionX.Models.Patient selectedPatient;
+
+    protected override void OnInitialized()
     {
-        foreach (var p in patients)
+        patientsTest = dbContext.Patients.ToList();
+        selectedPatient = patientsTest[0];
+    }
+
+    private void SelectRow(VisionX.Models.Patient patient)
+    {
+        foreach (var p in patientsTest)
         {
             p.IsSelected = false;
         }
-
         patient.IsSelected = !patient.IsSelected;
+        selectedPatient = patient;
+        Console.WriteLine(selectedPatient.PatientID);
     }
 
 

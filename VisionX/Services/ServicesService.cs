@@ -39,6 +39,18 @@ namespace VisionX.Services
             // Optionally, you can handle a case where the exam is not found.
         }
 
+        public void UpdateFee(int serviceId, int newFee)
+        {
+            var serviceToUpdate = _context.Services.Find(serviceId);
+
+            if (serviceToUpdate != null)
+            {
+                serviceToUpdate.Fee = newFee;
+                _context.SaveChanges();
+            }
+            // Optionally, you can handle a case where the service is not found.
+        }
+
 
     }
 }
