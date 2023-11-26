@@ -51,12 +51,18 @@ namespace VisionX.Data.Migrations
                     HistoryOfThyroid = table.Column<bool>(type: "bit", nullable: true),
                     HistoryOfTuberculosis = table.Column<bool>(type: "bit", nullable: true),
                     HistoryOfNeuromuscularDisease = table.Column<bool>(type: "bit", nullable: true),
-                    UncorrectedSphere = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UncorrectedCyliner = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UncorrectedAxis = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CorrectedSphere = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CorrectedCyliner = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CorrectedAxis = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UncorrectedODSphere = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UncorrectedODCylinder = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UncorrectedODAxis = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UncorrectedOSSphere = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UncorrectedOSCylinder = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UncorrectedOSAxis = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CorrectedODSphere = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CorrectedODCylinder = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CorrectedODAxis = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CorrectedOSSphere = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CorrectedOSCylinder = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CorrectedOSAxis = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Sex = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LifeStage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BloodPressure = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -163,12 +169,12 @@ namespace VisionX.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Patient",
-                columns: new[] { "PatientID", "Address", "BirthDate", "BloodPressure", "City", "Complaint", "CorrectedAxis", "CorrectedCyliner", "CorrectedSphere", "Email", "ExamDay", "ExamMonth", "ExamTime", "ExamYear", "EyeDrops", "FirstName", "GlaucomaHistory", "HasGlaucoma", "HistoryOfCancer", "HistoryOfCataracts", "HistoryOfDiabetes", "HistoryOfHIV", "HistoryOfHeartProblems", "HistoryOfKidneyDisease", "HistoryOfMacularDegeneration", "HistoryOfNeuromuscularDisease", "HistoryOfRetinalDetachment", "HistoryOfStroke", "HistoryOfThyroid", "HistoryOfTuberculosis", "IsEditing", "IsSelected", "LastName", "LifeStage", "MiddleName", "Occupation", "Phone", "PostalCode", "Province", "ProvincialHealthNumber", "Sex", "Symptoms", "UncorrectedAxis", "UncorrectedCyliner", "UncorrectedSphere" },
+                columns: new[] { "PatientID", "Address", "BirthDate", "BloodPressure", "City", "Complaint", "CorrectedODAxis", "CorrectedODCylinder", "CorrectedODSphere", "CorrectedOSAxis", "CorrectedOSCylinder", "CorrectedOSSphere", "Email", "ExamDay", "ExamMonth", "ExamTime", "ExamYear", "EyeDrops", "FirstName", "GlaucomaHistory", "HasGlaucoma", "HistoryOfCancer", "HistoryOfCataracts", "HistoryOfDiabetes", "HistoryOfHIV", "HistoryOfHeartProblems", "HistoryOfKidneyDisease", "HistoryOfMacularDegeneration", "HistoryOfNeuromuscularDisease", "HistoryOfRetinalDetachment", "HistoryOfStroke", "HistoryOfThyroid", "HistoryOfTuberculosis", "IsEditing", "IsSelected", "LastName", "LifeStage", "MiddleName", "Occupation", "Phone", "PostalCode", "Province", "ProvincialHealthNumber", "Sex", "Symptoms", "UncorrectedODAxis", "UncorrectedODCylinder", "UncorrectedODSphere", "UncorrectedOSAxis", "UncorrectedOSCylinder", "UncorrectedOSSphere" },
                 values: new object[,]
                 {
-                    { 1, "123 Main st", "1923-01-01", "Hypertensive Crisis", "Vancouver", "", "na", "na", "na", "test@mail.com", "1", "1", "11", "2011", "", "Edmond", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Chen", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "na", "na", "0.00" },
-                    { 2, "123 Test St", "1923-02-02", "Hypertensive Crisis", "Richmond", "", "na", "na", "na", "test@mail.com", "1", "1", "11", "2011", "", "Chris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Wu", "Senior", "Yue", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "na", "na", "0.00" },
-                    { 3, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Vancouver", "", "na", "na", "na", "test@mail.com", "1", "1", "11", "2011", "", "Kris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Ocampo", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "na", "na", "0.00" }
+                    { 1, "123 Main st", "1923-01-01", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Edmond", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Chen", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 2, "123 Test St", "1923-02-02", "Hypertensive Crisis", "Richmond", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Chris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Wu", "Senior", "Yue", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 3, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Kris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Ocampo", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "0", "0", "0.00", "0", "0", "0.00" }
                 });
 
             migrationBuilder.InsertData(

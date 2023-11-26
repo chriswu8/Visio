@@ -154,13 +154,22 @@ namespace VisionX.Data.Migrations
                     b.Property<string>("Complaint")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CorrectedAxis")
+                    b.Property<string>("CorrectedODAxis")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CorrectedCyliner")
+                    b.Property<string>("CorrectedODCylinder")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CorrectedSphere")
+                    b.Property<string>("CorrectedODSphere")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CorrectedOSAxis")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CorrectedOSCylinder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CorrectedOSSphere")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -265,13 +274,22 @@ namespace VisionX.Data.Migrations
                     b.Property<string>("Symptoms")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UncorrectedAxis")
+                    b.Property<string>("UncorrectedODAxis")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UncorrectedCyliner")
+                    b.Property<string>("UncorrectedODCylinder")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UncorrectedSphere")
+                    b.Property<string>("UncorrectedODSphere")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UncorrectedOSAxis")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UncorrectedOSCylinder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UncorrectedOSSphere")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PatientID");
@@ -287,9 +305,12 @@ namespace VisionX.Data.Migrations
                             BloodPressure = "Hypertensive Crisis",
                             City = "Vancouver",
                             Complaint = "",
-                            CorrectedAxis = "na",
-                            CorrectedCyliner = "na",
-                            CorrectedSphere = "na",
+                            CorrectedODAxis = "0",
+                            CorrectedODCylinder = "0",
+                            CorrectedODSphere = "0",
+                            CorrectedOSAxis = "0",
+                            CorrectedOSCylinder = "0",
+                            CorrectedOSSphere = "0",
                             Email = "test@mail.com",
                             ExamDay = "1",
                             ExamMonth = "1",
@@ -322,9 +343,12 @@ namespace VisionX.Data.Migrations
                             Province = "BC",
                             ProvincialHealthNumber = "12345",
                             Sex = "Female",
-                            UncorrectedAxis = "na",
-                            UncorrectedCyliner = "na",
-                            UncorrectedSphere = "0.00"
+                            UncorrectedODAxis = "0",
+                            UncorrectedODCylinder = "0",
+                            UncorrectedODSphere = "0.00",
+                            UncorrectedOSAxis = "0",
+                            UncorrectedOSCylinder = "0",
+                            UncorrectedOSSphere = "0.00"
                         },
                         new
                         {
@@ -334,9 +358,12 @@ namespace VisionX.Data.Migrations
                             BloodPressure = "Hypertensive Crisis",
                             City = "Richmond",
                             Complaint = "",
-                            CorrectedAxis = "na",
-                            CorrectedCyliner = "na",
-                            CorrectedSphere = "na",
+                            CorrectedODAxis = "0",
+                            CorrectedODCylinder = "0",
+                            CorrectedODSphere = "0",
+                            CorrectedOSAxis = "0",
+                            CorrectedOSCylinder = "0",
+                            CorrectedOSSphere = "0",
                             Email = "test@mail.com",
                             ExamDay = "1",
                             ExamMonth = "1",
@@ -369,9 +396,12 @@ namespace VisionX.Data.Migrations
                             Province = "BC",
                             ProvincialHealthNumber = "12345",
                             Sex = "Female",
-                            UncorrectedAxis = "na",
-                            UncorrectedCyliner = "na",
-                            UncorrectedSphere = "0.00"
+                            UncorrectedODAxis = "0",
+                            UncorrectedODCylinder = "0",
+                            UncorrectedODSphere = "0.00",
+                            UncorrectedOSAxis = "0",
+                            UncorrectedOSCylinder = "0",
+                            UncorrectedOSSphere = "0.00"
                         },
                         new
                         {
@@ -381,9 +411,12 @@ namespace VisionX.Data.Migrations
                             BloodPressure = "Hypertensive Crisis",
                             City = "Vancouver",
                             Complaint = "",
-                            CorrectedAxis = "na",
-                            CorrectedCyliner = "na",
-                            CorrectedSphere = "na",
+                            CorrectedODAxis = "0",
+                            CorrectedODCylinder = "0",
+                            CorrectedODSphere = "0",
+                            CorrectedOSAxis = "0",
+                            CorrectedOSCylinder = "0",
+                            CorrectedOSSphere = "0",
                             Email = "test@mail.com",
                             ExamDay = "1",
                             ExamMonth = "1",
@@ -416,9 +449,12 @@ namespace VisionX.Data.Migrations
                             Province = "BC",
                             ProvincialHealthNumber = "12345",
                             Sex = "Female",
-                            UncorrectedAxis = "na",
-                            UncorrectedCyliner = "na",
-                            UncorrectedSphere = "0.00"
+                            UncorrectedODAxis = "0",
+                            UncorrectedODCylinder = "0",
+                            UncorrectedODSphere = "0.00",
+                            UncorrectedOSAxis = "0",
+                            UncorrectedOSCylinder = "0",
+                            UncorrectedOSSphere = "0.00"
                         });
                 });
 

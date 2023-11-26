@@ -127,9 +127,9 @@ namespace VisionX.Data
         // }
 
 
-    public static List<Patient> GetPatients()
-    {
-        List<Patient> patients = new List<Patient>() {
+        public static List<Patient> GetPatients()
+        {
+            List<Patient> patients = new List<Patient>() {
             new Patient() {
                 PatientID = 1,
                 LastName = "Chen",
@@ -167,12 +167,18 @@ namespace VisionX.Data
                 HistoryOfThyroid = false,
                 HistoryOfTuberculosis = false,
                 HistoryOfNeuromuscularDisease = false,
-                UncorrectedSphere = "0.00",
-                UncorrectedCyliner = "na",
-                UncorrectedAxis = "na",
-                CorrectedSphere = "na",
-                CorrectedCyliner = "na",
-                CorrectedAxis = "na",
+                UncorrectedODSphere = "0.00",
+                UncorrectedODCylinder = "0",
+                UncorrectedODAxis = "0",
+                CorrectedODSphere = "0",
+                CorrectedODCylinder = "0",
+                CorrectedODAxis = "0",
+                UncorrectedOSSphere = "0.00",
+                UncorrectedOSCylinder = "0",
+                UncorrectedOSAxis = "0",
+                CorrectedOSSphere = "0",
+                CorrectedOSCylinder = "0",
+                CorrectedOSAxis = "0",
 
                 Sex = "Female",
                 LifeStage = "Senior",
@@ -217,12 +223,18 @@ namespace VisionX.Data
                 HistoryOfThyroid = false,
                 HistoryOfTuberculosis = false,
                 HistoryOfNeuromuscularDisease = false,
-                UncorrectedSphere = "0.00",
-                UncorrectedCyliner = "na",
-                UncorrectedAxis = "na",
-                CorrectedSphere = "na",
-                CorrectedCyliner = "na",
-                CorrectedAxis = "na",
+                UncorrectedODSphere = "0.00",
+                UncorrectedODCylinder = "0",
+                UncorrectedODAxis = "0",
+                CorrectedODSphere = "0",
+                CorrectedODCylinder = "0",
+                CorrectedODAxis = "0",
+                UncorrectedOSSphere = "0.00",
+                UncorrectedOSCylinder = "0",
+                UncorrectedOSAxis = "0",
+                CorrectedOSSphere = "0",
+                CorrectedOSCylinder = "0",
+                CorrectedOSAxis = "0",
 
                 Sex = "Female",
                 LifeStage = "Senior",
@@ -267,12 +279,18 @@ namespace VisionX.Data
                 HistoryOfThyroid = false,
                 HistoryOfTuberculosis = false,
                 HistoryOfNeuromuscularDisease = false,
-                UncorrectedSphere = "0.00",
-                UncorrectedCyliner = "na",
-                UncorrectedAxis = "na",
-                CorrectedSphere = "na",
-                CorrectedCyliner = "na",
-                CorrectedAxis = "na",
+                UncorrectedODSphere = "0.00",
+                UncorrectedODCylinder = "0",
+                UncorrectedODAxis = "0",
+                CorrectedODSphere = "0",
+                CorrectedODCylinder = "0",
+                CorrectedODAxis = "0",
+                UncorrectedOSSphere = "0.00",
+                UncorrectedOSCylinder = "0",
+                UncorrectedOSAxis = "0",
+                CorrectedOSSphere = "0",
+                CorrectedOSCylinder = "0",
+                CorrectedOSAxis = "0",
 
                 Sex = "Female",
                 LifeStage = "Senior",
@@ -282,12 +300,12 @@ namespace VisionX.Data
             }
         };
 
-        return patients;
-    }
+            return patients;
+        }
 
-    public static List<Service> GetServices()
-    {
-        List<Service> services = new List<Service>() {
+        public static List<Service> GetServices()
+        {
+            List<Service> services = new List<Service>() {
             new Service() {
                 Id = 1,
                 Fee = 100,
@@ -307,12 +325,12 @@ namespace VisionX.Data
                 Description = "Regular Eye Exam 3"
             }
         };
-        return services;
-    }
+            return services;
+        }
 
-    public static List<Appointment> GetAppointments()
-    {
-        List<Appointment> appointments = new List<Appointment>() {
+        public static List<Appointment> GetAppointments()
+        {
+            List<Appointment> appointments = new List<Appointment>() {
             new Appointment() {
                 ID = 1,
                 PatientID = 1,
@@ -323,12 +341,12 @@ namespace VisionX.Data
                 Time = "9:00"
             }
         };
-        return appointments;
-    }
+            return appointments;
+        }
 
-    public static List<Product> GetProducts()
-    {
-        List<Product> products = new List<Product>() {
+        public static List<Product> GetProducts()
+        {
+            List<Product> products = new List<Product>() {
                 new Product() {
                     ID = 1,
                     Manufacturer = "Ray Ban",
@@ -353,13 +371,13 @@ namespace VisionX.Data
 
         };
 
-        return products;
+            return products;
 
-    }
+        }
 
-    public static List<Invoice> GetInvoice()
-    {
-        List<Invoice> invoices = new List<Invoice>() {
+        public static List<Invoice> GetInvoice()
+        {
+            List<Invoice> invoices = new List<Invoice>() {
                 new Invoice() {
                     ID = 2,
                     Month = "12",
@@ -383,10 +401,10 @@ namespace VisionX.Data
 
         };
 
-        return invoices;
+            return invoices;
+
+        }
 
     }
-
-}
 
 }
