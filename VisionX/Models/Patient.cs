@@ -50,22 +50,28 @@ namespace VisionX.Models
         public bool? HistoryOfThyroid { get; set; }
         public bool? HistoryOfTuberculosis { get; set; }
         public bool? HistoryOfNeuromuscularDisease { get; set; }
-        public string? UncorrectedSphere { get; set; }
-        public string? UncorrectedCyliner { get; set; }
-        public string? UncorrectedAxis { get; set; }
-        public string? CorrectedSphere { get; set; }
-        public string? CorrectedCyliner { get; set; }
-        public string? CorrectedAxis { get; set; }
+        public string? UncorrectedODSphere { get; set; }
+        public string? UncorrectedODCylinder { get; set; }
+        public string? UncorrectedODAxis { get; set; }
+        public string? UncorrectedOSSphere { get; set; }
+        public string? UncorrectedOSCylinder { get; set; }
+        public string? UncorrectedOSAxis { get; set; }
+        public string? CorrectedODSphere { get; set; }
+        public string? CorrectedODCylinder { get; set; }
+        public string? CorrectedODAxis { get; set; }
+        public string? CorrectedOSSphere { get; set; }
+        public string? CorrectedOSCylinder { get; set; }
+        public string? CorrectedOSAxis { get; set; }
 
         // =====================================
         // Glaucoma Eye Exam Button Predictors
         // =====================================
-        
+
         public string? Sex { get; set; }
         public string? LifeStage { get; set; }
         public string? BloodPressure { get; set; }
         public string? GlaucomaHistory { get; set; }
         public string? HasGlaucoma { get; set; }
-        
+
     }
 }
