@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -14,18 +13,33 @@ namespace VisionX.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Exam",
+                name: "Patient",
                 columns: table => new
                 {
-                    ExamId = table.Column<int>(type: "int", nullable: false)
+                    PatientID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Province = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProvincialHealthNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Occupation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsSelected = table.Column<bool>(type: "bit", nullable: false),
+                    IsEditing = table.Column<bool>(type: "bit", nullable: false),
                     ExamMonth = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExamDay = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExamYear = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExamTime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Complaint = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Symptoms = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EyeDrops = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HistoryOfCancer = table.Column<bool>(type: "bit", nullable: false),
+                    HistoryOfCancer = table.Column<bool>(type: "bit", nullable: true),
                     HistoryOfCataracts = table.Column<bool>(type: "bit", nullable: true),
                     HistoryOfDiabetes = table.Column<bool>(type: "bit", nullable: true),
                     HistoryOfHeartProblems = table.Column<bool>(type: "bit", nullable: true),
@@ -46,12 +60,12 @@ namespace VisionX.Data.Migrations
                     Sex = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LifeStage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BloodPressure = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GlaucomaFamilyHistory = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GlaucomaHistory = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HasGlaucoma = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Exam", x => x.ExamId);
+                    table.PrimaryKey("PK_Patient", x => x.PatientID);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,40 +97,6 @@ namespace VisionX.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Service", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Patient",
-                columns: table => new
-                {
-                    PatientID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Province = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProvincialHealthNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Occupation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsSelected = table.Column<bool>(type: "bit", nullable: false),
-                    IsEditing = table.Column<bool>(type: "bit", nullable: false),
-                    ExamId = table.Column<int>(type: "int", nullable: false),
-                    InvoiceId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patient", x => x.PatientID);
-                    table.ForeignKey(
-                        name: "FK_Patient_Exam_ExamId",
-                        column: x => x.ExamId,
-                        principalTable: "Exam",
-                        principalColumn: "ExamId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,13 +162,13 @@ namespace VisionX.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Exam",
-                columns: new[] { "ExamId", "BloodPressure", "Complaint", "CorrectedAxis", "CorrectedCyliner", "CorrectedSphere", "ExamDay", "ExamMonth", "ExamTime", "ExamYear", "EyeDrops", "GlaucomaFamilyHistory", "HasGlaucoma", "HistoryOfCancer", "HistoryOfCataracts", "HistoryOfDiabetes", "HistoryOfHIV", "HistoryOfHeartProblems", "HistoryOfKidneyDisease", "HistoryOfMacularDegeneration", "HistoryOfNeuromuscularDisease", "HistoryOfRetinalDetachment", "HistoryOfStroke", "HistoryOfThyroid", "HistoryOfTuberculosis", "LifeStage", "Sex", "UncorrectedAxis", "UncorrectedCyliner", "UncorrectedSphere" },
+                table: "Patient",
+                columns: new[] { "PatientID", "Address", "BirthDate", "BloodPressure", "City", "Complaint", "CorrectedAxis", "CorrectedCyliner", "CorrectedSphere", "Email", "ExamDay", "ExamMonth", "ExamTime", "ExamYear", "EyeDrops", "FirstName", "GlaucomaHistory", "HasGlaucoma", "HistoryOfCancer", "HistoryOfCataracts", "HistoryOfDiabetes", "HistoryOfHIV", "HistoryOfHeartProblems", "HistoryOfKidneyDisease", "HistoryOfMacularDegeneration", "HistoryOfNeuromuscularDisease", "HistoryOfRetinalDetachment", "HistoryOfStroke", "HistoryOfThyroid", "HistoryOfTuberculosis", "IsEditing", "IsSelected", "LastName", "LifeStage", "MiddleName", "Occupation", "Phone", "PostalCode", "Province", "ProvincialHealthNumber", "Sex", "Symptoms", "UncorrectedAxis", "UncorrectedCyliner", "UncorrectedSphere" },
                 values: new object[,]
                 {
-                    { 1, "Hypertensive Crisis", "", "na", "na", "na", "1", "1", "11", "2011", "", "Maternal Parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, "Senior", "Female", "na", "na", "0.00" },
-                    { 2, "Normal", "", "na", "na", "na", "2", "2", "10:00AM", "2022", "", "None", "No", false, false, false, false, false, false, false, false, false, false, false, false, "Young adulthood", "Male", "na", "na", "0.00" },
-                    { 3, "Normal", "", "na", "na", "na", null, "3", "13:00", "2013", "", "None", "No", false, false, false, false, false, false, false, false, false, false, false, false, "Young adulthood", "Male", "na", "na", "0.00" }
+                    { 1, "123 Main st", "1923-01-01", "Hypertensive Crisis", "Vancouver", "", "na", "na", "na", "test@mail.com", "1", "1", "11", "2011", "", "Edmond", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Chen", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "na", "na", "0.00" },
+                    { 2, "123 Test St", "1923-02-02", "Hypertensive Crisis", "Richmond", "", "na", "na", "na", "test@mail.com", "1", "1", "11", "2011", "", "Chris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Wu", "Senior", "Yue", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "na", "na", "0.00" },
+                    { 3, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Vancouver", "", "na", "na", "na", "test@mail.com", "1", "1", "11", "2011", "", "Kris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Ocampo", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "na", "na", "0.00" }
                 });
 
             migrationBuilder.InsertData(
@@ -209,16 +189,6 @@ namespace VisionX.Data.Migrations
                     { 1, "REE1", "Regular Eye Exam", 100 },
                     { 2, "GEE1", "Glaucoma Eye Exam", 200 },
                     { 3, "YEE1", "Regular Eye Exam 3", 300 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Patient",
-                columns: new[] { "PatientID", "Address", "BirthDate", "City", "Email", "ExamId", "FirstName", "InvoiceId", "IsEditing", "IsSelected", "LastName", "MiddleName", "Occupation", "Phone", "PostalCode", "Province", "ProvincialHealthNumber" },
-                values: new object[,]
-                {
-                    { 1, "123 Main st", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Vancouver", "test@mail.com", 1, "Edmond", 1, false, false, "Chen", "Li", "test", "233132", "VA2 34B", "BC", "12345" },
-                    { 2, "123 Test St", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Richmond", "test@mail.com", 2, "Chris", 2, false, false, "Wu", "Yue", "test", "233132", "VA2 34B", "BC", "12345" },
-                    { 3, "123 Minor st", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Vancouver", "test@mail.com", 3, "Kris", 3, false, false, "Ocampo", "Li", "test", "233132", "VA2 34B", "BC", "12345" }
                 });
 
             migrationBuilder.InsertData(
@@ -259,11 +229,6 @@ namespace VisionX.Data.Migrations
                 name: "IX_Invoice_ServiceID",
                 table: "Invoice",
                 column: "ServiceID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Patient_ExamId",
-                table: "Patient",
-                column: "ExamId");
         }
 
         /// <inheritdoc />
@@ -283,9 +248,6 @@ namespace VisionX.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Service");
-
-            migrationBuilder.DropTable(
-                name: "Exam");
         }
     }
 }

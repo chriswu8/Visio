@@ -26,7 +26,6 @@
                         <td>@patient.ProvincialHealthNumber</td>
                         <td>@patient.FirstName</td>
                         <td>@patient.LastName</td>
-                        <!-- Add other columns similarly -->
                     </tr>
                 }
             </tbody>
@@ -40,19 +39,22 @@
     <div style="width: 75%">
         <div style="display: flex; align-items: flex-start; margin-bottom: 10px;">
             <label for="examDate">Exam Date:</label> &nbsp;
-            <input type="date" id="examDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            @* TODO: bind to modified Patient db schema / model*@
+            <input type="date" id="examDate" value="@DateTime.Now.ToString("yyyy-MM-dd")" />  
             <label for="chiefComplaint">Chief Complaint:</label>&nbsp;
-            <textarea type="text" id="chiefComplaint" rows="6" cols="50"></textarea>
+            <textarea type="text" id="chiefComplaint" rows="6" cols="50"
+                @bind="selectedPatientModel.Complaint"></textarea>
         </div>
         <br />
         <div class="symptoms-div">
             <label for="symptoms">Symptoms:</label>
-            <input type="text" id="symptoms" />
+            @* TODO: bind to Symptoms in db schema / model *@
+            <input type="text" id="symptoms"  @bind="selectedPatientModel.Symptoms"/>
         </div>
         <br />
         <div>
             <label for="eyeDrops">Eye Drops:</label>
-            <input type="text" id="eyeDrops" />
+            <input type="text" id="eyeDrops" @bind="selectedPatientModel.EyeDrops"/>
         </div>
         <br />
         <div>
@@ -201,8 +203,8 @@
             Glaucoma History
             <select id="glaucomaHistory">
                 <option value="None">None</option>
-                <option value="Maternal Parent">Maternal Parent</option>
-                <option value="Paternal Parent">Paternal Parent</option>
+                <option value="Maternal parent">Maternal parent</option>
+                <option value="Paternal parent">Paternal parent</option>
             </select>
         </td>
         <td>
@@ -319,6 +321,12 @@
     td select {
         width: calc(100% - 20px);
         margin-bottom: 10px;
+    }
+
+    .selected-row {
+        background-color: red;
+        color: white;
+        /* Adjust text color for visibility if needed */
     }
 </style>
 @code {

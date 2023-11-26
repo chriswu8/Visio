@@ -32,11 +32,13 @@
             <button class="book-button">Delete</button>
         </div>
         <div class="patient-buttons2">
-            @if (selectedPatient != null && ShouldRenderBookGEE1Button(selectedPatient.Sex, DetermineLifeStage(selectedPatient.BirthDate), selectedPatient.BloodPressure, selectedPatient.GlaucomaHistory, selectedPatient.HasGlaucoma))
+            @if (selectedPatientModel != null && ShouldRenderBookGEE1Button(selectedPatientModel.Sex, DetermineLifeStage(selectedPatientModel.BirthDate), selectedPatientModel.BloodPressure, selectedPatientModel.GlaucomaHistory, selectedPatientModel.HasGlaucoma))
+            
+            @* @if (true) *@
             {
                 <button class="glaucoma-button" @onclick="ShowConfirmAppointmentModal">Book GEE1</button>
             }
-@*             <button class="book-button">View Invoice</button> *@
+
             <button class="book-button" @onclick="ShowConfirmAppointmentModal">Schedule Patient</button>
         </div>
     </div>
@@ -60,7 +62,7 @@
                     <th>Postal Code</th>
                     <th>Birth Date</th>
                     <th>PHN</th>
-                    <th>ExamID</th>
+                    @* <th>ExamID</th> *@
                 </tr>
             </thead>
             <tbody>
@@ -68,21 +70,21 @@
             {
                 <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
                     @onclick="() => SelectRow(patient)">
-                    <td>@patient.PatientID</td>
-                    <td>@patient.LastName</td>
+                            <td>@patient.PatientID</td>
                     <td>@patient.FirstName</td>
+                    <td>@patient.LastName</td>
                     <td>@patient.MiddleName</td>
-                    @* <td>@patient.Exam.Sex</td>
-                    <td>@patient.Exam.BloodPressure</td>
-                    <td>@patient.Exam.GlaucomaFamilyHistory</td>
-                    <td>@patient.Exam.HasGlaucoma</td> *@
+                    <td>@patient.Sex</td>
+                    <td>@patient.BloodPressure</td>
+                    <td>@patient.GlaucomaHistory</td>
+                    <td>@patient.HasGlaucoma</td>
                     <td>@patient.Address</td>
                     <td>@patient.Province</td>
                     <td>@patient.City</td>
-                    <td>@patient.PostalCode</td>
+                    <td> @patient.PostalCode</td>
                     <td>@patient.BirthDate</td>
                     <td>@patient.ProvincialHealthNumber</td>
-                    @* <td>@patient.Exam</td> *@
+                    @* <td>@patient.Phone</td> *@
                 </tr>
             }
             </tbody>
@@ -419,6 +421,12 @@
     private bool ShouldRenderBookGEE1Button(string sex, string lifeStage, string bloodPressure, string familyHistory, string hasGlaucoma)
     {
         double sexValue, lifeStageValue, bloodPressureValue, familyHistoryValue, hasGlaucomaValue;
+        Console.WriteLine("sex: " + sex);
+        Console.WriteLine("lifeStage: " + lifeStage);
+        Console.WriteLine("bloodPressure: " + bloodPressure);
+        Console.WriteLine("familyHistory: " + familyHistory);
+        Console.WriteLine("hasGlaucoma: " + hasGlaucoma);
+
 
         // Define values based on the provided conditions
         sexValue = sex == "Male" ? 0.4 : 0.6;
@@ -511,6 +519,8 @@
         if (DateTime.TryParse(birthDate, out parsedBirthDate))
         {
             int age = DateTime.Now.Year - parsedBirthDate.Year;
+
+            Console.WriteLine("Age: " + age);
 
             if (age >= 0 && age <= 2)
             {
