@@ -1,6 +1,6 @@
 <div style="display: flex; width: 100%">
     <!-- Left Side -->
-    <div style="width: 35%">
+    <div class="left-patient-column" style="width: 35%">
         <label for="search">Search:</label>
         <input type="text" id="search" style="width: 75%" />
         <br /><br />
@@ -117,6 +117,9 @@
 
             </tbody>
         </table>
+        <div>
+            <button @onclick="ShowRetinalImages" class="show-retinal-images-button">Show Ocular Scans</button>
+        </div>
     </div>
 
     <!-- Right Side -->
@@ -193,72 +196,91 @@
             </div>
         </div>
         <br />
-        <div>
-            <label for="visualAcuity">Uncorrected Visual Acuity:</label>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Sphere</th>
-                        <th>Cylinder</th>
-                        <th>Axis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>OD &nbsp;</td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                    </tr>
-                    <tr>
-                        <td>OS &nbsp;</td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="visual-acuity-container">
+            <div class="visual-acuity">
+                <label class="VA-label" for="visualAcuity">Uncorrected Visual Acuity:</label>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Sphere</th>
+                            <th>Cylinder</th>
+                            <th>Axis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="OD">OD &nbsp;</td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                        </tr>
+                        <tr>
+                            <td class="OS">OS &nbsp;</td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br />
+            <div class="visual-acuity">
+                <label class="VA-label" for="visualAcuity">Corrected Visual Acuity:</label>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Sphere</th>
+                            <th>Cylinder</th>
+                            <th>Axis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="OD">OD &nbsp;</td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                        </tr>
+                        <tr>
+                            <td class="OS">OS &nbsp;</td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                            <td><input type="text" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <br />
-        <div>
-            <label for="visualAcuity">Corrected Visual Acuity:</label>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Sphere</th>
-                        <th>Cylinder</th>
-                        <th>Axis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>OD &nbsp;</td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                    </tr>
-                    <tr>
-                        <td>OS &nbsp;</td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                        <td><input type="text" /></td>
-                    </tr>
-                </tbody>
+        <div class="glaucoma-section">
+            <table class="glaucoma-table">
+                <tr>
+                    <th><span class="glaucoma-header-label">Life Stage</span></th>
+                    <th><span class="glaucoma-header-label">Sex</span></th>
+                    <th><span class="glaucoma-header-label">Blood Pressure</span></th>
+                    <th><span class="glaucoma-header-label">Glaucoma History</span></th>
+                    <th><span class="glaucoma-header-label">Has Glaucoma</span></th>
+                </tr>
+                <tr>
+                    <td><input type="text" id="lifeStage" /></td>
+                    <td><input type="text" id="sex" /></td>
+                    <td><input type="text" id="bloodPressure" /></td>
+                    <td><input type="text" id="glaucomaHistory" /></td>
+                    <td><input type="text" id="hasGlaucoma" /></td>
+                </tr>
             </table>
-        </div>
-        <br />
-        <div>
-            <button @onclick="ShowRetinalImages" class="show-retinal-images-button">Show Ocular Scans</button>
         </div>
 
-         @if (showRetinalImages)
+
+
+
+        @if (showRetinalImages)
         {
             <script suppress-error="BL9992">
                 window.open(window.location.origin + "/ocular-scans", "_blank");
             </script>
-        } 
+        }
     </div>
 </div>
 
@@ -273,27 +295,106 @@
     }
 
     .show-retinal-images-button {
-        float: right;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-        background-color: #3498db; 
-        color: #fff;
-        border: none;
         padding: 10px 15px;
         font-size: 14px;
+        border: none;
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s, box-shadow 0.3s;
-        margin-top: -9vh;
-        margin-right: 1vh;
-
+        background-color: #3498db;
+        color: #fff;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        outline: none;
+        margin-left: 15vw;
+        position: fixed;
+        bottom: 1vh;
+        margin-bottom: 1vh;
     }
 
-        .show-retinal-images-button:hover {
-            background-color: #2980b9; 
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
-        }
+    .show-retinal-images-button:hover {
+        background-color: #2980b9;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+    }
+
+    .show-retinal-images-button:active {
+        transform: translateY(1px);
+    }
+
+    .left-patient-column {
+        height: 72vh;
+        width: 100%;
+        overflow-y: auto;
+        display: block;
+        margin-right: 1vw;
+    }
+
+    #search {
+        position: sticky;
+        background-color: #fff;
+        z-index: 999;
+    }
+
+    .visual-acuity-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-start;
+        height: 20vh;
+        margin: 0;
+    }
 
 
+    .visual-acuity {
+        flex: 1;
+        transform: scale(0.6);
+        transform-origin: top left;
+        width: 45%;
+        box-sizing: border-box;
+    }
+
+    .VA-label {
+        margin-bottom: 1vh;
+    }
+
+    .OD,
+    .OS,
+    .VA-label {
+        font-size: 1.5rem;
+    }
+
+    td {
+        vertical-align: top;
+    }
+
+    td input[type="text"] {
+        display: block;
+        width: 12vw;
+        margin: 0;
+        padding: 4px;
+        box-sizing: border-box;
+    }
+
+    .glaucoma-header-label {
+        font-weight: normal;
+    }
+
+    .glaucoma-table input[type="text"] {
+        display: block;
+        width: 8vw;
+        margin: 0;
+        padding: 4px;
+        box-sizing: border-box;
+    }
+
+    .glaucoma-table {
+        border-collapse: separate;
+        border-spacing: 5px;
+    }
+
+    .glaucoma-table th,
+    .glaucoma-table td {
+        padding-right: 8px;
+    }
 </style>
 @code {
     private bool showRetinalImages = false;
@@ -302,4 +403,3 @@
         showRetinalImages = true;
     }
 }
-
