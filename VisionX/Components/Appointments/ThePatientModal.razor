@@ -41,6 +41,7 @@
     </div>
 
     <div class="patient-table">
+        <div style="overflow-x: auto;">
         <table>
             <thead>
                 <tr class="header-row">
@@ -72,8 +73,21 @@
                     <td>
                         <button @onclick="() => DeletePatient(patient)">Delete</button>
                     </td> *@
+                    <td>@patient.PatientID</td>
                     <td>@patient.FirstName</td>
                     <td>@patient.LastName</td>
+                     <td>@patient.MiddleName</td>
+                     <td>Madeupdata</td>
+                    <td>Madeupdata</td>
+                    <td>Madeupdata</td>
+                    <td>Madeupdata</td>
+                    <td>@patient.Address</td>
+                    <td>@patient.Province</td>
+                    <td>@patient.City</td>
+                    <td> @patient.PostalCode</td>
+                    <td>@patient.BirthDate</td>
+                    <td>@patient.ProvincialHealthNumber</td>
+                     <td>@patient.ExamId</td>
                     <!-- Add other columns similarly -->
                 </tr>
             }
@@ -225,6 +239,7 @@
                 } *@
             </tbody>
         </table>
+        </div>
 
         @if (showPatientInfo)
         {
