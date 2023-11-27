@@ -21,8 +21,6 @@
     <div class="patient-buttons1">
         <!-- <button class="book-button" @onclick="AddPatient">Add New Patient</button> -->
         <button class="book-button" @onclick="ShowPatientInfoModal">Add New Patient</button>
-        <button class="book-button" @onclick="ToggleEdit">@editButtonText</button>
-        <button class="book-button">Delete</button>
     </div>
     <div class="patient-buttons2">
         <button class="book-button">Schedule Patient</button>
@@ -147,7 +145,6 @@
     }
 
     .search-bar input[type="text"] {
-        /* Style the search input */
         padding: 5px;
         border: 1px solid #ccc;
         border-radius: 5px;
@@ -337,12 +334,6 @@ Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-1
         patient.IsSelected = true;
     }
 
-
-    private void ToggleEdit()
-    {
-        isEditing = !isEditing;
-        editButtonText = isEditing ? "Save" : "Edit";
-    }
 
     private void EditRow(Patient patient)
     {
