@@ -15,7 +15,7 @@
     <table>
         <thead>
             <tr class="header-row">
-                <th colspan="2">Actions</th>
+                <th colspan="3">Actions</th>
                 <th>Manufacturer</th>
                 <th>Model Number</th>
                 <th>Type</th>
@@ -72,6 +72,9 @@
             </tr> *@
                 <tr>
                     <td>
+                        <button @onclick="() => AddToCart(product)">Add To Cart</button>
+                    </td>
+                    <td>
                         <button @onclick="() => EditAService(product)">Edit</button>
                     </td>
                     <td>
@@ -105,6 +108,15 @@
             <!-- TheInvoice modal component -->
             <TheEditNewProduct OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit"
                 SelectedProduct="selectedProduct" />
+        </div>
+    }
+    else if (openAddToCartModal)
+    {
+        <div class="modal-overlay">
+            <!-- TheModifyService (Services) modal component -->
+            @* <TheModifyProduct OnExitClicked="HandleExit" /> *@
+            @* <TheAddNewPayment /> *@
+            <TheProductToPatient OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleAddProdForPtExit" SelectedProduct="selectedProduct"/>
         </div>
     }
 
@@ -239,6 +251,7 @@
     // modifyService
     private bool modifyProduct = false;
     private bool addAProduct = false;
+    private bool openAddToCartModal = false;
     //ModifyService
     private void AddProduct()
     { // modif
@@ -267,6 +280,12 @@ editAService = true; *@
     private void DeleteAService(VisionX.Models.Product product)
     {
         @* ServicesService.DeleteExam(service.Id); *@
+        ProductService.DeleteProduct(product.ID);
+    }
+
+    private void AddToCart(VisionX.Models.Product product) {
+        openAddToCartModal = true;
+        selectedProduct = product;
     }
 
     private List<Service> services = new List<Service>
@@ -322,6 +341,17 @@ new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"
 
     // Handle the save action here
     private void HandleAddAServiceSave()
+    {
+        addAProduct = false;
+    }
+
+    private void HandleAddProdForPtExit()
+    {
+        openAddToCartModal = false;
+    }
+
+    // Handle the save action here
+    private void HandleAddProdForPtSave()
     {
         addAProduct = false;
     }
