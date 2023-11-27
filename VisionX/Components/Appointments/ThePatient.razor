@@ -33,21 +33,21 @@
     <table>
         <thead>
             <tr class="header-row">
-                <th colspan="2">Actions</th>
                 <th>PatientID</th>
                 <th>Last Name</th>
                 <th>First Name</th>
                 <th>Middle Name</th>
+                <th>Sex</th>
+                <th>Blood Pressure (mmHg)</th>
+                <th>Glaucoma History</th>
+                <th>Has Glaucoma</th>
                 <th>Address</th>
                 <th>Province</th>
                 <th>City</th>
                 <th>Postal Code</th>
                 <th>Birth Date</th>
                 <th>PHN</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Occupation</th>
-                <th>ExamID</th>
+                <th colspan="2">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -55,12 +55,6 @@
             {
                 <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "") row-hover"
                     @onclick="() => SelectRow(patient)">
-                    <td>
-                        <button @onclick="() => EditPatient(patient)">Edit</button>
-                    </td>
-                    <td>
-                        <button @onclick="() => DeletePatient(patient)">Delete</button>
-                    </td>
                     <td>@patient.PatientID</td>
                     <td>@patient.FirstName</td>
                     <td>@patient.LastName</td>
@@ -75,9 +69,12 @@
                     <td> @patient.PostalCode</td>
                     <td>@patient.BirthDate</td>
                     <td>@patient.ProvincialHealthNumber</td>
-                    <td>@patient.Phone</td>
-                    @* <td>@patient.Email</td>
-                    <td>@patient.Occupation</td> *@
+                    <td>
+                        <button class="edit-button" @onclick="() => EditPatient(patient)">Edit</button>
+                    </td>
+                    <td>
+                        <button class="delete-button" @onclick="() => DeletePatient(patient)">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -92,9 +89,10 @@
                     {
                         <ThePatientInfo OnSaveClicked="HandleSave" OnCancelClicked="HandleCancel"
                             SelectedPatient="selectedPatient" />
-                    }else {
-                        <TheAddPatientInfo OnSaveClicked="HandleSave" OnCancelClicked="HandleCancel"
-                             />
+                    }
+                    else
+                    {
+                        <TheAddPatientInfo OnSaveClicked="HandleSave" OnCancelClicked="HandleCancel" />
                     }
 
                 </div>
@@ -108,21 +106,8 @@
 <style>
     .modal-container {
         transform: scale(0.9);
-        /* Adjust the scale factor as needed */
         transform-origin: center;
         transition: transform 0.3s;
-    }
-
-    .hover-effect:hover {
-        background-color: #ccc;
-        /* Change the color to the desired darker shade */
-        transition: background-color 0.3s;
-        /* Add a smooth transition */
-    }
-
-    .row-hover:hover {
-        background-color: #c0c0c0;
-        /* Add your desired background color for the hover effect */
     }
 
     .modal-background {
@@ -215,7 +200,7 @@
     }
 
     .selected-row {
-        background-color: red;
+        background-color: rgb(23, 12, 39);
         color: white;
     }
 
@@ -227,7 +212,6 @@
     }
 
     .book-button {
-        /* Style the action buttons */
         background-color: #f0f0f0;
         border: none;
         color: #333;
@@ -254,6 +238,38 @@
 
     .search-input {
         margin-left: 3em;
+    }
+
+    .edit-button {
+        padding: 5px 10px;
+        background-color: #3a3939;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-right: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .delete-button {
+        padding: 5px 10px;
+        background-color: #8d1212;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-right: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .edit-button:hover {
+        background-color: #292222;
+        color: #fff;
+    }
+
+    .delete-button:hover:hover {
+        background-color: #8c2424;
+        color: #fff;
     }
 </style>
 
@@ -313,13 +329,14 @@ Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-1
 
     private void SelectRow(VisionX.Models.Patient patient)
     {
-        @* foreach (var p in patients)
-{
-p.IsSelected = false;
-}
+        foreach (var p in patientsTest)
+        {
+            p.IsSelected = false;
+        }
 
-patient.IsSelected = !patient.IsSelected; *@
+        patient.IsSelected = true;
     }
+
 
     private void ToggleEdit()
     {
