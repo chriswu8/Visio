@@ -1,6 +1,11 @@
 ﻿@inject VisionX.Services.PatientService PatientService
 @using VisionX.Models
 @inject Microsoft.JSInterop.IJSRuntime JSRuntime
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+
+
 
 <div class="patient-info">
     <div class="input-row">
@@ -192,6 +197,21 @@
 public bool PatientEdit { get; set; } *@
 
 
+    private async Task CreateFolder(string folderName)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("createFolder", folderName);
+            Console.WriteLine("Folder created =======================================================================");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+    }
+
+
     // Event handlers
     private async Task OnSave()
     {
@@ -237,9 +257,15 @@ await OnSaveClicked.InvokeAsync(); *@
                 IsEditing = false
             };
 
-        PatientService.AddPatientAsync(patient);
+        await PatientService.AddPatientAsync(patient);
 
-        OnSaveClicked.InvokeAsync();
+        @* CreateFolder($"{patient.LastName}_{patient.FirstName}_{patient.ProvincialHealthNumber}"); *@
+        var folderName = $"{patient.LastName}_{patient.FirstName}_{patient.ProvincialHealthNumber}";
+        var ocularScansFolder = "OcularScans";
+        var path = Path.Combine(env.WebRootPath, ocularScansFolder, folderName);
+        Directory.CreateDirectory(path);
+
+        await OnSaveClicked.InvokeAsync();
     }
 
     private async Task OnCancel()
