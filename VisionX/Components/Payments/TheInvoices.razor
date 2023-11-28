@@ -63,13 +63,29 @@
                     <td>
                         @if (patient.IsEditing)
                         {
-                            <input @bind="patient.FirstName" />
+                            <input @bind="patient.LastName" />
                         }
                         else
                         {
                             @patient.FirstName
                         }
                     </td>
+                    
+                    <td> @patient.FirstName</td>
+                     <td> @patient.MiddleName</td>
+                    <td>@patient.Address</td>
+                    <td>@patient.Province</td>
+                    <td>@patient.City</td>
+                    <td> @patient.PostalCode</td>
+                    <td>@patient.BirthDate</td>
+                    <td>@patient.ProvincialHealthNumber</td>
+                    <td>@patient.Phone</td>
+                    <td>@patient.Email</td>
+                    <td>@patient.Occupation</td>
+                   
+                        
+                      
+
                     @* <td>
                         @if (patient.IsEditing)
                         {
