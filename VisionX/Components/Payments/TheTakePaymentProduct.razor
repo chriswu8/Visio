@@ -3,15 +3,17 @@
 <!-- ThePayment.razor -->
 <div class="payment-modal">
     <div class="left-payment-panel">
-        <h4 class="small-text">Code</h4>
-        <input type="text" class="input-field" placeholder="Enter data" @bind="SelectedService.Code" />
+        <h4 class="small-text">Manufacturer</h4>
+        <input type="text" class="input-field" placeholder="Enter data" @bind="SelectedProduct.Manufacturer" />
+
+        <h4 class="small-text">Model Number</h4>
+        <input type="text" class="input-field" placeholder="Enter date" @bind="SelectedProduct.ModelNumber" />
+
+        <h4 class="small-text">Type</h4>
+        <input type="text" class="input-field" placeholder="Enter insurance details" @bind="SelectedProduct.Type" />
 
         <h4 class="small-text">Fee</h4>
-        <input type="text" class="input-field" placeholder="Enter date" @bind="SelectedService.Fee" />
-
-        <h4 class="small-text">Description</h4>
-        <input type="text" class="input-field" placeholder="Enter insurance details"
-            @bind="SelectedService.Description" />
+        <input type="text" class="input-field" placeholder="Enter insurance details" @bind="SelectedProduct.Fee" />
 
         <div class="payment-type">
             <h4 class="small-text">Payment Type</h4>
@@ -20,7 +22,7 @@
                 <option value="cash">Cash</option>
                 <!-- Add more payment methods as needed -->
             </select>
-            <input type="text" class="input-field small-input" @bind="FirstPaymentAmount" />
+            <input type="number" class="input-field small-input" @bind="FirstPaymentAmount" />
         </div>
 
         <div class="payment-type">
@@ -30,7 +32,7 @@
                 <option value="cash">Cash</option>
                 <!-- Add more payment methods as needed -->
             </select>
-            <input type="text" class="input-field small-input" @bind="SecondPaymentAmount" />
+            <input type="number" class="input-field small-input" @bind="SecondPaymentAmount" />
         </div>
     </div>
 
@@ -47,7 +49,7 @@
                     <p class="red-text">TOTAL:</p>
                 </div>
                 <div class="right-column">
-                    <p>@SelectedService.Fee</p>
+                    <p>@SelectedProduct.Fee</p>
                     <p>@hst</p>
                     <p>@gst</p>
                     <p class="red-text">@total</p>
@@ -56,7 +58,7 @@
         </div>
 
         <div class="buttons">
-            <button class="visionX-button payment-save-button" @onclick="HandlePayment">Save</button>
+            <button class="visionX-button payment-save-button" @onclick="HandlePayment">Pay</button>
             <button class="visionX-button payment-exit-button" @onclick="HidePaymentModal">Exit</button>
         </div>
     </div>
@@ -150,31 +152,39 @@
     [Parameter] public EventCallback OnSavePaymentClicked { get; set; }
 
     [Parameter]
-    public VisionX.Models.Service SelectedService { get; set; }
-
-    public VisionX.Models.Invoice SelectedInvoiceObject {get; set;}
+    public VisionX.Models.Product SelectedProduct { get; set; } = null;
 
     [Parameter]
     public int invoiceID { get; set; }
 
-    public int SelectedInvoice { get; set; }
+
+    [Parameter]
+    public VisionX.Models.Service SelectedService { get; set; } = null;
+
+    public VisionX.Models.Invoice SelectedInvoiceObject { get; set; }
+
+
+    private decimal FirstPaymentAmount { get; set; } = 0.00m;
+    private decimal SecondPaymentAmount { get; set; } = 0.00m;
+    private bool showPaymentModal;
 
     private decimal? hst = 0;
     private decimal? gst = 0;
     private decimal? total = 0;
-    private decimal FirstPaymentAmount { get; set; } = 0.00m;
-    private decimal SecondPaymentAmount { get; set; } = 0.00m;
-
 
     protected override async void OnInitialized()
     {
         SelectedInvoiceObject = await invoiceService.GetInvoiceById(invoiceID);
-        hst = Math.Round((decimal)(SelectedInvoiceObject.Fee * 0.05), 2);
-        gst = Math.Round((decimal)(SelectedInvoiceObject.Fee * 0.07), 2);
+        hst = Math.Round((decimal)(SelectedProduct.Fee * 0.05), 2);
+        gst = Math.Round((decimal)(SelectedProduct.Fee * 0.07), 2);
         total = SelectedInvoiceObject.Fee + hst + gst;
     }
 
-    private bool showPaymentModal;
+    private async Task HidePaymentModal()
+    {
+        // Emit the OnCancelClicked event
+        await OnExitPaymentClicked.InvokeAsync();
+    }
 
     private async Task HandlePayment()
     {
@@ -191,12 +201,6 @@
             await invoiceService.UpdateInvoiceFee(invoiceID, (int)(SelectedInvoiceObject.Fee - paymentTotal));
             SelectedInvoiceObject = await invoiceService.GetInvoiceById(invoiceID);
         }
-    }
-
-    private async Task HidePaymentModal()
-    {
-        // Emit the OnCancelClicked event
-        await OnExitPaymentClicked.InvokeAsync();
     }
 
 

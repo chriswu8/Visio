@@ -16,11 +16,11 @@
                 <button class="search-button">Last Name</button>
                 <button class="search-button">PHN</button>
                 <button class="search-button">Phone</button>
-                <input  class="search-input" type="text" placeholder="  Search..." />
+                <input class="search-input" type="text" placeholder="  Search..." />
                 <button class="cancel-button visionX-button" @onclick="OnTopCancel">Cancel</button>
             </div>
-           
-            
+
+
         </div>
     </div>
     <hr />
@@ -32,61 +32,63 @@
             <button class="book-button">Delete</button>
         </div>
         <div class="patient-buttons2">
-            @if (selectedPatient != null && ShouldRenderBookGEE1Button(selectedPatient.Sex, DetermineLifeStage(selectedPatient.BirthDate), selectedPatient.BloodPressure, selectedPatient.GlaucomaHistory, selectedPatient.HasGlaucoma))
+            @if (selectedPatientModel != null && ShouldRenderBookGEE1Button(selectedPatientModel.Sex,
+            DetermineLifeStage(selectedPatientModel.BirthDate), selectedPatientModel.BloodPressure,
+            selectedPatientModel.GlaucomaHistory, selectedPatientModel.HasGlaucoma))
             {
                 <button class="glaucoma-button" @onclick="ShowConfirmAppointmentModal">Book GEE1</button>
             }
-@*             <button class="book-button">View Invoice</button> *@
+
             <button class="book-button" @onclick="ShowConfirmAppointmentModal">Schedule Patient</button>
         </div>
     </div>
 
     <div class="patient-table">
         <div style="overflow-x: auto;">
-        <table>
-            <thead>
-                <tr class="header-row">
-                    <th>PatientID</th>
-                    <th>Last Name</th>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Sex</th>
-                    <th>Blood pressure</th>
-                    <th>Glaucoma History</th>
-                    <th>Has Glaucoma</th>
-                    <th>Address</th>
-                    <th>Province</th>
-                    <th>City</th>
-                    <th>Postal Code</th>
-                    <th>Birth Date</th>
-                    <th>PHN</th>
-                    <th>ExamID</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var patient in patientsTest)
-            {
-                <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
-                    @onclick="() => SelectRow(patient)">
-                    <td>@patient.PatientID</td>
-                    <td>@patient.LastName</td>
-                    <td>@patient.FirstName</td>
-                    <td>@patient.MiddleName</td>
-                    @* <td>@patient.Exam.Sex</td>
-                    <td>@patient.Exam.BloodPressure</td>
-                    <td>@patient.Exam.GlaucomaFamilyHistory</td>
-                    <td>@patient.Exam.HasGlaucoma</td> *@
-                    <td>@patient.Address</td>
-                    <td>@patient.Province</td>
-                    <td>@patient.City</td>
-                    <td>@patient.PostalCode</td>
-                    <td>@patient.BirthDate</td>
-                    <td>@patient.ProvincialHealthNumber</td>
-                    @* <td>@patient.Exam</td> *@
-                </tr>
-            }
-            </tbody>
-        </table>
+            <table>
+                <thead>
+                    <tr class="header-row">
+                        <th>PatientID</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Sex</th>
+                        <th>Blood pressure</th>
+                        <th>Glaucoma History</th>
+                        <th>Has Glaucoma</th>
+                        <th>Address</th>
+                        <th>Province</th>
+                        <th>City</th>
+                        <th>Postal Code</th>
+                        <th>Birth Date</th>
+                        <th>PHN</th>
+                        @* <th>ExamID</th> *@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in patientsTest)
+                    {
+                        <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
+                            @onclick="() => SelectRow(patient)">
+                            <td>@patient.PatientID</td>
+                            <td>@patient.FirstName</td>
+                            <td>@patient.LastName</td>
+                            <td>@patient.MiddleName</td>
+                            <td>@patient.Sex</td>
+                            <td>@patient.BloodPressure</td>
+                            <td>@patient.GlaucomaHistory</td>
+                            <td>@patient.HasGlaucoma</td>
+                            <td>@patient.Address</td>
+                            <td>@patient.Province</td>
+                            <td>@patient.City</td>
+                            <td> @patient.PostalCode</td>
+                            <td>@patient.BirthDate</td>
+                            <td>@patient.ProvincialHealthNumber</td>
+                            @* <td>@patient.Phone</td> *@
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
 
         @if (showPatientInfo)
@@ -105,17 +107,18 @@
             <div class="modal-container">
                 <div class="modal-background">
                     <div class="modal-content">
-                        <TheConfirmAppointment OnConfirmAppointmentSaveClicked="HideConfirmAppointmentModal" OnConfirmAppointmentCancelClicked="HideConfirmAppointmentModal" Month="@Month" Day="@Day" Year="@Year" TimeInString="@TimeInString" SelectedPatientModel="@selectedPatientModel"/>
+                        <TheConfirmAppointment OnConfirmAppointmentSaveClicked="HideConfirmAppointmentModal"
+                            OnConfirmAppointmentCancelClicked="HideConfirmAppointmentModal" Month="@Month" Day="@Day"
+                            Year="@Year" TimeInString="@TimeInString" SelectedPatientModel="@selectedPatientModel" />
                     </div>
                 </div>
             </div>
         }
     </div>
-</div> 
+</div>
 
 
 <style>
-
     .modal-content {
         display: flex;
         justify-content: center;
@@ -140,15 +143,15 @@
         margin-top: 2em;
     }
 
-        .search-bar input[type="text"] {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 20vw;
-        }
+    .search-bar input[type="text"] {
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 20vw;
+    }
 
     .cancel-button {
-        margin-left: 375px; 
+        margin-left: 375px;
         min-width: 7em;
     }
 
@@ -159,20 +162,21 @@
         margin-top: -60px;
     }
 
-        .buttons-top button {
-            padding: 5px 10px;
-            background-color: #f0f0f0;
-            border: none;
-            color: #333;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-        }
+    .buttons-top button {
+        padding: 5px 10px;
+        background-color: #f0f0f0;
+        border: none;
+        color: #333;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
 
-            .buttons-top button:hover {
-                background-color: #666;
-                color: #fff;
-            }
+    .buttons-top button:hover {
+        background-color: #666;
+        color: #fff;
+    }
+
     .search-button {
         min-width: 100px;
     }
@@ -186,7 +190,8 @@
         border-collapse: collapse;
     }
 
-    th, td {
+    th,
+    td {
         border: 1px solid #ccc;
         padding: 8px;
         text-align: center;
@@ -227,10 +232,10 @@
         transition: background-color 0.3s, color 0.3s;
     }
 
-        .book-button:hover {
-            background-color: #666;
-            color: #fff;
-        }
+    .book-button:hover {
+        background-color: #666;
+        color: #fff;
+    }
 
     .header-row {
         background-color: #333;
@@ -246,8 +251,8 @@
     .glaucoma-button {
         display: inline-block;
         padding: 6px 20px;
-        background-color: #4CAF50; 
-        color: #fff; 
+        background-color: #4CAF50;
+        color: #fff;
         border: none;
         border-radius: 5px;
         text-align: center;
@@ -258,11 +263,10 @@
 
     }
 
-        .glaucoma-button:hover {
-            background-color: #45a049; 
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); 
-        }
-
+    .glaucoma-button:hover {
+        background-color: #45a049;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
 </style>
 
 @code {
@@ -279,13 +283,17 @@
     private bool showConfirmAppointment = false;
     private List<VisionX.Models.Patient> patientsTest;
 
-        private VisionX.Models.Patient selectedPatientModel;
+    private VisionX.Models.Patient selectedPatientModel;
 
-        protected override void OnInitialized()
+    protected override void OnInitialized()
     {
         patientsTest = dbContext.Patients.ToList();
-        selectedPatientModel = patientsTest[0];
+        @* selectedPatientModel = patientsTest[0]; *@
         @* patientsTest[0].IsSelected = true; *@
+        foreach (var patient in patientsTest)
+        {
+            patient.IsSelected = false;
+        }
     }
 
 
@@ -316,12 +324,22 @@
     }
 
     private List<Patient> patients = new List<Patient>
-    {
-        new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Sex = "Male", BloodPressure = "Normal", GlaucomaHistory = "None", HasGlaucoma = "No", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "2023-01-01", PHN = "9812714728", ImageID = "VXE1" },
-        new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Sex = "Female", BloodPressure = "Hypertensive Crisis", GlaucomaHistory = "Maternal parent", HasGlaucoma = "Yes", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1923-02-02", PHN = "9843926834", ImageID = "VXE2" },
-        new Patient { PatientID = 3, LastName = "Johnson", FirstName = "Emily", MiddleName = "Grace", Sex = "Female", BloodPressure = "High (stage 1)", GlaucomaHistory = "Maternal parent", HasGlaucoma = "No", Address = "789 Oak St", Province = "BC", City = "Vancouver", PostalCode = "V7Z2W1", BirthDate = "1996-03-03", PHN = "9876543210", ImageID = "VXE3"},
-        new Patient { PatientID = 4, LastName = "Brown", FirstName = "Michael", MiddleName = "David", Sex = "Male", BloodPressure = "High (stage 2)", GlaucomaHistory = "Paternal parent", HasGlaucoma = "No", Address = "567 Pine St", Province = "BC", City = "Surrey", PostalCode = "V6A8X7", BirthDate = "1970-04-04", PHN = "9876543211", ImageID = "VXE4"},
-    };
+{
+new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Sex = "Male", BloodPressure =
+"Normal", GlaucomaHistory = "None", HasGlaucoma = "No", Address = "123 Main St", Province = "BC", City = "Richmond",
+PostalCode = "V6Y9U4", BirthDate = "2023-01-01", PHN = "9812714728", ImageID = "VXE1" },
+new Patient { PatientID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Sex = "Female", BloodPressure
+= "Hypertensive Crisis", GlaucomaHistory = "Maternal parent", HasGlaucoma = "Yes", Address = "456 Elm St", Province =
+"BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1923-02-02", PHN = "9843926834", ImageID = "VXE2" },
+new Patient { PatientID = 3, LastName = "Johnson", FirstName = "Emily", MiddleName = "Grace", Sex = "Female",
+BloodPressure = "High (stage 1)", GlaucomaHistory = "Maternal parent", HasGlaucoma = "No", Address = "789 Oak St",
+Province = "BC", City = "Vancouver", PostalCode = "V7Z2W1", BirthDate = "1996-03-03", PHN = "9876543210", ImageID =
+"VXE3"},
+new Patient { PatientID = 4, LastName = "Brown", FirstName = "Michael", MiddleName = "David", Sex = "Male",
+BloodPressure = "High (stage 2)", GlaucomaHistory = "Paternal parent", HasGlaucoma = "No", Address = "567 Pine St",
+Province = "BC", City = "Surrey", PostalCode = "V6A8X7", BirthDate = "1970-04-04", PHN = "9876543211", ImageID =
+"VXE4"},
+};
     private Patient selectedPatient; // Property to store the selected patient
 
 
@@ -354,23 +372,27 @@
         nextPatientID++;
     }
 
-    private void SelectRow(VisionX.Models.Patient patient)
+    private void SelectRow(VisionX.Models.Patient patient) // =========== Guarded
     {
-        foreach (var p in patientsTest)
-        {
-            p.IsSelected = false;
-        }
-
-        @* patient.IsSelected = !patient.IsSelected;
-
         if (patient.IsSelected)
         {
-            selectedPatient = patient;
-        } *@
-        patient.IsSelected = !patient.IsSelected;
-        Console.WriteLine(patient.PatientID);
-        selectedPatientModel = patient;
+            // If the patient is already selected, deselect it
+            patient.IsSelected = false;
+            selectedPatientModel = null; // Clear the selected patient model
+        }
+        else
+        {
+            // Deselect all patients and select the clicked one
+            foreach (var p in patientsTest)
+            {
+                p.IsSelected = false;
+            }
+            patient.IsSelected = true;
+            Console.WriteLine("Selected Patient: " + patient.PatientID);
+            selectedPatientModel = patient;
+        }
     }
+
 
     private void ToggleEdit()
     {
@@ -416,9 +438,16 @@
         public bool IsEditing { get; set; }
     }
 
-    private bool ShouldRenderBookGEE1Button(string sex, string lifeStage, string bloodPressure, string familyHistory, string hasGlaucoma)
+    private bool ShouldRenderBookGEE1Button(string sex, string lifeStage, string bloodPressure, string familyHistory, string
+    hasGlaucoma)
     {
         double sexValue, lifeStageValue, bloodPressureValue, familyHistoryValue, hasGlaucomaValue;
+        Console.WriteLine("sex: " + sex);
+        Console.WriteLine("lifeStage: " + lifeStage);
+        Console.WriteLine("bloodPressure: " + bloodPressure);
+        Console.WriteLine("familyHistory: " + familyHistory);
+        Console.WriteLine("hasGlaucoma: " + hasGlaucoma);
+
 
         // Define values based on the provided conditions
         sexValue = sex == "Male" ? 0.4 : 0.6;
@@ -494,7 +523,7 @@
         thefamilyHistoryValue = familyHistoryValue + 0;
         thehasGlaucomaValue = hasGlaucomaValue + 0;
 
- 
+
         Console.WriteLine("Calculated thesexValue: " + thesexValue);
         Console.WriteLine("Calculated thelifeStageValue: " + thelifeStageValue);
         Console.WriteLine("Calculated thebloodPressureValue: " + thebloodPressureValue);
@@ -511,6 +540,8 @@
         if (DateTime.TryParse(birthDate, out parsedBirthDate))
         {
             int age = DateTime.Now.Year - parsedBirthDate.Year;
+
+            Console.WriteLine("Age: " + age);
 
             if (age >= 0 && age <= 2)
             {
@@ -543,7 +574,7 @@
         }
         else
         {
-            return "INAPPROPRIATE VALUE TO DETERMINE LIFE STAGE"; 
+            return "INAPPROPRIATE VALUE TO DETERMINE LIFE STAGE";
         }
     }
 

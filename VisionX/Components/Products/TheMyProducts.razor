@@ -1,0 +1,359 @@
+@using VisionX.Models
+@using Microsoft.EntityFrameworkCore
+@inject VisionX.Services.ProductService ProductService
+@inject Data.ApplicationDbContext dbContext
+
+<link rel="stylesheet" href="/css/site.css" />
+
+<div class="service-buttons">
+    <div class="service-buttons2">
+        <button class="service-button" @onclick="AddProduct">Add Product</button>
+    </div>
+</div>
+
+<div class="MyServicesTable">
+    <table>
+        <thead>
+            <tr class="header-row">
+                <th colspan="3">Actions</th>
+                <th>Manufacturer</th>
+                <th>Model Number</th>
+                <th>Type</th>
+                <th>Fee</th>
+
+            </tr>
+        </thead>
+        @* Links the Services ID to the database data based off of the implementation from ThePatient.razor *@
+
+        <tbody>
+
+            @foreach (var product in productsTest)
+            {
+                @* <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" :
+            "")" @onclick="() => SelectRow(service)">
+            <td>@service.ServiceID</td>
+
+            <td>
+            @if (service.IsEditing)
+            {
+            <input @bind="service.ServiceID" />
+            }
+            else
+            {
+            @service.ServiceID
+
+            }
+            </td>
+
+
+            <td>
+            @if (service.IsEditing)
+            {
+            <input @bind="service.Fee" />
+            }
+            else
+            {
+            @service.Fee
+            }
+            </td>
+
+            <td>
+            @if (service.IsEditing)
+            {
+            <input @bind="service.ServiceDescription" />
+            }
+            else
+            {
+            @service.ServiceDescription
+            }
+            </td>
+
+
+            </tr> *@
+                <tr>
+                    <td>
+                        <button @onclick="() => AddToCart(product)">Add To Cart</button>
+                    </td>
+                    <td>
+                        <button @onclick="() => EditAService(product)">Edit</button>
+                    </td>
+                    <td>
+                        <button @onclick="() => DeleteAService(product)">Delete</button>
+                    </td>
+                    @* <td>@service.Code</td> *@
+                    <td>@product.Manufacturer</td>
+                    <td>@product.ModelNumber</td>
+                    <td>@product.Type</td>
+                    <td>@product.Fee</td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+    <!--modifyService-->
+    @if (addAProduct)
+    {
+        <!-- Modal overlay -->
+        <div class="modal-overlay">
+            <!-- TheModifyService (Services) modal component -->
+            @* <TheModifyProduct OnExitClicked="HandleExit" /> *@
+            @* <TheAddNewPayment /> *@
+            <TheAddNewProduct OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit"/>
+        </div>
+    }
+    else if (editAProduct)
+    {
+        <div class="modal-overlay">
+            <!-- TheInvoice modal component -->
+            <TheEditNewProduct OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit"
+                SelectedProduct="selectedProduct" />
+        </div>
+    }
+    else if (openAddToCartModal)
+    {
+        <div class="modal-overlay">
+            <!-- TheModifyService (Services) modal component -->
+            @* <TheModifyProduct OnExitClicked="HandleExit" /> *@
+            @* <TheAddNewPayment /> *@
+            <TheProductToPatient OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleAddProdForPtExit" SelectedProduct="selectedProduct"/>
+        </div>
+    }
+
+</div>
+
+
+
+@* CSS Styling *@
+
+<style>
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        /* Adjust z-index as needed */
+    }
+
+    .modal-container {
+        transform: scale(0.9);
+        /* Adjust the scale factor as needed */
+        transform-origin: center;
+        transition: transform 0.3s;
+    }
+
+    .modal-background {
+        background-color: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+    }
+
+    /* Add this for smooth scaling on hover */
+    .modal-container:hover {
+        transform: scale(1);
+    }
+
+
+    .MyServicesTable {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+
+    th,
+    td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .header-row {
+        background-color: #000000;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .even-row {
+        background-color: #f0f0f0;
+        color: #000;
+    }
+
+    .odd-row {
+        background-color: #d0d0d0;
+    }
+
+    .selected-row {
+        background-color: red;
+        color: white;
+    }
+
+    .header-row {
+        background-color: #333;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .service-button {
+        /* Style the action buttons */
+        background-color: #f0f0f0;
+        border: none;
+        color: #333;
+        padding: 10px;
+        width: auto;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 5px;
+        line-height: 19px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .service-button:hover {
+        background-color: #666;
+        color: #fff;
+    }
+
+    .service-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2em;
+    }
+</style>
+
+@code {
+    // modifyService
+    private bool modifyProduct = false;
+    private bool addAProduct = false;
+    private bool openAddToCartModal = false;
+    //ModifyService
+    private void AddProduct()
+    { // modif
+        addAProduct = true;
+    }
+
+    private void HandleExit()
+    {
+        // Handle the save action here
+
+        modifyProduct = false;
+    }
+
+    private bool editAProduct = false;
+
+    private VisionX.Models.Product selectedProduct;
+
+    private void EditAService(VisionX.Models.Product product)
+    {
+        @* selectedService = service;
+editAService = true; *@
+        selectedProduct = product;
+        editAProduct = true;
+    }
+
+    private void DeleteAService(VisionX.Models.Product product)
+    {
+        @* ServicesService.DeleteExam(service.Id); *@
+        ProductService.DeleteProduct(product.ID);
+    }
+
+    private void AddToCart(VisionX.Models.Product product) {
+        openAddToCartModal = true;
+        selectedProduct = product;
+    }
+
+    private List<Service> services = new List<Service>
+{
+new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Test"},
+new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"}
+};
+
+    private List<VisionX.Models.Product> productsTest;
+
+    protected override void OnInitialized()
+    {
+        productsTest = dbContext.Products.ToList();
+    }
+
+    private void HandleEditAServiceExit()
+    {
+        editAProduct = false;
+    }
+
+    // Handle the save action here
+    private void HandleEditAServiceSave()
+    {
+        editAProduct = false;
+    }
+
+
+    public class Service
+    {
+        public int ServiceID { get; set; }
+        public string Fee { get; set; }
+        public string ServiceDescription { get; set; }
+
+        public bool IsSelected { get; set; }
+        public bool IsEditing { get; set; }
+    }
+
+
+    private void SelectRow(Service service)
+    {
+        foreach (var s in services)
+        {
+            s.IsSelected = false;
+        }
+
+        service.IsSelected = !service.IsSelected;
+    }
+
+    private void HandleAddAServiceExit()
+    {
+        addAProduct = false;
+    }
+
+    // Handle the save action here
+    private void HandleAddAServiceSave()
+    {
+        addAProduct = false;
+    }
+
+    private void HandleAddProdForPtExit()
+    {
+        openAddToCartModal = false;
+    }
+
+    // Handle the save action here
+    private void HandleAddProdForPtSave()
+    {
+        addAProduct = false;
+    }
+
+}

@@ -1,6 +1,7 @@
 ﻿@using VisionX.Models
 @inject Data.ApplicationDbContext dbContext
 @inject VisionX.Services.AppointmentService appointmentService
+@inject VisionX.Services.InvoiceService invoiceService
 
 
 
@@ -20,7 +21,7 @@
             <select @onchange="HandleExamSelection">
                 @foreach (var service in serviceList)
                 {
-                    <option value="@service.Id">@service.Code</option>
+                    <option value="@($"{service.Id}-{service.Fee}")">@service.Code</option>
                     <!-- Modify the value and text based on your Exam model -->
                 }
             </select>
@@ -86,34 +87,41 @@
     [Parameter] public VisionX.Models.Patient SelectedPatientModel { get; set; }
     private List<VisionX.Models.Service> serviceList;
     private int selectedServiceId;
+    private int serviceFee;
+
+    private VisionX.Models.Service service;
 
     private void HandleExamSelection(ChangeEventArgs e)
     {
-        if (int.TryParse(e.Value.ToString(), out var result))
-        {
-            selectedServiceId = result;
-        }
-        else
-        {
-            // Handle the case where the value cannot be parsed to an integer
-        }
+        string selectedValue = e.Value.ToString();
+        // Parse the selected value to extract ID and Fee
+        string[] parts = selectedValue.Split('-');
+        int selectedId = int.Parse(parts[0]);
+        int selectedFee = (int) decimal.Parse(parts[1]);
+
+        // Now, you can use selectedId and selectedFee as needed
+        Console.WriteLine($"Selected ID: {selectedId}, Selected Fee: {selectedFee}");
+
+        selectedServiceId = selectedId;
+        serviceFee = selectedFee;
     }
 
     protected override void OnInitialized()
     {
         serviceList = dbContext.Services.ToList();
         selectedServiceId = serviceList[0].Id;
+        serviceFee = (int) serviceList[0].Fee;
     }
 
     // Event handlers
     private async Task OnSave()
     {
         @* Console.WriteLine(Month);
-        Console.WriteLine(Day);
-        Console.WriteLine(Year);
-        Console.WriteLine(TimeInString);
-        Console.WriteLine(SelectedPatientModel.PatientID);
-        Console.WriteLine(selectedExamId); *@
+Console.WriteLine(Day);
+Console.WriteLine(Year);
+Console.WriteLine(TimeInString);
+Console.WriteLine(SelectedPatientModel.PatientID);
+Console.WriteLine(selectedExamId); *@
         // Emit the OnSaveClicked event
         //Console.WriteLine(selectedServiceId);
         var newAppointment = new VisionX.Models.Appointment
@@ -126,7 +134,19 @@
                 ServiceID = selectedServiceId
             };
 
+        var newInvoice = new VisionX.Models.Invoice
+            {
+                Month = Month,
+                PatientID = SelectedPatientModel.PatientID,
+                Day = Day,
+                Year = Year,
+                ServiceID = selectedServiceId,
+                Fee = serviceFee,
+                ProductID = null
+            };
+
         await appointmentService.AddAppointmentAsync(newAppointment);
+        await invoiceService.AddInvoice(newInvoice);
 
         //await OnSaveClicked.InvokeAsync();
         //await OnConfirmAppointmentSaveClicked.InvokeAsync();

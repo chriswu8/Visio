@@ -13,17 +13,142 @@ namespace VisionX.Data
             modelBuilder.Entity<Service>().HasData(GetServices());
             modelBuilder.Entity<Appointment>().HasData(GetAppointments());
             modelBuilder.Entity<Product>().HasData(GetProducts());
-            modelBuilder.Entity<Exam>().HasData(GetExams());
+            // modelBuilder.Entity<Exam>().HasData(GetExams());
             modelBuilder.Entity<Invoice>().HasData(GetInvoice());
 
         }
 
-        public static List<Exam> GetExams()
+        // public static List<Exam> GetExams()
+        // {
+        //     List<Exam> exams = new List<Exam>()
+        //     {
+        //         new Exam() {
+        //         ExamId = 1,
+        //         ExamMonth = "1",
+        //         ExamDay = "1",
+        //         ExamYear = "2011",
+        //         ExamTime = "11",
+        //         Complaint = "",
+        //         EyeDrops = "",
+        //         HistoryOfCancer = false,
+        //         HistoryOfCataracts = false,
+        //         HistoryOfDiabetes = false,
+        //         HistoryOfHeartProblems = false,
+        //         HistoryOfHIV = false,
+        //         HistoryOfKidneyDisease = false,
+        //         HistoryOfMacularDegeneration = false,
+        //         HistoryOfRetinalDetachment = false,
+        //         HistoryOfStroke = false,
+        //         HistoryOfThyroid = false,
+        //         HistoryOfTuberculosis = false,
+        //         HistoryOfNeuromuscularDisease = false,
+        //         UncorrectedSphere = "0.00",
+        //         UncorrectedCyliner = "na",
+        //         UncorrectedAxis = "na",
+        //         CorrectedSphere = "na",
+        //         CorrectedCyliner = "na",
+        //         CorrectedAxis = "na",
+
+        //         Sex = "Female",
+        //         LifeStage = "Senior",
+        //         BloodPressure = "Hypertensive Crisis",
+        //         GlaucomaFamilyHistory = "Maternal Parent",
+        //         HasGlaucoma = "Yes"
+        //         },
+
+        //         new Exam() {
+        //         ExamId = 2,
+        //         ExamMonth = "2",
+        //         ExamDay = "2",
+        //         ExamYear = "2022",
+        //         ExamTime = "10:00AM",
+        //         Complaint = "",
+        //         EyeDrops = "",
+        //         HistoryOfCancer = false,
+        //         HistoryOfCataracts = false,
+        //         HistoryOfDiabetes = false,
+        //         HistoryOfHeartProblems = false,
+        //         HistoryOfHIV = false,
+        //         HistoryOfKidneyDisease = false,
+        //         HistoryOfMacularDegeneration = false,
+        //         HistoryOfRetinalDetachment = false,
+        //         HistoryOfStroke = false,
+        //         HistoryOfThyroid = false,
+        //         HistoryOfTuberculosis = false,
+        //         HistoryOfNeuromuscularDisease = false,
+        //         UncorrectedSphere = "0.00",
+        //         UncorrectedCyliner = "na",
+        //         UncorrectedAxis = "na",
+        //         CorrectedSphere = "na",
+        //         CorrectedCyliner = "na",
+        //         CorrectedAxis = "na",
+
+        //         Sex = "Male",
+        //         LifeStage = "Young adulthood",
+        //         BloodPressure = "Normal",
+        //         GlaucomaFamilyHistory = "None",
+        //         HasGlaucoma = "No"
+        //         },
+
+        //         new Exam() {
+        //         ExamId = 3,
+        //         ExamMonth = "3",
+        //         ExamYear = "2013",
+        //         ExamTime = "13:00",
+        //         Complaint = "",
+        //         EyeDrops = "",
+        //         HistoryOfCancer = false,
+        //         HistoryOfCataracts = false,
+        //         HistoryOfDiabetes = false,
+        //         HistoryOfHeartProblems = false,
+        //         HistoryOfHIV = false,
+        //         HistoryOfKidneyDisease = false,
+        //         HistoryOfMacularDegeneration = false,
+        //         HistoryOfRetinalDetachment = false,
+        //         HistoryOfStroke = false,
+        //         HistoryOfThyroid = false,
+        //         HistoryOfTuberculosis = false,
+        //         HistoryOfNeuromuscularDisease = false,
+        //         UncorrectedSphere = "0.00",
+        //         UncorrectedCyliner = "na",
+        //         UncorrectedAxis = "na",
+        //         CorrectedSphere = "na",
+        //         CorrectedCyliner = "na",
+        //         CorrectedAxis = "na",
+
+        //         Sex = "Male",
+        //         LifeStage = "Young adulthood",
+        //         BloodPressure = "Normal",
+        //         GlaucomaFamilyHistory = "None",
+        //         HasGlaucoma = "No"
+        //         },
+        //     };
+        //     return exams;
+        // }
+
+
+        public static List<Patient> GetPatients()
         {
-            List<Exam> exams = new List<Exam>()
-            {
-                new Exam() {
-                ExamId = 1,
+            List<Patient> patients = new List<Patient>() {
+            new Patient() {
+                PatientID = 1,
+                LastName = "Chen",
+                FirstName = "Edmond",
+                MiddleName = "Li",
+                Address = "123 Main st",
+                Province = "BC",
+                City = "Vancouver",
+                PostalCode = "VA2 34B",
+                BirthDate = "1923-01-01",
+                ProvincialHealthNumber = "12345",
+                Phone = "233132",
+                Email = "test@mail.com",
+                Occupation = "test",
+                IsSelected = false,
+                IsEditing = false,
+                // ExamId = 1,
+                // InvoiceId = 1,
+                //  ExamId = 1,
                 ExamMonth = "1",
                 ExamDay = "1",
                 ExamYear = "2011",
@@ -42,111 +167,24 @@ namespace VisionX.Data
                 HistoryOfThyroid = false,
                 HistoryOfTuberculosis = false,
                 HistoryOfNeuromuscularDisease = false,
-                UncorrectedSphere = "0.00",
-                UncorrectedCyliner = "na",
-                UncorrectedAxis = "na",
-                CorrectedSphere = "na",
-                CorrectedCyliner = "na",
-                CorrectedAxis = "na",
+                UncorrectedODSphere = "0.00",
+                UncorrectedODCylinder = "0",
+                UncorrectedODAxis = "0",
+                CorrectedODSphere = "0",
+                CorrectedODCylinder = "0",
+                CorrectedODAxis = "0",
+                UncorrectedOSSphere = "0.00",
+                UncorrectedOSCylinder = "0",
+                UncorrectedOSAxis = "0",
+                CorrectedOSSphere = "0",
+                CorrectedOSCylinder = "0",
+                CorrectedOSAxis = "0",
 
                 Sex = "Female",
                 LifeStage = "Senior",
                 BloodPressure = "Hypertensive Crisis",
-                GlaucomaFamilyHistory = "Maternal Parent",
+                GlaucomaHistory = "Maternal parent",
                 HasGlaucoma = "Yes"
-                },
-
-                new Exam() {
-                ExamId = 2,
-                ExamMonth = "2",
-                ExamDay = "2",
-                ExamYear = "2022",
-                ExamTime = "10:00AM",
-                Complaint = "",
-                EyeDrops = "",
-                HistoryOfCancer = false,
-                HistoryOfCataracts = false,
-                HistoryOfDiabetes = false,
-                HistoryOfHeartProblems = false,
-                HistoryOfHIV = false,
-                HistoryOfKidneyDisease = false,
-                HistoryOfMacularDegeneration = false,
-                HistoryOfRetinalDetachment = false,
-                HistoryOfStroke = false,
-                HistoryOfThyroid = false,
-                HistoryOfTuberculosis = false,
-                HistoryOfNeuromuscularDisease = false,
-                UncorrectedSphere = "0.00",
-                UncorrectedCyliner = "na",
-                UncorrectedAxis = "na",
-                CorrectedSphere = "na",
-                CorrectedCyliner = "na",
-                CorrectedAxis = "na",
-
-                Sex = "Male",
-                LifeStage = "Young adulthood",
-                BloodPressure = "Normal",
-                GlaucomaFamilyHistory = "None",
-                HasGlaucoma = "No"
-                },
-
-                new Exam() {
-                ExamId = 3,
-                ExamMonth = "3",
-                ExamYear = "2013",
-                ExamTime = "13:00",
-                Complaint = "",
-                EyeDrops = "",
-                HistoryOfCancer = false,
-                HistoryOfCataracts = false,
-                HistoryOfDiabetes = false,
-                HistoryOfHeartProblems = false,
-                HistoryOfHIV = false,
-                HistoryOfKidneyDisease = false,
-                HistoryOfMacularDegeneration = false,
-                HistoryOfRetinalDetachment = false,
-                HistoryOfStroke = false,
-                HistoryOfThyroid = false,
-                HistoryOfTuberculosis = false,
-                HistoryOfNeuromuscularDisease = false,
-                UncorrectedSphere = "0.00",
-                UncorrectedCyliner = "na",
-                UncorrectedAxis = "na",
-                CorrectedSphere = "na",
-                CorrectedCyliner = "na",
-                CorrectedAxis = "na",
-
-                Sex = "Male",
-                LifeStage = "Young adulthood",
-                BloodPressure = "Normal",
-                GlaucomaFamilyHistory = "None",
-                HasGlaucoma = "No"
-                },
-            };
-            return exams;
-        }
-
-
-        public static List<Patient> GetPatients()
-        {
-            List<Patient> patients = new List<Patient>() {
-            new Patient() {
-                PatientID = 1,
-                LastName = "Chen",
-                FirstName = "Edmond",
-                MiddleName = "Li",
-                Address = "123 Main st",
-                Province = "BC",
-                City = "Vancouver",
-                PostalCode = "VA2 34B",
-                ProvincialHealthNumber = "12345",
-                Phone = "233132",
-                Email = "test@mail.com",
-                Occupation = "test",
-                IsSelected = false,
-                IsEditing = false,
-                ExamId = 1,
-                InvoiceId = 1
             },
             new Patient() {
                 PatientID = 2,
@@ -157,14 +195,52 @@ namespace VisionX.Data
                 Province = "BC",
                 City = "Richmond",
                 PostalCode = "VA2 34B",
+                BirthDate = "1923-02-02",
                 ProvincialHealthNumber = "12345",
                 Phone = "233132",
                 Email = "test@mail.com",
                 Occupation = "test",
                 IsSelected = false,
                 IsEditing = false,
-                ExamId = 2,
-                InvoiceId = 2
+                // ExamId = 2,
+                // InvoiceId = 2,
+                //  ExamId = 1,
+                ExamMonth = "1",
+                ExamDay = "1",
+                ExamYear = "2011",
+                ExamTime = "11",
+                Complaint = "",
+                EyeDrops = "",
+                HistoryOfCancer = false,
+                HistoryOfCataracts = false,
+                HistoryOfDiabetes = false,
+                HistoryOfHeartProblems = false,
+                HistoryOfHIV = false,
+                HistoryOfKidneyDisease = false,
+                HistoryOfMacularDegeneration = false,
+                HistoryOfRetinalDetachment = false,
+                HistoryOfStroke = false,
+                HistoryOfThyroid = false,
+                HistoryOfTuberculosis = false,
+                HistoryOfNeuromuscularDisease = false,
+                UncorrectedODSphere = "0.00",
+                UncorrectedODCylinder = "0",
+                UncorrectedODAxis = "0",
+                CorrectedODSphere = "0",
+                CorrectedODCylinder = "0",
+                CorrectedODAxis = "0",
+                UncorrectedOSSphere = "0.00",
+                UncorrectedOSCylinder = "0",
+                UncorrectedOSAxis = "0",
+                CorrectedOSSphere = "0",
+                CorrectedOSCylinder = "0",
+                CorrectedOSAxis = "0",
+
+                Sex = "Female",
+                LifeStage = "Senior",
+                BloodPressure = "Hypertensive Crisis",
+                GlaucomaHistory = "Maternal parent",
+                HasGlaucoma = "Yes"
             },
             new Patient() {
                 PatientID = 3,
@@ -175,14 +251,52 @@ namespace VisionX.Data
                 Province = "BC",
                 City = "Vancouver",
                 PostalCode = "VA2 34B",
+                BirthDate = "2000-03-03",
                 ProvincialHealthNumber = "12345",
                 Phone = "233132",
                 Email = "test@mail.com",
                 Occupation = "test",
                 IsSelected = false,
                 IsEditing = false,
-                ExamId = 3,
-                InvoiceId = 3
+                // ExamId = 3,
+                // InvoiceId = 3
+                //  ExamId = 1,
+                ExamMonth = "1",
+                ExamDay = "1",
+                ExamYear = "2011",
+                ExamTime = "11",
+                Complaint = "",
+                EyeDrops = "",
+                HistoryOfCancer = false,
+                HistoryOfCataracts = false,
+                HistoryOfDiabetes = false,
+                HistoryOfHeartProblems = false,
+                HistoryOfHIV = false,
+                HistoryOfKidneyDisease = false,
+                HistoryOfMacularDegeneration = false,
+                HistoryOfRetinalDetachment = false,
+                HistoryOfStroke = false,
+                HistoryOfThyroid = false,
+                HistoryOfTuberculosis = false,
+                HistoryOfNeuromuscularDisease = false,
+                UncorrectedODSphere = "0.00",
+                UncorrectedODCylinder = "0",
+                UncorrectedODAxis = "0",
+                CorrectedODSphere = "0",
+                CorrectedODCylinder = "0",
+                CorrectedODAxis = "0",
+                UncorrectedOSSphere = "0.00",
+                UncorrectedOSCylinder = "0",
+                UncorrectedOSAxis = "0",
+                CorrectedOSSphere = "0",
+                CorrectedOSCylinder = "0",
+                CorrectedOSAxis = "0",
+
+                Sex = "Female",
+                LifeStage = "Senior",
+                BloodPressure = "Hypertensive Crisis",
+                GlaucomaHistory = "Maternal parent",
+                HasGlaucoma = "Yes"
             }
         };
 
@@ -290,5 +404,7 @@ namespace VisionX.Data
             return invoices;
 
         }
+
     }
+
 }
