@@ -1,4 +1,7 @@
 ﻿@using VisionX.Components.Employees
+@using VisionX.Services
+@inject VisionX.Services.PdfService PdfService
+@inject IJSRuntime JSRuntime
 <link rel="stylesheet" href="/css/site.css" />
 
 <div class="inner-nav">
@@ -104,8 +107,35 @@
         </tbody>
     </table>
     </div>
+    <button @onclick="ConvertToPdf">Convert to PDF</button>
 
 @code {
+
+    @* private async Task ConvertToPdf()
+    {
+    var html = "<html>http://localhost:8888/TheEmployees</html>"; // Replace this with your actual HTML
+    var pdf = PdfService.ConvertHtmlToPdf(html);
+
+    // Now you can do whatever you want with the PDF, e.g. download it
+    var content = new System.IO.MemoryStream(pdf);
+    var contentType = "APPLICATION/octet-stream";
+    var fileName = "download.pdf";
+
+    await JSRuntime.InvokeAsync<object>("saveAsFile", new object[] { fileName, Convert.ToBase64String(content.ToArray()) });
+    } *@
+
+    private async Task ConvertToPdf()
+{
+    var html = "<html>http://localhost:8888/TheEmployees</html>"; // Replace this with your actual HTML
+    var pdf = PdfService.ConvertHtmlToPdf(html);
+
+    // Now you can do whatever you want with the PDF, e.g. download it
+    var content = new System.IO.MemoryStream(pdf);
+    var contentType = "APPLICATION/octet-stream";
+    var fileName = "download.pdf";
+    await JSRuntime.InvokeAsync<object>("saveAsFile", new object[] { fileName, Convert.ToBase64String(content.ToArray()) });
+}
+
     private bool showSignIn = true;
     private bool showSignOut = false;
     private bool showTotalHours = false;
@@ -130,6 +160,8 @@
         showSignOut = false;
         showTotalHours = true;
     }
+
+
 }
 
 <style>

@@ -4,6 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using VisionX.Data;
 using VisionX.Services;
 
+// DinkToPdf is the Html to Pdf Converter
+using DinkToPdf;
+using DinkToPdf.Contracts;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -14,6 +19,12 @@ builder.Services.AddScoped<PatientService>();
 builder.Services.AddScoped<AppointmentService>();
 builder.Services.AddScoped<InvoiceService>();
 builder.Services.AddScoped<ProductService>();
+
+builder.Services.AddScoped<PdfService>(); // Html tp Pdf Converter
+
+// DinkToPdf Html to Pdf Converter in the builder services container
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
 
 string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(
