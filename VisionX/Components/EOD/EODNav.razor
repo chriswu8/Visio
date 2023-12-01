@@ -1,4 +1,5 @@
 ﻿﻿@using VisionX.Components.EOD
+@inject IJSRuntime JSRuntime
 
 <div class="inner-nav">
     <button class="nav-underline" @onclick="ShowViewTransactions">View Transactions</button>
@@ -115,7 +116,7 @@
         <strong>Total: @examTest.Sum(service => service.Fee).ToString("C")</strong>
     </div>
 
-    <button  @onclick="ExportAsPdf">Export as PDF</button>
+    <button  @onclick="GeneratePdf">Export as PDF</button>
 }
 
 @* <div class="dropdown">
@@ -159,11 +160,14 @@ new Service { Patient = "Jane Doe", Date = DateTime.Now.AddDays(-1), ServiceID =
     }
     @* End of the section that contains the above code for the dropdown menu *@
 
-    
-
-    async Task ExportAsPdf()
+     private async Task GeneratePdf()
     {
-        @* // Get the HTML content of the page
+        await JSRuntime.InvokeVoidAsync("convertHtmlToPdf");
+    }
+
+     @* async Task ExportAsPdf()
+    {
+       // Get the HTML content of the page
         string htmlContent = await JSRuntime.InvokeAsync<string>("getHtmlContent");
 
         // Send the HTML content to the server
@@ -174,8 +178,8 @@ new Service { Patient = "Jane Doe", Date = DateTime.Now.AddDays(-1), ServiceID =
         {
             var pdfBytes = await response.Content.ReadAsByteArrayAsync();
             await JSRuntime.InvokeVoidAsync("downloadPdf", pdfBytes);
-        } *@
-    }
+        } 
+    }*@
 
     public class Service
     {

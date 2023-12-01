@@ -1,10 +1,13 @@
 ﻿@using VisionX.Components.Employees
+@inject IJSRuntime JSRuntime
 <link rel="stylesheet" href="/css/site.css" />
 
 <div class="inner-nav">
     <button class="nav-underline" @onclick="ShowSignIn">Sign-In</button>
     <button class="nav-underline" @onclick="ShowSignOut">Sign-Out</button>
     <button class="nav-underline" @onclick="ShowTotalHours">Total Hours</button>
+
+        <button class="nav-underline" @onclick="GeneratePdf">Generate PDF</button>
 </div>
 
 <br />
@@ -109,6 +112,11 @@
     private bool showSignIn = true;
     private bool showSignOut = false;
     private bool showTotalHours = false;
+
+    private async Task GeneratePdf()
+    {
+        await JSRuntime.InvokeVoidAsync("convertHtmlToPdf");
+    }
 
     private void ShowSignIn()
     {
@@ -233,6 +241,8 @@
 </style>
 
 @code{
+
+
     private List<TimeInTimeOut> employees = new List<TimeInTimeOut>
     {
        @* new TimeInTimeOut { EmployeeID = 1, Date = "2021-01-01", TimeIn = Convert.ToInt32(new TimeSpan(8, 0, 0).TotalHours), TimeOut = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours), TotalHoursWorked = 9 },
