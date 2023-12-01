@@ -3,45 +3,49 @@
 <div>
     <h3>@DateTime.Now.ToString("MMMM dd, yyyy")</h3>
 
-    @* <div class="centered-appointment-section">
-        <div class="appointment-section">
-            <TheAppointmentsOfTheDay SelectedTime="selectedTime"/>
-        </div>
-    </div> *@
-
     <div class="finishing-buttons">
         <button class="book-button" @onclick="ShowPatientModal">Squeeze In</button>
         <button class="book-button">Change</button>
-        <button class="book-button">Delete</button>
-        <button class="book-button">Patient</button>
-        <button class="book-button close-button">Close </button>
+        <button class="delete-apt-button">Delete</button>
     </div>
 </div>
 
-@* @if (showConfirmAppointmentModal)
-{
-    <div class="modal-container">
-        <div class="modal-background">
-            <div class="modal-content">
-                 <TheConfirmAppointment OnSaveClicked="HandleSave" OnCancelClicked="HandleCancel" /> 
-                <!-- <ThePatient OnSaveClicked="HandleSave" OnCancelClicked="HandleCancel" />  -->
-            </div>
-        </div>
-    </div>
-} *@
 
 @if (showPatientModal)
 {
     <div class="modal-container">
         <div class="modal-background">
             <div class="modal-content">
-                <ThePatientModal OnTopCancelClicked="HidePatientModal"  Month="@Month" Day="@Day" Year="@Year" TimeInString="@TimeInString"/>
+                <ThePatientModal OnTopCancelClicked="HidePatientModal" Month="@Month" Day="@Day" Year="@Year"
+                    TimeInString="@TimeInString" />
             </div>
         </div>
     </div>
 }
 
 <style>
+    .delete-apt-button {
+        background-color: #d02222;
+        float: right;
+        border: none;
+        color: #eaeaea;
+        padding: 10px;
+        width: auto;
+        height: 37px;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 5px;
+        line-height: 19px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .delete-apt-button:hover {
+        background-color: #6a0909;
+        color: #fff;
+    }
+
+
     h3 {
         font-size: 16px;
         font-weight: bold;
@@ -50,7 +54,7 @@
         background-color: #f0f0f0;
         padding: 5px;
         border-radius: 5px;
-        text-align:center;
+        text-align: center;
         transition: background-color 0.3s, color 0.3s;
     }
 
@@ -86,17 +90,17 @@
         transition: background-color 0.3s, color 0.3s;
     }
 
-        .book-button:hover {
-            background-color: #666;
-            color: #fff;
-        }
+    .book-button:hover {
+        background-color: #666;
+        color: #fff;
+    }
 
     .finishing-buttons {
         margin-top: 10px;
     }
 
     .close-button {
-        background-color: #262624; 
+        background-color: #262624;
         color: white;
         margin-left: 20px;
     }
@@ -112,10 +116,10 @@
     [Parameter]
     public DateTime SelectedTime { get; set; }
 
-    [Parameter] public string Month {get; set;}
-    [Parameter] public string Day {get; set;}
-    [Parameter] public string Year {get; set;}
-    [Parameter] public string TimeInString {get; set;}
+    [Parameter] public string Month { get; set; }
+    [Parameter] public string Day { get; set; }
+    [Parameter] public string Year { get; set; }
+    [Parameter] public string TimeInString { get; set; }
 
     private bool showConfirmAppointmentModal = false; // likely needs to be in ThePatient and ThePatientModal
     private bool showPatientModal = false;
@@ -134,8 +138,6 @@
 
     private void HandleSave()
     {
-        // Handle the save action here
-
         showConfirmAppointmentModal = false;
     }
 
@@ -146,8 +148,6 @@
 
     private void HandleAppointmentRowClick()
     {
-        // Handle the row click event in the parent component
-        
         Console.WriteLine(selectedTime);
     }
 }
