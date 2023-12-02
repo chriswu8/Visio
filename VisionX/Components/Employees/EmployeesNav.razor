@@ -6,9 +6,6 @@
     <button class="nav-underline" @onclick="ShowSignIn">Sign-In</button>
     <button class="nav-underline" @onclick="ShowSignOut">Sign-Out</button>
     <button class="nav-underline" @onclick="ShowTotalHours">Total Hours</button>
-
-        <button class="nav-underline" @onclick="GeneratePdf">Generate PDF</button>
-        <button class="nav-underline" @onclick="GenerateExcel">Generate Excel</button>
 </div>
 
 <br />
@@ -107,6 +104,10 @@
             }
         </tbody>
     </table>
+
+        <button @onclick="GeneratePdf" class="edit-button">Export as PDF</button>
+
+    <button @onclick="GenerateExcel" class="edit-button">Export as Excel</button>
     </div>
 
 @code {
