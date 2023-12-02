@@ -6,7 +6,6 @@
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 
 
-
 <div class="component-container">
     <link rel="stylesheet" href="/css/site.css" />
 
@@ -45,7 +44,7 @@
 
     <div class="patient-table">
         <div style="overflow-x: auto;">
-            <table>
+            <table class="patient-modal-table">
                 <thead>
                     <tr class="header-row">
                         <th>PatientID</th>
@@ -62,7 +61,6 @@
                         <th>Postal Code</th>
                         <th>Birth Date</th>
                         <th>PHN</th>
-                        @* <th>ExamID</th> *@
                     </tr>
                 </thead>
                 <tbody>
@@ -84,7 +82,6 @@
                             <td> @patient.PostalCode</td>
                             <td>@patient.BirthDate</td>
                             <td>@patient.ProvincialHealthNumber</td>
-                            @* <td>@patient.Phone</td> *@
                         </tr>
                     }
                 </tbody>
@@ -119,16 +116,34 @@
 
 
 <style>
+    .patient-modal-table {
+        height: 70vh;
+        overflow-y: auto;
+        display: block;
+    }
+
+    .header-row th {
+        position: sticky;
+        top: 0;
+        background-color: #333;
+        z-index: 1;
+    }
+
+
+
     .modal-content {
         display: flex;
         justify-content: center;
         align-items: center;
-        min-width: 40em;
+        min-width: 88em;
+        background-color: #444;
+        color: white;
     }
 
     .component-container {
         width: 95%;
         margin: 0 auto;
+        scale: 0.8;
     }
 
     .patient-controls {
@@ -436,6 +451,7 @@ Province = "BC", City = "Surrey", PostalCode = "V6A8X7", BirthDate = "1970-04-04
 
         public bool IsSelected { get; set; }
         public bool IsEditing { get; set; }
+
     }
 
     private bool ShouldRenderBookGEE1Button(string sex, string lifeStage, string bloodPressure, string familyHistory, string

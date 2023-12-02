@@ -1,10 +1,13 @@
 ﻿@using VisionX.Components.Employees
+@inject IJSRuntime JSRuntime
 <link rel="stylesheet" href="/css/site.css" />
 
 <div class="inner-nav">
     <button class="nav-underline" @onclick="ShowSignIn">Sign-In</button>
     <button class="nav-underline" @onclick="ShowSignOut">Sign-Out</button>
     <button class="nav-underline" @onclick="ShowTotalHours">Total Hours</button>
+
+        <button class="nav-underline" @onclick="GeneratePdf">Generate PDF</button>
 </div>
 
 <br />
@@ -26,7 +29,7 @@
     }
 </div>
 
-<div class="employee-table">
+@* <div class="employee-table">
     <table>
         <thead>
             <tr class="header-row">
@@ -70,12 +73,50 @@
             }
         </tbody>
     </table>
+    </div> *@
+
+    <div class="hours-table">
+    <table>
+        <thead>
+            <tr class="header-row">
+                <th>Employee</th>
+                <th>Date</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Total Hours Worked</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+          
+             @foreach (var employee in employees)
+            @* @foreach (var timeintimeout in timeintimeouts) *@
+
+            {
+                <tr class="@(employee.EmployeeID % 2 == 0 ? "even-row" : "odd-row") @(employee.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(employee)">
+                     
+                  <td>@employee.EmployeeID</td>
+                    <td>@employee.Date</td>
+                   <td>@employee.TimeIn</td>
+                    <td>@employee.TimeOut</td>
+                    <td>@employee.TotalHoursWorked</td>
+                
+                </tr>
+            }
+        </tbody>
+    </table>
     </div>
 
 @code {
     private bool showSignIn = true;
     private bool showSignOut = false;
     private bool showTotalHours = false;
+
+    private async Task GeneratePdf()
+    {
+        await JSRuntime.InvokeVoidAsync("convertHtmlToPdf");
+    }
 
     private void ShowSignIn()
     {
@@ -100,6 +141,10 @@
 }
 
 <style>
+
+    table {
+    margin: 50px;
+}
 
     .modal-overlay {
         position: fixed;
@@ -153,6 +198,8 @@
 
     .employee-table {
         margin-top: 10px;
+        @* width: 75%;
+        margin: 0 auto; /* This will center the table */ *@
     }
 
     table {
@@ -194,16 +241,36 @@
 </style>
 
 @code{
-    private List<Employee> employees = new List<Employee>
+
+
+    private List<TimeInTimeOut> employees = new List<TimeInTimeOut>
     {
-        new Employee { EmployeeID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Address = "123 Main St", Province = "BC", City = "Richmond", PostalCode = "V6Y9U4", BirthDate = "1990-01-01", Phone = "123-456-7890", Email = "johndoe@example.com", Occupation = "Engineer", ImageID = "VXE1" },
-        new Employee { EmployeeID = 2, LastName = "Smith", FirstName = "Jane", MiddleName = "Amber", Address = "456 Elm St", Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-15", Phone = "987-654-3210", Email = "janesmith@example.com", Occupation = "Doctor", ImageID = "VXE2" }
+       @* new TimeInTimeOut { EmployeeID = 1, Date = "2021-01-01", TimeIn = Convert.ToInt32(new TimeSpan(8, 0, 0).TotalHours), TimeOut = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours), TotalHoursWorked = 9 },
+       new TimeInTimeOut { EmployeeID = 2, Date = "2021-01-01", TimeIn = Convert.ToInt32(new TimeSpan(8, 0, 0).TotalHours), TimeOut = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours), TotalHoursWorked = 9 } *@
+      
+      new TimeInTimeOut 
+        { 
+            EmployeeID = 1, 
+            Date = "2021-01-01", 
+            TimeIn = Convert.ToInt32(new TimeSpan(9, 1, 2).TotalHours), 
+            TimeOut = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours), 
+            TotalHoursWorked = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours) - Convert.ToInt32(new TimeSpan(9, 1, 2).TotalHours)
+        },
+
+        new TimeInTimeOut 
+        { 
+            EmployeeID = 2, 
+            Date = "2021-01-01", 
+            TimeIn = Convert.ToInt32(new TimeSpan(8, 0, 0).TotalHours), 
+            TimeOut = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours), 
+            TotalHoursWorked = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours) - Convert.ToInt32(new TimeSpan(8, 0, 0).TotalHours)
+        }
     }; 
 
     private int nextEmployeeID = 3;
     private bool isEditing = false;
 
-        private void SelectRow(Employee employee)
+        private void SelectRow(TimeInTimeOut employee)
     {
         foreach (var p in employees)
         {
@@ -213,24 +280,24 @@
        employee.IsSelected = !employee.IsSelected;
     }
 
-    public class Employee
+    public class TimeInTimeOut
     {
         public int EmployeeID { get; set; }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public string Address { get; set; }
-        public string Province { get; set; }
-        public string City { get; set; }
-        public string PostalCode { get; set; }
-        public string BirthDate { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Occupation { get; set; }
-        public string ImageID { get; set; }
+        @* public string LastName { get; set; } *@
 
+         public string Date { get; set; }
+        @* public string FirstName { get; set; } *@
+
+         public int TimeIn{ get; set; }
+        @* public string MiddleName { get; set; } *@
+
+          public int TimeOut{ get; set; }
+        @* public string Address { get; set; } *@
+
+          public int TotalHoursWorked{ get; set; }
         public bool IsSelected { get; set; }
         public bool IsEditing { get; set; }
     }
 
-}
+    } 
+

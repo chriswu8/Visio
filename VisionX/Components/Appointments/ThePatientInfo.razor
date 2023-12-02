@@ -5,7 +5,7 @@
 <div class="patient-info">
     <div class="input-row">
         <div class="input-label last-name-div">Last Name:</div>
-        <input id="lastNameInput" class="input-field last-name-input" type="text" @bind="SelectedPatient.LastName"  />
+        <input id="lastNameInput" class="input-field last-name-input" type="text" @bind="SelectedPatient.LastName" />
     </div>
     <div class="input-row">
         <div class="input-label first-name-div">First Name:</div>
@@ -189,8 +189,8 @@
     [Parameter]
     public VisionX.Models.Patient SelectedPatient { get; set; } = new VisionX.Models.Patient();
 
-    @* [Parameter] 
-     public bool PatientEdit { get; set; } *@
+    @* [Parameter]
+public bool PatientEdit { get; set; } *@
 
 
     // Event handlers
