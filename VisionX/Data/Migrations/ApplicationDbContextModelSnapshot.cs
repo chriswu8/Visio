@@ -69,6 +69,46 @@ namespace VisionX.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("VisionX.Models.Employee", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<TimeSpan?>("ClockIn")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("ClockOut")
+                        .HasColumnType("time");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Employee", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            FirstName = "Chris",
+                            LastName = "Wu",
+                            MiddleName = "Yue"
+                        });
+                });
+
             modelBuilder.Entity("VisionX.Models.Invoice", b =>
                 {
                     b.Property<int>("ID")

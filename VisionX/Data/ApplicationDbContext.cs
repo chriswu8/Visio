@@ -29,12 +29,14 @@ namespace VisionX.Data
             builder.Entity<Appointment>().Property(m => m.ID).IsRequired();
             builder.Entity<Product>().Property(m => m.ID).IsRequired();
             builder.Entity<Invoice>().Property(m => m.ID).IsRequired();
+            builder.Entity<Employee>().Property(m => m.ID).IsRequired();
 
             builder.Entity<Patient>().ToTable("Patient");
             builder.Entity<Service>().ToTable("Service");
             builder.Entity<Appointment>().ToTable("Appointment");
             builder.Entity<Product>().ToTable("Product");
             builder.Entity<Invoice>().ToTable("Invoice");
+            builder.Entity<Employee>().ToTable("Employee");
 
 
             builder.Seed();

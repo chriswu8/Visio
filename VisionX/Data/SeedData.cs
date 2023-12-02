@@ -15,6 +15,7 @@ namespace VisionX.Data
             modelBuilder.Entity<Product>().HasData(GetProducts());
             // modelBuilder.Entity<Exam>().HasData(GetExams());
             modelBuilder.Entity<Invoice>().HasData(GetInvoice());
+            modelBuilder.Entity<Employee>().HasData(GetEmployees());
 
         }
 
@@ -402,6 +403,23 @@ namespace VisionX.Data
         };
 
             return invoices;
+
+        }
+
+        public static List<Employee> GetEmployees()
+        {
+            List<Employee> employees = new List<Employee>() {
+        new Employee() {
+            ID = 1,
+            FirstName = "Chris",
+            LastName = "Wu",
+            MiddleName = "Yue",
+            ClockIn = null // Assuming 8:30 AM as the ClockIn time
+        },
+        // Add more employees if needed
+    };
+
+            return employees;
 
         }
 
