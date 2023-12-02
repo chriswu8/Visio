@@ -15,6 +15,7 @@ builder.Services.AddScoped<AppointmentService>();
 builder.Services.AddScoped<InvoiceService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<PageRowsService>();
+builder.Services.AddScoped<PatientRowsService>();
 
 string connStr = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(

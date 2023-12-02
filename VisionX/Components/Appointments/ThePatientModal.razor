@@ -4,6 +4,7 @@
 @inject Data.ApplicationDbContext dbContext
 @inject VisionX.Services.PatientService _patientService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+@inject VisionX.Services.PatientRowsService PatientRowsService
 
 
 <div class="component-container">
@@ -38,7 +39,11 @@
                 <button class="glaucoma-button" @onclick="ShowConfirmAppointmentModal">Book GEE1</button>
             }
 
-            <button class="book-button" @onclick="ShowConfirmAppointmentModal">Schedule Patient</button>
+            @if (PatientRowsService.PatientRowSelected == false)
+            {
+                <span style="color: rgb(241, 191, 191); margin-right: 10px;">Must select a patient</span>
+            }
+            <button class="book-button" @onclick="HandleScheduling">Schedule Patient</button>
         </div>
     </div>
 
@@ -69,8 +74,8 @@
                         <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
                             @onclick="() => SelectRow(patient)">
                             <td>@patient.PatientID</td>
-                            <td>@patient.FirstName</td>
                             <td>@patient.LastName</td>
+                            <td>@patient.FirstName</td>
                             <td>@patient.MiddleName</td>
                             <td>@patient.Sex</td>
                             <td>@patient.BloodPressure</td>
@@ -344,6 +349,16 @@
         showConfirmAppointment = true;
     }
 
+    private void HandleScheduling()
+    {
+        Console.WriteLine("Schedule button clicked.");
+        Console.WriteLine("PatientRowsService.PatientRowSelected: " + PatientRowsService.PatientRowSelected);
+        if (PatientRowsService.PatientRowSelected == true)
+        {
+            ShowConfirmAppointmentModal();
+        }
+    }
+
     private void HideConfirmAppointmentModal()
     {
         showConfirmAppointment = false;
@@ -414,17 +429,16 @@ Province = "BC", City = "Surrey", PostalCode = "V6A8X7", BirthDate = "1970-04-04
         nextPatientID++;
     }
 
-    private void SelectRow(VisionX.Models.Patient patient) // =========== Guarded
+    private void SelectRow(VisionX.Models.Patient patient)
     {
         if (patient.IsSelected)
         {
-            // If the patient is already selected, deselect it
             patient.IsSelected = false;
-            selectedPatientModel = null; // Clear the selected patient model
+            selectedPatientModel = null;
+            PatientRowsService.PatientRowSelected = false;
         }
         else
         {
-            // Deselect all patients and select the clicked one
             foreach (var p in patientsTest)
             {
                 p.IsSelected = false;
@@ -432,6 +446,7 @@ Province = "BC", City = "Surrey", PostalCode = "V6A8X7", BirthDate = "1970-04-04
             patient.IsSelected = true;
             Console.WriteLine("Selected Patient: " + patient.PatientID);
             selectedPatientModel = patient;
+            PatientRowsService.PatientRowSelected = true;
         }
     }
 
