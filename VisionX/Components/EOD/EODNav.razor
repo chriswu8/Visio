@@ -1,4 +1,5 @@
 ﻿﻿@using VisionX.Components.EOD
+@inject VisionX.Services.InvoiceService invoiceService
 
 <div class="inner-nav">
     <button class="nav-underline" @onclick="ShowViewTransactions">View Transactions</button>
@@ -36,32 +37,32 @@
         <!-- Month Options are posted below  -->
 
         @* December 2023 to January 2023 *@
-        <option value="December 2023">December 2023</option>
-        <option value="November 2023">November 2023</option>
-        <option value="October 2023">October 2023</option>
-        <option value="September 2023">September 2023</option>
-        <option value="August 2023">August 2023</option>
-        <option value="July 2023">July 2023</option>
-        <option value="June 2023">June 2023</option>
-        <option value="May 2023">May 2023</option>
-        <option value="April 2023">April 2023</option>
-        <option value="March 2023">March 2023</option>
-        <option value="February 2023">February 2023</option>
-        <option value="January 2023">January 2023</option>
+        <option value="12 2023">December 2023</option>
+        <option value="11 2023">November 2023</option>
+        <option value="10 2023">October 2023</option>
+        <option value="9 2023">September 2023</option>
+        <option value="8 2023">August 2023</option>
+        <option value="7 2023">July 2023</option>
+        <option value="6 2023">June 2023</option>
+        <option value="5 2023">May 2023</option>
+        <option value="4 2023">April 2023</option>
+        <option value="3 2023">March 2023</option>
+        <option value="2 2023">February 2023</option>
+        <option value="1 2023">January 2023</option>
 
         @* December 2022 to January 2022 *@
-        <option value="December 2022">December 2022</option>
-        <option value="November 2022">November 2022</option>
-        <option value="October 2022">October 2022</option>
-        <option value="September 2022">September 2022</option>
-        <option value="August 2022">August 2022</option>
-        <option value="July 2022">July 2022</option>
-        <option value="June 2022">June 2022</option>
-        <option value="May 2022">May 2022</option>
-        <option value="April 2022">April 2022</option>
-        <option value="March 2022">March 2022</option>
-        <option value="February 2022">February 2022</option>
-        <option value="January 2022">January 2022</option>
+        <option value="12 2022">December 2022</option>
+        <option value="11 2022">November 2022</option>
+        <option value="10 2022">October 2022</option>
+        <option value="9 2022">September 2022</option>
+        <option value="8 2022">August 2022</option>
+        <option value="7 2022">July 2022</option>
+        <option value="6 2022">June 2022</option>
+        <option value="5 2022">May 2022</option>
+        <option value="4 2022">April 2022</option>
+        <option value="3 2022">March 2022</option>
+        <option value="2 2022">February 2022</option>
+        <option value="1 2022">January 2022</option>
 
     </select>
 </div>
@@ -73,49 +74,77 @@
     <table id="data-table" style="margin-top: 20px; margin-bottom: 20px;">
         <thead class="options-table">
             <tr class="header-row">
-                <th>Patient</th>
-                <th>Date</th>
-                <th>ServiceID</th>
-                <th>ProductID</th>
+                <th colspan="2">Patient</th>
+                <th>Service</th>
+                <th>Product</th>
                 <th>Fee</th>
             </tr>
         </thead>
         <tbody>
 
-            @foreach (var service in examTest)
+            @foreach (var service in invoiceList)
             {
                 <!-- Populate table rows here -->
                 <tr class="servicesTable-background">
 
+                    <td>@service.Patient.LastName</td>
+                    <td>@service.Patient.FirstName</td>
+
+                    @if (service.Service == null)
+                    {
+                        <td>n/a</td>
+                    }
+                    else if (service.Product == null)
+                    {
+                        <td>n/a</td>
+                    }
+
+
+
+                    @if (service.Service != null)
+                    {
+                        <td>@service.Service.Code</td>
+                        <td></td>
+                        <td>@service.Service.Fee</td>
+                    }
+
+                    @if (service.Product != null)
+                    {
+                        <td>@service.Product.Manufacturer @service.Product.ModelNumber @service.Product.Type</td>
+                    }
+
+
                     @* Patient *@
                     @* <td>patient info</td> *@
-                    <td>@service.Patient</td>
+                    @* <td>@service.PatientID</td> *@
+                    @* <td>@service.Product.Manufacturer</td> *@
 
                     @* Date *@
                     @* <td>date info</td> *@
-                    <td>@service.Date.ToShortDateString()</td>
+                    @* <td>@service.Date.ToShortDateString()</td> *@
 
                     @* ServiceID *@
                     @* <td>serviceID info</td> *@
-                    <td>@service.ServiceID</td>
+                    @* <td>service.Service.Code</td> *@
 
                     @* ProductID *@
                     @* <td>productID info</td> *@
-                    <td>@service.ProductID</td>
+                    @* <td>@service.ProductID</td>
+            <td>@service.Fee</td> *@
 
                     @* Fee *@
                     @* <td>$Fee info</td> *@
-                    <td>@service.Fee.ToString("C")</td>
+                    @* <td>@service.Fee.ToString("C")</td> *@
                 </tr>
             }
         </tbody>
     </table>
 
-    <div style="margin-top: 20px; margin-bottom: 20px;">
-        <strong>Total: @examTest.Sum(service => service.Fee).ToString("C")</strong>
-    </div>
+    @* <div style="margin-top: 20px; margin-bottom: 20px;">
+<strong>Total: @examTest.Sum(service => service.Fee).ToString("C")</strong>
+</div> *@
 
-    <button  @onclick="ExportAsPdf">Export as PDF</button>
+    <button @onclick="ExportAsPdf">Export as PDF</button>
 }
 
 @* <div class="dropdown">
@@ -143,38 +172,42 @@ Select an option
     private bool showPrintReport = false;
 
     @* This section contains the code for the dropdown menu *@
-    string selectedOption = "";
+    string selectedOption = "12 2023";
     @* List<Service> examTest = new List<Service>(); *@
-    List<Service> examTest = new List<Service>
+    @* List<Service> examTest = new List<Service>
 {
 new Service { Patient = "John Doe", Date = DateTime.Now, ServiceID = 1, ProductID = 101, Fee = 200.50m },
 new Service { Patient = "Jane Doe", Date = DateTime.Now.AddDays(-1), ServiceID = 2, ProductID = 102, Fee = 300.75m },
 // Add more mock data here
-};
+}; *@
+
+    public List<VisionX.Models.Invoice> invoiceList;
 
 
     void HandleSelectionChange(ChangeEventArgs e)
     {
         selectedOption = e.Value.ToString();
+        string[] parts = selectedOption.Split(' ');
+        invoiceList = invoiceService.GetInvoicesByMonthAndYear(parts[0], parts[1]);
     }
     @* End of the section that contains the above code for the dropdown menu *@
 
-    
+
 
     async Task ExportAsPdf()
     {
         @* // Get the HTML content of the page
-        string htmlContent = await JSRuntime.InvokeAsync<string>("getHtmlContent");
+string htmlContent = await JSRuntime.InvokeAsync<string>("getHtmlContent");
 
-        // Send the HTML content to the server
-        var response = await Http.PostAsJsonAsync("/api/pdf", new { HtmlContent = htmlContent });
+// Send the HTML content to the server
+var response = await Http.PostAsJsonAsync("/api/pdf", new { HtmlContent = htmlContent });
 
-        // Download the PDF
-        if (response.IsSuccessStatusCode)
-        {
-            var pdfBytes = await response.Content.ReadAsByteArrayAsync();
-            await JSRuntime.InvokeVoidAsync("downloadPdf", pdfBytes);
-        } *@
+// Download the PDF
+if (response.IsSuccessStatusCode)
+{
+var pdfBytes = await response.Content.ReadAsByteArrayAsync();
+await JSRuntime.InvokeVoidAsync("downloadPdf", pdfBytes);
+} *@
     }
 
     public class Service
@@ -211,13 +244,14 @@ new Service { Patient = "Jane Doe", Date = DateTime.Now.AddDays(-1), ServiceID =
 {
 new Service {ServiceID = 101, Fee = "$20", ServiceDescription = "Eye Pressure Test"},
 new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"}
-};
+}; *@
 
-private List<VisionX.Models.Exam> examTest;
-protected override void OnInitialized()
-{
-examTest = dbContext.Exams.ToList();
-} *@
+    @* private List<VisionX.Models.Exam> examTest; *@
+    protected override void OnInitialized()
+    {
+        string[] parts = selectedOption.Split(' ');
+        invoiceList = invoiceService.GetInvoicesByMonthAndYear(parts[0], parts[1]);
+    }
 }
 
 
@@ -247,18 +281,5 @@ examTest = dbContext.Exams.ToList();
         color: #fff;
     }
 
-    @* .even-row {
-        background-color: #f0f0f0;
-        color: #000;
-    }
-
-    .odd-row {
-        background-color: #d0d0d0;
-    }
-
-    .selected-row {
-        background-color: red;
-        color: white;
-    } *@
-    
+    @*.even-row{background-color:#f0f0f0;color:#000;}.odd-row{background-color:#d0d0d0;}.selected-row{background-color:red;color:white;}*@
 </style>

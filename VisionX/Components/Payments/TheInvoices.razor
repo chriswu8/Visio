@@ -7,14 +7,14 @@
 <link rel="stylesheet" href="/css/site.css" />
 
 <div class="patient-controls">
-    <div class="search-bar">
+    @* <div class="search-bar">
         <div class="buttons-top">
             <button>Last Name</button>
             <button>PHN</button>
             <button>Phone</button>
         </div>
         <input class="search-input" type="text" placeholder="Search..." />
-    </div>
+    </div> *@
 </div>
 <hr />
 <div class="patient-buttons">
@@ -35,12 +35,8 @@
                 <th>Province</th>
                 <th>City</th>
                 <th>Postal Code</th>
-                <th>Birth Date</th>
-                <th>PHN</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th>Occupation</th>
-                <th>ExamID</th>
             </tr>
         </thead>
         <tbody>
@@ -49,8 +45,7 @@
                 <tr class="@(patient.PatientID % 2 == 0 ? "even-row" : "odd-row") @(patient.IsSelected ? "selected-row" : "")"
                     @onclick="() => SelectRow(patient)">
                     <td>@patient.PatientID</td>
-                    @* <td>@patient.FirstName</td> *@
-                    @* <td>
+                    <td>
                         @if (patient.IsEditing)
                         {
                             <input @bind="patient.LastName" />
@@ -59,7 +54,7 @@
                         {
                             @patient.LastName
                         }
-                    </td> *@
+                    </td>
                     <td>
                         @if (patient.IsEditing)
                         {
@@ -70,7 +65,7 @@
                             @patient.FirstName
                         }
                     </td>
-                    @* <td>
+                    <td>
                         @if (patient.IsEditing)
                         {
                             <input @bind="patient.MiddleName" />
@@ -133,26 +128,6 @@
                     <td>
                         @if (patient.IsEditing)
                         {
-                            <input @bind="patient.PHN" />
-                        }
-                        else
-                        {
-                            @patient.PHN
-                        }
-                    </td>
-                    <td>
-                        @if (patient.IsEditing)
-                        {
-                            <input @bind="patient.Phone" />
-                        }
-                        else
-                        {
-                            @patient.Phone
-                        }
-                    </td>
-                    <td>
-                        @if (patient.IsEditing)
-                        {
                             <input @bind="patient.Email" />
                         }
                         else
@@ -160,26 +135,6 @@
                             @patient.Email
                         }
                     </td>
-                    <td>
-                        @if (patient.IsEditing)
-                        {
-                            <input @bind="patient.Occupation" />
-                        }
-                        else
-                        {
-                            @patient.Occupation
-                        }
-                    </td>
-                    <td>
-                        @if (patient.IsEditing)
-                        {
-                            <input @bind="patient.ImageID" />
-                        }
-                        else
-                        {
-                            @patient.ImageID
-                        }
-                    </td> *@
                 </tr>
             }
         </tbody>

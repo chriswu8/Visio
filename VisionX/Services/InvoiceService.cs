@@ -53,16 +53,25 @@ namespace VisionX.Services
             var services = invoices
                 .Where(i => i.Service != null)
                 .Select(i => i.Service)
-                .Distinct()
                 .ToList();
 
             var products = invoices
                 .Where(i => i.Product != null)
                 .Select(i => i.Product)
-                .Distinct()
                 .ToList();
 
             return (services, products, invoices);
+        }
+
+        public List<Invoice> GetInvoicesByMonthAndYear(string month, string year)
+        {
+            // Assuming you want to match both month and year
+            return _context.Invoices
+                .Where(i => i.Month == month && i.Year == year && i.IsPaid == true)
+                .Include(i => i.Patient)
+                .Include(i => i.Service)
+                .Include(i => i.Product)
+                .ToList();
         }
 
         public async Task<Invoice> GetInvoiceById(int invoiceId)
@@ -83,6 +92,20 @@ namespace VisionX.Services
             }
 
             return false; // Indicates that the invoice with the given ID was not found
+        }
+
+        public async Task MarkInvoiceAsPaid(int invoiceId)
+        {
+            var invoice = _context.Invoices.Find(invoiceId);
+
+            if (invoice != null)
+            {
+                // Update the IsPaid property
+                invoice.IsPaid = true;
+
+                // Save changes to the database
+                _context.SaveChanges();
+            }
         }
 
         // public async Task<(List<object> services, List<object> products)> GetServicesAndProductsByPatient(int patientId)
@@ -168,25 +191,27 @@ namespace VisionX.Services
 
 
 
-        // public async Task<decimal> CalculateTotalFeeByPatient(int patientId)
-        // {
-        //     var (services, products) = await GetServicesAndProductsByPatient(patientId);
+        public async Task<int> CalculateTotalFeeByPatient(int patientId)
+        {
+            var (services, products, invoice) = await GetServicesAndProductsByPatient(patientId);
 
-        //     // Calculate the total fee based on services and products
-        //     decimal totalFee = 0;
+            // Calculate the total fee based on services and products
+            int totalFee = 0;
 
-        //     if (services != null)
-        //     {
-        //         totalFee += services.Sum(service => service.Fee);
-        //     }
+            if (services != null)
+            {
+                totalFee += services.Sum(service => service.Fee);
 
-        //     if (products != null)
-        //     {
-        //         totalFee += products.Sum(product => product.Fee ?? 0);
-        //     }
+            }
 
-        //     return totalFee;
-        // }
+            if (products != null)
+            {
+                totalFee += products.Sum(product => (int)product.Fee);
+
+            }
+
+            return totalFee;
+        }
 
         public async Task<bool> DeleteInvoice(int invoiceId)
         {

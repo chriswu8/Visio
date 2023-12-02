@@ -12,7 +12,7 @@ using VisionX.Data;
 namespace VisionX.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231126224115_M1")]
+    [Migration("20231129062344_M1")]
     partial class M1
     {
         /// <inheritdoc />
@@ -86,6 +86,9 @@ namespace VisionX.Data.Migrations
                     b.Property<int?>("Fee")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Month")
                         .HasColumnType("nvarchar(max)");
 
@@ -117,6 +120,7 @@ namespace VisionX.Data.Migrations
                             ID = 2,
                             Day = "14",
                             Fee = 100,
+                            IsPaid = false,
                             Month = "12",
                             PatientID = 1,
                             ServiceID = 1,
@@ -127,6 +131,7 @@ namespace VisionX.Data.Migrations
                             ID = 3,
                             Day = "14",
                             Fee = 100,
+                            IsPaid = false,
                             Month = "12",
                             PatientID = 1,
                             ProductID = 1,

@@ -190,6 +190,9 @@
 
     [Parameter]
     public VisionX.Models.Product SelectedProduct { get; set; }
+
+    @* [Parameter]
+    public VisionX.Models.Patient SelectedPatient { get; set; } *@
     private bool showPaymentModal;
 
     private ElementReference serviceIdInput;
@@ -254,12 +257,13 @@ Console.WriteLine(SelectedProduct.ID); *@
         DateTime currentDate = DateTime.Now;
         Invoice newInvoice = new Invoice
             {
-                PatientID = SelectedProduct.ID,
+                PatientID = selectedPatient.PatientID,
                 Month = currentDate.Month.ToString(),
                 Day = currentDate.Day.ToString(),
                 Year = currentDate.Year.ToString(),
                 Fee = SelectedProduct.Fee,
                 ProductID = SelectedProduct.ID,
+                IsPaid = false,
                 ServiceID = null
             };
 

@@ -14,6 +14,7 @@ namespace VisionX.Models
         public int? Fee {get; set;}
         public int? ServiceID { get; set; }
         public int? ProductID {get; set;}
+        public bool IsPaid {get; set;}
 
         [ForeignKey("ServiceID")]
         public Service? Service {get; set;}

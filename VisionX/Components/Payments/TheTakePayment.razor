@@ -57,7 +57,7 @@
 
         <div class="buttons">
             <button class="visionX-button payment-save-button" @onclick="HandlePayment">Save</button>
-            <button class="visionX-button payment-exit-button" @onclick="HidePaymentModal">Exit</button>
+            <button class="visionX-button payment-exit-button" @onclick="OnExitPaymentClicked">Exit</button>
         </div>
     </div>
 </div>
@@ -183,7 +183,7 @@
         {
             //Console.WriteLine(SelectedProduct.ID);
             //ProductService.DeleteProduct(SelectedProduct.ID);
-            await invoiceService.DeleteInvoice(invoiceID);
+            await invoiceService.MarkInvoiceAsPaid(invoiceID);
         }
         else
         {
@@ -191,6 +191,8 @@
             await invoiceService.UpdateInvoiceFee(invoiceID, (int)(SelectedInvoiceObject.Fee - paymentTotal));
             SelectedInvoiceObject = await invoiceService.GetInvoiceById(invoiceID);
         }
+        
+        OnExitPaymentClicked.InvokeAsync();
     }
 
     private async Task HidePaymentModal()

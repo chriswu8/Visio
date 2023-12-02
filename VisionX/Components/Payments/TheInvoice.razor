@@ -20,14 +20,14 @@
                         {
                             foreach (var invoice in InvoiceList)
                             {
-                                if (invoice.ServiceID == service.Id)
+                                if (invoice.ServiceID == service.Id && invoice.IsPaid != true)
                                 {
-                                    <tr @onclick="() => SelectService(service, invoice.ID)" class="@GetRowClass(service)">
-                                        <td>@invoice.ID</td>
+                                    <tr @onclick="() => SelectService(service, invoice.ID)">
                                         <td>@service.Id</td>
                                         <td>@service.Description</td>
                                         <td>@service.Fee</td>
                                     </tr>
+                                    break;
                                 }
                             }
                         }
@@ -43,20 +43,38 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @* @if (ProductList != null)
+                    {
+                    foreach (var product in ProductList)
+                    {
+                    foreach (var invoice in InvoiceList)
+                    {
+                    if (invoice.ProductID == product.ID)
+                    {
+                    <tr @onclick="() => SelectProduct(product, invoice.ID)" class="@GetRowClass(product)">
+                    <td>@invoice.ID</td>
+                    <td>@product.ModelNumber</td>
+                    <td>@product.Manufacturer</td>
+                    <td>@product.Fee</td>
+                    </tr>
+                    }
+                    }
+                    }
+                    } *@
                     @if (ProductList != null)
                     {
-                        foreach (var product in ProductList)
+                        foreach (var invoice in InvoiceList)
                         {
-                            foreach (var invoice in InvoiceList)
+                            foreach (var product in ProductList)
                             {
-                                if (invoice.ProductID == product.ID)
+                                if (invoice.ProductID == product.ID && invoice.IsPaid != true)
                                 {
-                                    <tr @onclick="() => SelectProduct(product, invoice.ID)" class="@GetRowClass(product)">
-                                        <td>@invoice.ID</td>
+                                    <tr @onclick="() => SelectProduct(product, invoice.ID)">
                                         <td>@product.ModelNumber</td>
                                         <td>@product.Manufacturer</td>
                                         <td>@product.Fee</td>
                                     </tr>
+                                    break;
                                 }
                             }
                         }
@@ -87,7 +105,7 @@
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
             <TheTakePaymentProduct OnSavePaymentClicked="HandlePaymentSave" OnExitPaymentClicked="HandlePaymentExit"
-                SelectedProduct="@SelectedProduct" invoiceID="@this.invoiceID"/>
+                SelectedProduct="@SelectedProduct" invoiceID="@this.invoiceID" />
         </div>
     }
     else if (openServiceModal)
@@ -95,13 +113,17 @@
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
             <TheTakePayment OnSavePaymentClicked="HandlePaymentSave" OnExitPaymentClicked="HandlePaymentExit"
-                SelectedService="@SelectedService" invoiceID="@this.invoiceID"/>
+                SelectedService="@SelectedService" invoiceID="@this.invoiceID" />
         </div>
     }
 
 </div>
 
 <style>
+    .highlighted-row {
+        background-color: #ffeeba;
+    }
+
     .invoice-modal {
         display: flex;
         justify-content: space-between;
@@ -215,6 +237,9 @@
 
     private int invoiceID;
 
+    @* int selectedServiceId;
+    int selectedProductId; *@
+
 
     protected override async void OnInitialized()
     {
@@ -229,8 +254,26 @@ ProductList = result.products; *@
         ProductList = result.products;
         InvoiceList = result.invoices;
 
-        //TotalFee = await invoiceService.CalculateTotalFeeByPatient(SelectedPatient.PatientID);
+        TotalFee = await invoiceService.CalculateTotalFeeByPatient(SelectedPatient.PatientID);
 
+        @* foreach (var p in InvoiceList)
+{
+
+Console.WriteLine(p.ID);
+
+}
+
+foreach (var p in ProductList)
+{
+if (p != null)
+{
+Console.WriteLine(p.ModelNumber);
+}
+} *@
+
+        @* foreach (var p in ServiceList) {
+Console.WriteLine(p.Fee);
+} *@
 
         StateHasChanged();
     }
@@ -285,17 +328,16 @@ private void SelectProduct(VisionX.Models.Product product)
         showTakePayment = false;
     }
 
-    private string GetRowClass(object item)
+    @* private string GetRowClass(int itemId)
     {
-        return selectedRow == item ? "selected-row" : "";
-    }
+        return itemId == SelectedService.Id || itemId == SelectedProduct.ID ? "highlighted-row" : "";
+    } *@
 
     private void SelectService(VisionX.Models.Service service, int invoiceID)
     {
         SelectedService = service;
         selectedRow = service;
         this.invoiceID = invoiceID;
-        Console.WriteLine(this.invoiceID);
         @* openServiceModal = true;
 openProductModal = false; *@
         // Handle the selection logic or emit an event if needed

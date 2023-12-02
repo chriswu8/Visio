@@ -145,7 +145,8 @@ namespace VisionX.Data.Migrations
                     Year = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Fee = table.Column<int>(type: "int", nullable: true),
                     ServiceID = table.Column<int>(type: "int", nullable: true),
-                    ProductID = table.Column<int>(type: "int", nullable: true)
+                    ProductID = table.Column<int>(type: "int", nullable: true),
+                    IsPaid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -204,11 +205,11 @@ namespace VisionX.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Invoice",
-                columns: new[] { "ID", "Day", "Fee", "Month", "PatientID", "ProductID", "ServiceID", "Year" },
+                columns: new[] { "ID", "Day", "Fee", "IsPaid", "Month", "PatientID", "ProductID", "ServiceID", "Year" },
                 values: new object[,]
                 {
-                    { 2, "14", 100, "12", 1, null, 1, "2023" },
-                    { 3, "14", 100, "12", 1, 1, null, "2023" }
+                    { 2, "14", 100, false, "12", 1, null, 1, "2023" },
+                    { 3, "14", 100, false, "12", 1, 1, null, "2023" }
                 });
 
             migrationBuilder.CreateIndex(
