@@ -15,11 +15,10 @@
     <table>
         <thead>
             <tr class="header-row">
-                <th colspan="2">Actions</th>
                 <th>ServiceID</th>
                 <th>Fee</th>
                 <th>ServiceDescription</th>
-
+                <th colspan="2">Actions</th>
             </tr>
         </thead>
         @* Links the Services ID to the database data based off of the implementation from ThePatient.razor *@
@@ -28,57 +27,18 @@
 
             @foreach (var service in servicesTest)
             {
-                @* <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" :
-            "")" @onclick="() => SelectRow(service)">
-            <td>@service.ServiceID</td>
 
-            <td>
-            @if (service.IsEditing)
-            {
-            <input @bind="service.ServiceID" />
-            }
-            else
-            {
-            @service.ServiceID
-
-            }
-            </td>
-
-
-            <td>
-            @if (service.IsEditing)
-            {
-            <input @bind="service.Fee" />
-            }
-            else
-            {
-            @service.Fee
-            }
-            </td>
-
-            <td>
-            @if (service.IsEditing)
-            {
-            <input @bind="service.ServiceDescription" />
-            }
-            else
-            {
-            @service.ServiceDescription
-            }
-            </td>
-
-
-            </tr> *@
                 <tr class="servicesTable-background">
-                    <td>
-                        <button @onclick="() => EditAService(service)">Edit</button>
-                    </td>
-                    <td>
-                        <button @onclick="() => DeleteAService(service)">Delete</button>
-                    </td>
+
                     <td>@service.Code</td>
                     <td>@service.Fee</td>
                     <td>@service.Description</td>
+                    <td>
+                        <button @onclick="() => EditAService(service)" class="edit-button">Edit</button>
+                    </td>
+                    <td>
+                        <button @onclick="() => DeleteAService(service)" class="delete-button">Delete</button>
+                    </td>
                 </tr>
             }
 
@@ -98,7 +58,8 @@
     {
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
-            <TheAddNewService OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit" SelectedService="selectedService" />
+            <TheAddNewService OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit"
+                SelectedService="selectedService" />
         </div>
     }
 
@@ -109,9 +70,8 @@
 @* CSS Styling *@
 
 <style>
-
     .servicesTable-background {
-    background-color: white;
+        background-color: white;
     }
 
     .modal-overlay {
@@ -260,7 +220,8 @@
         editAService = true;
     }
 
-    private void DeleteAService(VisionX.Models.Service service) {
+    private void DeleteAService(VisionX.Models.Service service)
+    {
         ServicesService.DeleteExam(service.Id);
     }
 

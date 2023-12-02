@@ -15,12 +15,12 @@
     <table>
         <thead>
             <tr class="header-row">
-                <th colspan="3">Actions</th>
+
                 <th>Manufacturer</th>
                 <th>Model Number</th>
                 <th>Type</th>
                 <th>Fee</th>
-
+                <th colspan="3">Actions</th>
             </tr>
         </thead>
         @* Links the Services ID to the database data based off of the implementation from ThePatient.razor *@
@@ -29,62 +29,23 @@
 
             @foreach (var product in productsTest)
             {
-                @* <tr class="@(service.ServiceID % 2 == 0 ? "even-row" : "odd-row") @(service.IsSelected ? "selected-row" :
-            "")" @onclick="() => SelectRow(service)">
-            <td>@service.ServiceID</td>
 
-            <td>
-            @if (service.IsEditing)
-            {
-            <input @bind="service.ServiceID" />
-            }
-            else
-            {
-            @service.ServiceID
-
-            }
-            </td>
-
-
-            <td>
-            @if (service.IsEditing)
-            {
-            <input @bind="service.Fee" />
-            }
-            else
-            {
-            @service.Fee
-            }
-            </td>
-
-            <td>
-            @if (service.IsEditing)
-            {
-            <input @bind="service.ServiceDescription" />
-            }
-            else
-            {
-            @service.ServiceDescription
-            }
-            </td>
-
-
-            </tr> *@
                 <tr>
-                    <td>
-                        <button @onclick="() => AddToCart(product)">Add To Cart</button>
-                    </td>
-                    <td>
-                        <button @onclick="() => EditAService(product)">Edit</button>
-                    </td>
-                    <td>
-                        <button @onclick="() => DeleteAService(product)">Delete</button>
-                    </td>
+
                     @* <td>@service.Code</td> *@
                     <td>@product.Manufacturer</td>
                     <td>@product.ModelNumber</td>
                     <td>@product.Type</td>
                     <td>@product.Fee</td>
+                    <td>
+                        <button @onclick="() => AddToCart(product)" class="edit-button">Add To Cart</button>
+                    </td>
+                    <td>
+                        <button @onclick="() => EditAService(product)" class="edit-button">Edit</button>
+                    </td>
+                    <td>
+                        <button @onclick="() => DeleteAService(product)" class="delete-button">Delete</button>
+                    </td>
                 </tr>
             }
 
@@ -99,7 +60,7 @@
             <!-- TheModifyService (Services) modal component -->
             @* <TheModifyProduct OnExitClicked="HandleExit" /> *@
             @* <TheAddNewPayment /> *@
-            <TheAddNewProduct OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit"/>
+            <TheAddNewProduct OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit" />
         </div>
     }
     else if (editAProduct)
@@ -116,7 +77,8 @@
             <!-- TheModifyService (Services) modal component -->
             @* <TheModifyProduct OnExitClicked="HandleExit" /> *@
             @* <TheAddNewPayment /> *@
-            <TheProductToPatient OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleAddProdForPtExit" SelectedProduct="selectedProduct"/>
+            <TheProductToPatient OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleAddProdForPtExit"
+                SelectedProduct="selectedProduct" />
         </div>
     }
 
@@ -283,7 +245,8 @@ editAService = true; *@
         ProductService.DeleteProduct(product.ID);
     }
 
-    private void AddToCart(VisionX.Models.Product product) {
+    private void AddToCart(VisionX.Models.Product product)
+    {
         openAddToCartModal = true;
         selectedProduct = product;
     }
