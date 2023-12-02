@@ -13,17 +13,17 @@
 <div>
     @if (showViewTransactions)
     {
-        <TheViewTransactions />
+            <TheViewTransactions />
     }
 
     @if (showDownloadReport)
     {
-        <TheDownloadReport />
+            <TheDownloadReport />
     }
 
     @if (showPrintReport)
     {
-        <ThePrintReport />
+            <ThePrintReport />
     }
 </div>
 
@@ -33,7 +33,7 @@
         <option value="">Select an option</option>
 
         <!-- Today is the first and default option -->
-        <option value="Today">Today</option>
+        @* <option value="Today">Today</option> *@
 
         <!-- Month Options are posted below  -->
 
@@ -70,48 +70,48 @@
 
 @if (!string.IsNullOrEmpty(selectedOption))
 {
-    <h1>@selectedOption</h1>
+        <h1>@selectedOption</h1>
 
-    <table id="data-table" style="margin-top: 20px; margin-bottom: 20px;">
-        <thead class="options-table">
-            <tr class="header-row">
-                <th colspan="2">Patient</th>
-                <th>Service</th>
-                <th>Product</th>
-                <th>Fee</th>
-            </tr>
-        </thead>
-        <tbody>
+        <table id="data-table" style="margin-top: 20px; margin-bottom: 20px;">
+            <thead class="options-table">
+                <tr class="header-row">
+                    <th colspan="2">Patient</th>
+                    <th>Description</th>
+                    <th>Fee</th>
+                </tr>
+            </thead>
+            <tbody>
 
             @foreach (var service in invoiceList)
             {
-                <!-- Populate table rows here -->
-                <tr class="servicesTable-background">
+                        <!-- Populate table rows here -->
+                        <tr class="servicesTable-background">
 
-                    <td>@service.Patient.LastName</td>
-                    <td>@service.Patient.FirstName</td>
+                            <td>@service.Patient.LastName</td>
+                            <td>@service.Patient.FirstName</td>
 
-                    @if (service.Service == null)
+                    @* @if (service.Service == null)
                     {
-                        <td>n/a</td>
+                                    <td>n/a</td>
                     }
-                    else if (service.Product == null)
+
+                    @if (service.Product == null)
                     {
-                        <td>n/a</td>
-                    }
+                                    <td>n/a</td>
+                    } *@
 
 
 
                     @if (service.Service != null)
                     {
-                        <td>@service.Service.Code</td>
-                        <td></td>
-                        <td>@service.Service.Fee</td>
+                                    <td>@service.Service.Code</td>
+                                    <td>@service.Service.Fee</td>
                     }
 
                     @if (service.Product != null)
                     {
-                        <td>@service.Product.Manufacturer @service.Product.ModelNumber @service.Product.Type</td>
+                                    <td>@service.Product.Manufacturer @service.Product.ModelNumber @service.Product.Type</td>
+                                    <td>@service.Product.Fee</td>
                     }
 
 
@@ -136,17 +136,17 @@
                     @* Fee *@
                     @* <td>$Fee info</td> *@
                     @* <td>@service.Fee.ToString("C")</td> *@
-                </tr>
+                        </tr>
             }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
     @* <div style="margin-top: 20px; margin-bottom: 20px;">
 <strong>Total: @examTest.Sum(service => service.Fee).ToString("C")</strong>
 </div> *@
 
     @* <button @onclick="ExportAsPdf">Export as PDF</button> *@
-    <button @onclick="GeneratePdf">Export as PDF</button>
+        <button @onclick="GeneratePdf">Export as PDF</button>
 }
 
 @* <div class="dropdown">
