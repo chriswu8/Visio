@@ -147,6 +147,8 @@
 
     @* <button @onclick="ExportAsPdf">Export as PDF</button> *@
     <button @onclick="GeneratePdf" class="edit-button">Export as PDF</button>
+
+    <button @onclick="GenerateExcel" class="edit-button">Export as Excel</button>
 }
 
 @* <div class="dropdown">
@@ -197,6 +199,11 @@ new Service { Patient = "Jane Doe", Date = DateTime.Now.AddDays(-1), ServiceID =
     private async Task GeneratePdf()
     {
         await JSRuntime.InvokeVoidAsync("convertHtmlToPdf");
+    }
+
+    private async Task GenerateExcel()
+    {
+        await JSRuntime.InvokeVoidAsync("generateExcel", "data-table");
     }
 
     @* async Task ExportAsPdf()
