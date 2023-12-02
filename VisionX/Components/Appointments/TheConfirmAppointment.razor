@@ -26,6 +26,11 @@
         </div>
     </div>
     <div class="button-bar">
+        @if (showCannotScheduleMessage)
+        {
+            <p class="apt-conflict-error-message" style="color: red;"><b>Scheduling conflict</b>: there already exists an
+                appointment for this time slot.</p>
+        }
         <button class="visionX-button" @onclick="OnSave">Save</button>
         <button class="visionX-button" @onclick="OnCancel">Cancel</button>
     </div>
@@ -39,6 +44,15 @@
         border: 1px solid #ccc;
         padding: 20px;
         border-radius: 10px;
+    }
+
+    .apt-conflict-error-message {
+        display: inline-block;
+        color: #cc0000;
+        border-radius: 5px;
+        margin-right: 10px;
+        margin-top: 10px;
+        white-space: nowrap;
     }
 
     .left-column {
@@ -118,37 +132,95 @@
         serviceFee = (int)serviceList[0].Fee;
     }
 
-    // Event handlers
+    @* private async Task OnSave()
+{
+var newAppointment = new VisionX.Models.Appointment
+{
+Month = Month,
+Day = Day,
+Year = Year,
+Time = TimeInString,
+PatientID = SelectedPatientModel.PatientID,
+ServiceID = selectedServiceId
+};
+
+var newInvoice = new VisionX.Models.Invoice
+{
+Month = Month,
+PatientID = SelectedPatientModel.PatientID,
+Day = Day,
+Year = Year,
+ServiceID = selectedServiceId,
+Fee = serviceFee,
+IsPaid = false,
+ProductID = null
+};
+
+await appointmentService.AddAppointmentAsync(newAppointment);
+await invoiceService.AddInvoice(newInvoice);
+
+await OnCancel();
+
+} *@
+
+    private bool showCannotScheduleMessage = false;
+
     private async Task OnSave()
     {
-        var newAppointment = new VisionX.Models.Appointment
+        try
+        {
+            // Check if an appointment already exists for the selected time slot
+            bool appointmentExists = dbContext.Appointments.Any(a =>
+            a.Month == Month &&
+            a.Day == Day &&
+            a.Year == Year &&
+            a.Time == TimeInString);
+
+            if (appointmentExists)
             {
-                Month = Month,
-                Day = Day,
-                Year = Year,
-                Time = TimeInString,
-                PatientID = SelectedPatientModel.PatientID,
-                ServiceID = selectedServiceId
-            };
-
-        var newInvoice = new VisionX.Models.Invoice
+                // An appointment already exists for this time slot
+                showCannotScheduleMessage = true;
+            }
+            else
             {
-                Month = Month,
-                PatientID = SelectedPatientModel.PatientID,
-                Day = Day,
-                Year = Year,
-                ServiceID = selectedServiceId,
-                Fee = serviceFee,
-                IsPaid = false,
-                ProductID = null
-            };
+                // Create a new appointment and invoice
+                var newAppointment = new VisionX.Models.Appointment
+                    {
+                        Month = Month,
+                        Day = Day,
+                        Year = Year,
+                        Time = TimeInString,
+                        PatientID = SelectedPatientModel.PatientID,
+                        ServiceID = selectedServiceId
+                    };
 
-        await appointmentService.AddAppointmentAsync(newAppointment);
-        await invoiceService.AddInvoice(newInvoice);
+                var newInvoice = new VisionX.Models.Invoice
+                    {
+                        Month = Month,
+                        PatientID = SelectedPatientModel.PatientID,
+                        Day = Day,
+                        Year = Year,
+                        ServiceID = selectedServiceId,
+                        Fee = serviceFee,
+                        IsPaid = false,
+                        ProductID = null
+                    };
 
-        //await OnSaveClicked.InvokeAsync();
-        //await OnConfirmAppointmentSaveClicked.InvokeAsync();
+                // Add the new appointment and invoice if no conflicting appointment exists
+                await appointmentService.AddAppointmentAsync(newAppointment);
+                await invoiceService.AddInvoice(newInvoice);
+
+                // Close the confirmation modal
+                await OnCancel();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Exception: " + ex);
+            // Handle the exception as needed
+        }
     }
+
 
     private async Task OnCancel()
     {

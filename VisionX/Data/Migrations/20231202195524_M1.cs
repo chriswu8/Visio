@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,6 +13,23 @@ namespace VisionX.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Employee",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClockIn = table.Column<TimeSpan>(type: "time", nullable: true),
+                    ClockOut = table.Column<TimeSpan>(type: "time", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employee", x => x.ID);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Patient",
                 columns: table => new
@@ -169,13 +187,34 @@ namespace VisionX.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Employee",
+                columns: new[] { "ID", "ClockIn", "ClockOut", "FirstName", "LastName", "MiddleName" },
+                values: new object[] { 1, null, null, "Chris", "Wu", "Yue" });
+
+            migrationBuilder.InsertData(
                 table: "Patient",
                 columns: new[] { "PatientID", "Address", "BirthDate", "BloodPressure", "City", "Complaint", "CorrectedODAxis", "CorrectedODCylinder", "CorrectedODSphere", "CorrectedOSAxis", "CorrectedOSCylinder", "CorrectedOSSphere", "Email", "ExamDay", "ExamMonth", "ExamTime", "ExamYear", "EyeDrops", "FirstName", "GlaucomaHistory", "HasGlaucoma", "HistoryOfCancer", "HistoryOfCataracts", "HistoryOfDiabetes", "HistoryOfHIV", "HistoryOfHeartProblems", "HistoryOfKidneyDisease", "HistoryOfMacularDegeneration", "HistoryOfNeuromuscularDisease", "HistoryOfRetinalDetachment", "HistoryOfStroke", "HistoryOfThyroid", "HistoryOfTuberculosis", "IsEditing", "IsSelected", "LastName", "LifeStage", "MiddleName", "Occupation", "Phone", "PostalCode", "Province", "ProvincialHealthNumber", "Sex", "Symptoms", "UncorrectedODAxis", "UncorrectedODCylinder", "UncorrectedODSphere", "UncorrectedOSAxis", "UncorrectedOSCylinder", "UncorrectedOSSphere" },
                 values: new object[,]
                 {
-                    { 1, "123 Main st", "1923-01-01", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Edmond", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Chen", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "0", "0", "0.00", "0", "0", "0.00" },
-                    { 2, "123 Test St", "1923-02-02", "Hypertensive Crisis", "Richmond", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Chris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Wu", "Senior", "Yue", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "0", "0", "0.00", "0", "0", "0.00" },
-                    { 3, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Kris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Ocampo", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "0", "0", "0.00", "0", "0", "0.00" }
+                    { 1, "123 Main st", "1923-01-01", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Edmond", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Chen", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 2, "123 Test St", "1923-02-02", "Hypertensive Crisis", "Richmond", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Chris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Wu", "Senior", "Yue", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 3, "123 Minor st", "2000-03-03", "High (stage 1)", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Kris", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Ocampo", "Young adulthood", "KO", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 4, "123 Minor st", "2000-03-03", "Elevated", "Maple Ridge", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Bradner", "Paternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Coilan", "Senior", "BC", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 5, "123 Minor st", "2000-03-03", "High (stage 2)", "Surrey", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Kenar", "Paternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Crasto", "Adolescence", "KC", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 6, "123 Minor st", "2000-03-03", "Normal", "New Westminister", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Kevin", "Maternal parent", "No", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Guo", "Young adulthood", "KG", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 7, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Richmond", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Trevor", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Hong", "Senior", "TH", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 8, "123 Minor st", "2000-03-03", "High (stage 2)", "Coquitlam", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Reynard", "Paternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Lo", "Infant", "RL", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 9, "123 Minor st", "2000-03-03", "Elevated", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2014", "", "James", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Lum", "Toddler", "JL", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 10, "123 Minor st", "2000-03-03", "Normal", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2015", "", "Traill", "Maternal parent", "No", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Lyall", "Young adulthood", "TL", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 11, "123 Minor st", "2000-03-03", "High (stage 1)", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Miguel", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Magpoc", "Adolescence", "MM", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 12, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Sarvenaz", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Mehregan", "Senior", "SM", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 13, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Anna", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Yujeong", "Senior", "AY", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 14, "123 Minor st", "2000-03-03", "Normal", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2021", "", "Nanakpreet", "Paternal parent", "No", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Singh", "Middle Adulthood", "NS", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 15, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2019", "", "Sahil", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Rai", "Senior", "Class Rep", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 16, "123 Minor st", "2000-03-03", "Normal", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2020", "", "Samuel", "Maternal parent", "No", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Tjahjadi", "Adolescence", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 17, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2014", "", "Shayan", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Zahedanaraki", "Senior", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 18, "123 Minor st", "2000-03-03", "Hypertensive Crisis", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Medhat", "Maternal parent", "Yes", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Elmasry", "Young Adulthood", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Male", null, "0", "0", "0.00", "0", "0", "0.00" },
+                    { 19, "123 Minor st", "2000-03-03", "Normal", "Vancouver", "", "0", "0", "0", "0", "0", "0", "test@mail.com", "1", "1", "11", "2011", "", "Mirela", "Maternal parent", "No", false, false, false, false, false, false, false, false, false, false, false, false, false, false, "Gutica", "Young Adulthood", "Li", "test", "233132", "VA2 34B", "BC", "12345", "Female", null, "0", "0", "0.00", "0", "0", "0.00" }
                 });
 
             migrationBuilder.InsertData(
@@ -243,6 +282,9 @@ namespace VisionX.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Appointment");
+
+            migrationBuilder.DropTable(
+                name: "Employee");
 
             migrationBuilder.DropTable(
                 name: "Invoice");

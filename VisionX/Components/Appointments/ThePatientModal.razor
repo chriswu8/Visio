@@ -5,6 +5,7 @@
 @inject VisionX.Services.PatientService _patientService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 @inject VisionX.Services.PatientRowsService PatientRowsService
+@inject VisionX.Services.PageRowsService PageRowsService
 
 
 <div class="component-container">
@@ -32,6 +33,11 @@
             <button class="book-button">Delete</button> *@
         </div>
         <div class="patient-buttons2">
+            @if (showCannotScheduleMessage)
+            {
+                <p style="color: red; margin-right: 10px;">Cannot schedule another patient at this time slot.</p>
+            }
+
             @if (selectedPatientModel != null && ShouldRenderBookGEE1Button(selectedPatientModel.Sex,
             DetermineLifeStage(selectedPatientModel.BirthDate), selectedPatientModel.BloodPressure,
             selectedPatientModel.GlaucomaHistory, selectedPatientModel.HasGlaucoma))
@@ -111,7 +117,8 @@
                     <div class="confirm-apt-modal-content">
                         <TheConfirmAppointment OnConfirmAppointmentSaveClicked="HideConfirmAppointmentModal"
                             OnConfirmAppointmentCancelClicked="HideConfirmAppointmentModal" Month="@Month" Day="@Day"
-                            Year="@Year" TimeInString="@TimeInString" SelectedPatientModel="@selectedPatientModel" />
+                            Year="@Year" TimeInString="@TimeInString" SelectedPatientModel="@selectedPatientModel"
+                            OnCancelClicked="HandleCancelConfirmation" />
                     </div>
                 </div>
             </div>
@@ -328,6 +335,7 @@
     [Parameter] public string TimeInString { get; set; }
 
     private bool showConfirmAppointment = false;
+    private bool showCannotScheduleMessage = false;
     private List<VisionX.Models.Patient> patientsTest;
 
     private VisionX.Models.Patient selectedPatientModel;
@@ -335,8 +343,7 @@
     protected override void OnInitialized()
     {
         patientsTest = dbContext.Patients.ToList();
-        @* selectedPatientModel = patientsTest[0]; *@
-        @* patientsTest[0].IsSelected = true; *@
+
         foreach (var patient in patientsTest)
         {
             patient.IsSelected = false;
@@ -353,10 +360,23 @@
     {
         Console.WriteLine("Schedule button clicked.");
         Console.WriteLine("PatientRowsService.PatientRowSelected: " + PatientRowsService.PatientRowSelected);
-        if (PatientRowsService.PatientRowSelected == true)
+
+        try
         {
-            ShowConfirmAppointmentModal();
+            if (PatientRowsService.PatientRowSelected == true)
+            {
+                ShowConfirmAppointmentModal();
+            }
+            else
+            {
+                showCannotScheduleMessage = true;
+            }
         }
+        catch (Exception e)
+        {
+            Console.WriteLine("Exception: " + e);
+        }
+
     }
 
     private void HideConfirmAppointmentModal()
@@ -380,6 +400,14 @@
         await OnCancelClicked.InvokeAsync();
     }
 
+    private void HandleCancelConfirmation()
+    {
+        Console.WriteLine("Cancel confirmation received.");
+
+        // Set showConfirmAppointment to false to hide the modal
+        showConfirmAppointment = false;
+    }
+
     private List<Patient> patients = new List<Patient>
 {
 new Patient { PatientID = 1, LastName = "Doe", FirstName = "John", MiddleName = "Jake", Sex = "Male", BloodPressure =
@@ -397,9 +425,7 @@ BloodPressure = "High (stage 2)", GlaucomaHistory = "Paternal parent", HasGlauco
 Province = "BC", City = "Surrey", PostalCode = "V6A8X7", BirthDate = "1970-04-04", PHN = "9876543211", ImageID =
 "VXE4"},
 };
-    private Patient selectedPatient; // Property to store the selected patient
-
-
+    private Patient selectedPatient;
     private int nextPatientID = 3;
     private bool isEditing = false;
     private string editButtonText = "Edit";
