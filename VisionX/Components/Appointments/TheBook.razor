@@ -119,7 +119,7 @@
                             <td class="header-cell">Time</td>
                             <td class="header-cell">Patient</td>
                             <td class="header-cell">Service</td>
-                            <td class="header-cell">Contact</td>
+                            <td class="header-cell">Appointment Type</td>
                         </tr>
 
                         @for (int hour = 9; hour <= 16; hour++)
@@ -390,6 +390,11 @@
         //HandleDateSelection(selectedInterval);
     }
 
+    private Appointment GetSelectedAppointment(string combinedTime)
+    {
+        return appointmentForDay.FirstOrDefault(appointment => appointment.Time == combinedTime);
+    }
+
     private void HandleRowClick(string combinedTime)
     {
         clickedRow = combinedTime;
@@ -411,6 +416,14 @@ Console.WriteLine(selectedDay); *@
         //OnRowClick.InvokeAsync((hour, minute));
 
         PageRowsService.RowClicked = true;
+
+        Appointment selectedAppointment = GetSelectedAppointment(combinedTime); // Get the selected appointment
+
+
+        // Check if the selected row has data in the specified columns
+        bool areColumnsEmpty = IsSelectedRowEmpty(selectedAppointment);
+        // Pass the information to ThePage.razor component
+        PageRowsService.SetSelectedRowEmpty(areColumnsEmpty);
 
     }
 
@@ -457,4 +470,14 @@ Console.WriteLine(calendarDate.Year.ToString()) *@
 
         }
     }
+
+    private bool IsSelectedRowEmpty(Appointment appointment)
+    {
+        // Check if the specified appointment row has data in Patient, Service, and Contact columns
+        return appointment == null
+        || string.IsNullOrEmpty(appointment.Patient?.FirstName)
+        || appointment.Service == null
+        || string.IsNullOrEmpty(appointment.Service.Description);
+    }
+
 }
