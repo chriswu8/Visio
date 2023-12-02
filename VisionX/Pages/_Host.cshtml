@@ -15,6 +15,9 @@
     <link rel="icon" type="image/png" href="favicon.png"/>
      
      @* Generate PDF file script tags  *@
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script> *@
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
 
@@ -37,7 +40,7 @@
     <script src="_framework/blazor.server.js"></script>
 
    @* Generate PDF from HTML in div using JavaScript *@
-    <script>
+    @* <script>
     window.convertHtmlToPdf = function() {
         html2canvas(document.body, {
             onrendered: function(canvas) {
@@ -48,7 +51,20 @@
             }
         });
     }
-  </script>
+  </script> *@
+
+<script>
+window.convertHtmlToPdf = function() {
+    html2canvas(document.body, {
+        onrendered: function(canvas) {
+            var imgData = canvas.toDataURL('image/png');
+            var doc = new jsPDF();
+            doc.addImage(imgData, 'PNG', 1, 1);
+            doc.save('download.pdf');
+        }
+    });
+}
+</script>
 
 </body>
 </html>
