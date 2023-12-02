@@ -422,6 +422,9 @@ Console.WriteLine(selectedDay); *@
 
         // Check if the selected row has data in the specified columns
         bool areColumnsEmpty = IsSelectedRowEmpty(selectedAppointment);
+        Console.WriteLine("areColumnsEmpty: " + areColumnsEmpty);
+        Console.WriteLine("PageRowsService.RowClicked: " + PageRowsService.RowClicked);
+        Console.WriteLine("areColumnsEmpty: " + areColumnsEmpty);
         // Pass the information to ThePage.razor component
         PageRowsService.SetSelectedRowEmpty(areColumnsEmpty);
 
