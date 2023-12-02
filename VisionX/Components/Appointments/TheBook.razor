@@ -1,4 +1,6 @@
 ﻿@inject VisionX.Services.AppointmentService AppointmentService
+@inject VisionX.Services.PageRowsService PageRowsService
+
 @using VisionX.Models
 
 
@@ -374,6 +376,8 @@
         appointmentsWithDetails = AppointmentService.GetAppointmentsWithDetails();
         @* appointmentForDay = HandleDateSelection(DateTime.Now); *@
         HandleDateSelection(DateTime.Now);
+        PageRowsService.RowClicked = false;
+
     }
 
     private void ScheduleTime(int dateInTheFuture)
@@ -405,6 +409,9 @@ Console.WriteLine(selectedDay); *@
         this.timeInString = combinedTime;
         //this.selectedDateTime = selectedDateTime.ToString("yyyy-MM-dd");
         //OnRowClick.InvokeAsync((hour, minute));
+
+        PageRowsService.RowClicked = true;
+
     }
 
     private string GetRowClass(string combinedTime)

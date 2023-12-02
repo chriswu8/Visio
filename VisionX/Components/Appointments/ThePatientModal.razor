@@ -26,9 +26,9 @@
     <div class="patient-buttons">
         <div class="patient-buttons1">
             <!-- <button class="book-button" @onclick="AddPatient">Add New Patient</button> -->
-            <button class="book-button" @onclick="ShowPatientInfoModal">Add New Patient</button>
+            @* <button class="book-button" @onclick="ShowPatientInfoModal">Add New Patient</button>
             <button class="book-button" @onclick="ToggleEdit">@editButtonText</button>
-            <button class="book-button">Delete</button>
+            <button class="book-button">Delete</button> *@
         </div>
         <div class="patient-buttons2">
             @if (selectedPatientModel != null && ShouldRenderBookGEE1Button(selectedPatientModel.Sex,
@@ -101,9 +101,9 @@
 
         @if (showConfirmAppointment)
         {
-            <div class="modal-container">
-                <div class="modal-background">
-                    <div class="modal-content">
+            <div class="confirm-apt-modal-container">
+                <div class="confirm-apt-modal-background">
+                    <div class="confirm-apt-modal-content">
                         <TheConfirmAppointment OnConfirmAppointmentSaveClicked="HideConfirmAppointmentModal"
                             OnConfirmAppointmentCancelClicked="HideConfirmAppointmentModal" Month="@Month" Day="@Day"
                             Year="@Year" TimeInString="@TimeInString" SelectedPatientModel="@selectedPatientModel" />
@@ -135,10 +135,37 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        min-width: 88em;
+        min-width: 100vw;
         background-color: #444;
         color: white;
     }
+
+    .confirm-apt-modal-container {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 600px;
+        background-color: #000000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+
+    }
+
+    .confirm-apt-modal-background {}
+
+    .confirm-apt-modal-content {
+        background-color: #000000;
+        color: white;
+        padding: 20px;
+        width: 66vw;
+        border-radius: 5px;
+
+    }
+
 
     .component-container {
         width: 95%;

@@ -7,14 +7,13 @@
 
 <div>
     <link rel="stylesheet" href="/css/site.css" />
-    <div class="modal-content">
+    <div class="the-confirm-apt-modal-content">
         <div class="left-column">
-            @* <span>Date:</span>
-            <input type="date" /><br /><br />
-            <span>Time:</span>
-            <input type="time" /> *@
-            <p>Schedule appointment for @SelectedPatientModel.FirstName @SelectedPatientModel.LastName:
-                @Year-@Month-@Day at @TimeInString</p>
+            <p>Schedule appointment for <b>@SelectedPatientModel.FirstName @SelectedPatientModel.LastName</b>
+            <p></p>
+            <p>On: <b>@Year-@Month-@Day at @TimeInString</b></p>
+            </p>
+
         </div>
         <div class="right-column">
             <span>Exam:</span>
@@ -22,52 +21,58 @@
                 @foreach (var service in serviceList)
                 {
                     <option value="@($"{service.Id}-{service.Fee}")">@service.Code</option>
-                    <!-- Modify the value and text based on your Exam model -->
                 }
             </select>
         </div>
     </div>
     <div class="button-bar">
         <button class="visionX-button" @onclick="OnSave">Save</button>
-        <button class="visionX-button" @onclick="OnConfirmAppointmentCancel">Cancel</button>
+        <button class="visionX-button" @onclick="OnCancel">Cancel</button>
     </div>
 </div>
 <style>
-    .modal-content {
+    .the-confirm-apt-modal-content {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        max-width: 45em;
         max-height: 15em;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 10px;
     }
 
     .left-column {
         flex: 1;
-        margin: 20px;
-        margin-right: 10px;
-        /* Adjust the margin to reduce space */
+        margin-right: 20px;
     }
 
     .right-column {
         flex: 1;
         display: flex;
         flex-direction: column;
-        margin: 20px;
     }
 
     .button-bar {
         display: flex;
         justify-content: flex-end;
-        align-items: right;
-        /* Vertically align buttons in the middle */
         margin-top: 15px;
-        margin-bottom: -5px;
+        margin-left: 33.5vw;
+        width: 30vw;
     }
 
     .button-bar button {
         margin-left: 20px;
-        /* Add margin between buttons */
-        margin-bottom: -2px;
+        padding: 8px 20px;
+        border: none;
+        background-color: #414446;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .button-bar button:hover {
+        background-color: #2d2f31;
     }
 </style>
 
@@ -97,7 +102,7 @@
         // Parse the selected value to extract ID and Fee
         string[] parts = selectedValue.Split('-');
         int selectedId = int.Parse(parts[0]);
-        int selectedFee = (int) decimal.Parse(parts[1]);
+        int selectedFee = (int)decimal.Parse(parts[1]);
 
         // Now, you can use selectedId and selectedFee as needed
         Console.WriteLine($"Selected ID: {selectedId}, Selected Fee: {selectedFee}");
@@ -110,7 +115,7 @@
     {
         serviceList = dbContext.Services.ToList();
         selectedServiceId = serviceList[0].Id;
-        serviceFee = (int) serviceList[0].Fee;
+        serviceFee = (int)serviceList[0].Fee;
     }
 
     // Event handlers
