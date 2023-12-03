@@ -1,4 +1,6 @@
 ﻿@inject VisionX.Services.InvoiceService invoiceService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
 
 <!-- TheInvoice.razor -->
 <div class="invoice-modal">
@@ -22,7 +24,7 @@
                             {
                                 if (invoice.ServiceID == service.Id && invoice.IsPaid != true)
                                 {
-                                    <tr @onclick="() => SelectService(service, invoice.ID)">
+                                    <tr @onclick="() => SelectService(service, invoice.ID)" class="@(IsRowSelected(invoice.ID) ? "selected-row" : "")">
                                         <td>@service.Id</td>
                                         <td>@service.Description</td>
                                         <td>@service.Fee</td>
@@ -43,24 +45,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @* @if (ProductList != null)
-                    {
-                    foreach (var product in ProductList)
-                    {
-                    foreach (var invoice in InvoiceList)
-                    {
-                    if (invoice.ProductID == product.ID)
-                    {
-                    <tr @onclick="() => SelectProduct(product, invoice.ID)" class="@GetRowClass(product)">
-                    <td>@invoice.ID</td>
-                    <td>@product.ModelNumber</td>
-                    <td>@product.Manufacturer</td>
-                    <td>@product.Fee</td>
-                    </tr>
-                    }
-                    }
-                    }
-                    } *@
                     @if (ProductList != null)
                     {
                         foreach (var invoice in InvoiceList)
@@ -69,7 +53,7 @@
                             {
                                 if (invoice.ProductID == product.ID && invoice.IsPaid != true)
                                 {
-                                    <tr @onclick="() => SelectProduct(product, invoice.ID)">
+                                    <tr @onclick="() => SelectProduct(product, invoice.ID)" class="@(IsRowSelected(invoice.ID) ? "selected-row" : "")">
                                         <td>@product.ModelNumber</td>
                                         <td>@product.Manufacturer</td>
                                         <td>@product.Fee</td>
@@ -237,8 +221,10 @@
 
     private int invoiceID;
 
+    int selectedRowId = -1;
+
     @* int selectedServiceId;
-    int selectedProductId; *@
+int selectedProductId; *@
 
 
     protected override async void OnInitialized()
@@ -312,32 +298,38 @@ private void SelectProduct(VisionX.Models.Product product)
         }
     }
 
-    private void HandlePaymentExit()
+    private async void HandlePaymentExit()
     {
         showTakePayment = false;
         openServiceModal = false;
         openProductModal = false;
         SelectedService = null;
         SelectedProduct = null;
+        TotalFee = await invoiceService.CalculateTotalFeeByPatient(SelectedPatient.PatientID);
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
-    private void HandlePaymentSave()
+    private async void HandlePaymentSave()
     {
         // Handle the save action here
 
         showTakePayment = false;
+        TotalFee = await invoiceService.CalculateTotalFeeByPatient(SelectedPatient.PatientID);
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     @* private string GetRowClass(int itemId)
-    {
-        return itemId == SelectedService.Id || itemId == SelectedProduct.ID ? "highlighted-row" : "";
-    } *@
+{
+return itemId == SelectedService.Id || itemId == SelectedProduct.ID ? "highlighted-row" : "";
+} *@
 
     private void SelectService(VisionX.Models.Service service, int invoiceID)
     {
+        Console.WriteLine(service.Id);
         SelectedService = service;
         selectedRow = service;
         this.invoiceID = invoiceID;
+        selectedRowId = invoiceID;
         @* openServiceModal = true;
 openProductModal = false; *@
         // Handle the selection logic or emit an event if needed
@@ -348,9 +340,17 @@ openProductModal = false; *@
         SelectedProduct = product;
         selectedRow = product;
         this.invoiceID = invoiceID;
+        selectedRowId = invoiceID;
         @* openProductModal = true;
 openServiceModal = false; *@
         // Handle the selection logic or emit an event if needed
+    }
+
+    bool IsRowSelected(int invoiceId)
+    {
+        Console.WriteLine(invoiceId);
+        Console.WriteLine(selectedRowId);
+        return selectedRowId == invoiceId;
     }
 
 

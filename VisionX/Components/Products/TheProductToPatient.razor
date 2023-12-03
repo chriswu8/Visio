@@ -213,6 +213,7 @@
     protected override void OnInitialized()
     {
         patientsTest = dbContext.Patients.ToList();
+        selectedPatient = patientsTest[0];
     }
 
 

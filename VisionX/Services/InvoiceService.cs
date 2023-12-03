@@ -193,22 +193,28 @@ namespace VisionX.Services
 
         public async Task<int> CalculateTotalFeeByPatient(int patientId)
         {
-            var (services, products, invoice) = await GetServicesAndProductsByPatient(patientId);
+            var (services, products, invoices) = await GetServicesAndProductsByPatient(patientId);
 
             // Calculate the total fee based on services and products
             int totalFee = 0;
 
             if (services != null)
             {
-                totalFee += services.Sum(service => service.Fee);
-
+                // Calculate the total fee of services only for unpaid invoices
+                totalFee += invoices
+                    .Where(invoice => !invoice.IsPaid && services.Any(service => service.Id == invoice.ServiceID))
+                    .Sum(invoice => (int)invoice.Service?.Fee);
             }
 
-            if (products != null)
+            if (products != null && invoices != null)
             {
-                totalFee += products.Sum(product => (int)product.Fee);
-
+                // Calculate the total fee of products only for unpaid invoices
+                totalFee += invoices
+                    .Where(invoice => !invoice.IsPaid && products.Any(product => product.ID == invoice.ProductID))
+                    .Sum(invoice => (int)invoice.Product?.Fee);
             }
+
+            Console.WriteLine(totalFee);
 
             return totalFee;
         }
