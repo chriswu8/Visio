@@ -79,7 +79,21 @@ namespace VisionX.Services
             // }
         }
 
+        public async Task DeleteAppointmentAsync(int appointmentId)
+        {
+            var appointmentToDelete = await _context.Appointments.FindAsync(appointmentId);
 
+            if (appointmentToDelete != null)
+            {
+                _context.Appointments.Remove(appointmentToDelete);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                // Handle the case where the appointment with the given ID doesn't exist
+                throw new InvalidOperationException("Appointment not found");
+            }
+        }
 
     }
 }

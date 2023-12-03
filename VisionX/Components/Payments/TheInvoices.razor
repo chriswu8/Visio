@@ -8,12 +8,12 @@
 
 <div class="patient-controls">
     @* <div class="search-bar">
-        <div class="buttons-top">
-            <button>Last Name</button>
-            <button>PHN</button>
-            <button>Phone</button>
-        </div>
-        <input class="search-input" type="text" placeholder="Search..." />
+    <div class="buttons-top">
+    <button>Last Name</button>
+    <button>PHN</button>
+    <button>Phone</button>
+    </div>
+    <input class="search-input" type="text" placeholder="Search..." />
     </div> *@
 </div>
 <hr />
@@ -58,7 +58,7 @@
                     <td>
                         @if (patient.IsEditing)
                         {
-                            <input @bind="patient.LastName" />
+                            <input @bind="patient.FirstName" />
                         }
                         else
                         {
@@ -145,7 +145,7 @@
         <!-- Modal overlay -->
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
-            <TheInvoice OnExitClicked="HandleExit" SelectedPatient="@selectedPatient"/>
+            <TheInvoice OnExitClicked="HandleExit" SelectedPatient="@selectedPatient" />
         </div>
     }
 

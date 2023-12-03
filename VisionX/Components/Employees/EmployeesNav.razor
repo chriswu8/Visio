@@ -10,8 +10,6 @@
     <button class="nav-underline" @onclick="ShowSignIn">Sign-In</button>
     <button class="nav-underline" @onclick="ShowSignOut">Sign-Out</button>
     <button class="nav-underline" @onclick="ShowTotalHours">Total Hours</button>
-
-    <button class="nav-underline" @onclick="GeneratePdf">Generate PDF</button>
 </div>
 
 <br />
@@ -80,7 +78,7 @@
 </table>
 </div> *@
 
-<div class="hours-table">
+<div class="hours-table" id="hours-table">
     <button class="book-button" @onclick="ClockIn">Clock In</button>
     <button class="book-button" @onclick="ClockOut">Clock Out</button>
     <button class="book-button" @onclick="ShowAddEmployeeModal">Add Employee</button>
@@ -130,6 +128,10 @@
         <AddEmployeeModal OnSaveClicked="OnAddEmployeeSave" OnCancelClicked="OnAddEmployeeCancel" />
     }
 
+
+        <button @onclick="GeneratePdf" class="edit-button">Export as PDF</button>
+
+    <button @onclick="GenerateExcel" class="edit-button">Export as Excel</button>
 </div>
 
 @code {
@@ -147,6 +149,11 @@
     private async Task GeneratePdf()
     {
         await JSRuntime.InvokeVoidAsync("convertHtmlToPdf");
+    }
+
+        private async Task GenerateExcel()
+    {
+        await JSRuntime.InvokeVoidAsync("generateExcel", "hours-table");
     }
 
     private void ShowSignIn()

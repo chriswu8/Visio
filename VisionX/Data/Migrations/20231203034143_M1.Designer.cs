@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VisionX.Data;
 
@@ -11,9 +12,11 @@ using VisionX.Data;
 namespace VisionX.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231203034143_M1")]
+    partial class M1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,9 +90,6 @@ namespace VisionX.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsSelected")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -97,9 +97,6 @@ namespace VisionX.Data.Migrations
                     b.Property<string>("MiddleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan?>("TotalHoursWorked")
-                        .HasColumnType("time");
 
                     b.HasKey("ID");
 
@@ -110,10 +107,8 @@ namespace VisionX.Data.Migrations
                         {
                             ID = 1,
                             FirstName = "Chris",
-                            IsSelected = false,
                             LastName = "Wu",
-                            MiddleName = "Yue",
-                            TotalHoursWorked = new TimeSpan(0, 0, 0, 0, 0)
+                            MiddleName = "Yue"
                         });
                 });
 
