@@ -31,8 +31,19 @@ namespace VisionX.Services
 
             if (productToDelete != null)
             {
-                _context.Products.Remove(productToDelete);
-                _context.SaveChanges();
+                // Check if there are any references to this product in the Patient entity
+                bool hasReferences = _context.Invoices.Any(p => p.ProductID == productId);
+
+                if (!hasReferences)
+                {
+                    _context.Products.Remove(productToDelete);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    // Throw an exception indicating that the product has references and cannot be deleted
+                    throw new InvalidOperationException($"Product with ID {productId} has references and cannot be deleted.");
+                }
             }
             // Optionally, you can handle a case where the product is not found.
         }
@@ -49,9 +60,9 @@ namespace VisionX.Services
             // Optionally, you can handle a case where the product is not found.
         }
 
-        public void UpdateProduct(Product updatedProduct)
+        public void UpdateProduct(int selectedProductID, Product updatedProduct)
         {
-            var existingProduct = _context.Products.Find(updatedProduct.ID);
+            var existingProduct = _context.Products.Find(selectedProductID);
 
             if (existingProduct != null)
             {

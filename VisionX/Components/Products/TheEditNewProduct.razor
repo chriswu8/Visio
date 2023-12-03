@@ -190,7 +190,7 @@
                 Fee = Convert.ToInt32(prodFee)
             };
 
-        ProductService.UpdateProduct(newProduct);
+        ProductService.UpdateProduct(SelectedProduct.ID, newProduct);
         await OnSavePaymentClicked.InvokeAsync();
     }
 }

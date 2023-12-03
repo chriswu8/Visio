@@ -2,6 +2,7 @@
 @using Microsoft.EntityFrameworkCore
 @inject VisionX.Services.ProductService ProductService
 @inject Data.ApplicationDbContext dbContext
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 
 <link rel="stylesheet" href="/css/site.css" />
 
@@ -10,6 +11,13 @@
         <button class="service-button" @onclick="AddProduct">Add Product</button>
     </div>
 </div>
+
+@if (!string.IsNullOrEmpty(deleteErrorMessage))
+{
+    <div class="alert alert-danger">
+        @deleteErrorMessage
+    </div>
+}
 
 <div class="MyServicesTable">
     <table>
@@ -60,7 +68,7 @@
             <!-- TheModifyService (Services) modal component -->
             @* <TheModifyProduct OnExitClicked="HandleExit" /> *@
             @* <TheAddNewPayment /> *@
-            <TheAddNewProduct OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit" />
+            <TheAddNewProduct OnSavePaymentClicked="HandleAddAServiceSave" OnExitPaymentClicked="HandleAddAServiceExit" />
         </div>
     }
     else if (editAProduct)
@@ -214,6 +222,8 @@
     private bool modifyProduct = false;
     private bool addAProduct = false;
     private bool openAddToCartModal = false;
+    private string deleteErrorMessage;
+
     //ModifyService
     private void AddProduct()
     { // modif
@@ -242,7 +252,17 @@ editAService = true; *@
     private void DeleteAService(VisionX.Models.Product product)
     {
         @* ServicesService.DeleteExam(service.Id); *@
-        ProductService.DeleteProduct(product.ID);
+        try
+        {
+            ProductService.DeleteProduct(product.ID);
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        }
+        catch (InvalidOperationException ex)
+        {
+            deleteErrorMessage = $"This product can't be deleted! {ex.Message}";
+        }
+        @* ProductService.DeleteProduct(product.ID);
+NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true); *@
     }
 
     private void AddToCart(VisionX.Models.Product product)
@@ -267,12 +287,14 @@ new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"
     private void HandleEditAServiceExit()
     {
         editAProduct = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     // Handle the save action here
     private void HandleEditAServiceSave()
     {
         editAProduct = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
 
@@ -300,23 +322,27 @@ new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"
     private void HandleAddAServiceExit()
     {
         addAProduct = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     // Handle the save action here
     private void HandleAddAServiceSave()
     {
         addAProduct = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     private void HandleAddProdForPtExit()
     {
         openAddToCartModal = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     // Handle the save action here
     private void HandleAddProdForPtSave()
     {
         addAProduct = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
 }

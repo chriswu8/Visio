@@ -8,37 +8,26 @@
 <div class="payment-modal">
     <div class="left-payment-panel">
 
-        <h4 class="small-text">Manufacturer</h4>
-        <input type="text" class="input-field" id="productManufacturer" />
-
-        <h4 class="small-text">Model Number</h4>
-        <input type="text" class="input-field" id="productModelNumber"/>
-
-        <h4 class="small-text">Type</h4>
-        <input type="text" class="input-field" id="productType" />
-
-        <h4 class="small-text">Fee</h4>
-        <input type="text" class="input-field" id="productFee" />
-
-        @* <div class="payment-type">
-        <h4 class="small-text">Payment Type</h4>
-        <select class="input-field">
-        <option value="credit">Credit Card</option>
-        <option value="cash">Cash</option>
-        <!-- Add more payment methods as needed -->
-        </select>
-        <input type="text" class="input-field small-input" value="0.00" />
+        <div class="input-container">
+            <h4 class="small-text">Manufacturer</h4>
+            <input type="text" class="input-field" id="productManufacturer" />
         </div>
 
-        <div class="payment-type">
-        <h4 class="small-text">2nd Payment Type</h4>
-        <select class="input-field">
-        <option value="credit">Credit Card</option>
-        <option value="cash">Cash</option>
-        <!-- Add more payment methods as needed -->
-        </select>
-        <input type="text" class="input-field small-input" value="0.00" />
-        </div>*@
+        <div class="input-container">
+            <h4 class="small-text">Model Number</h4>
+            <input type="text" class="input-field" id="productModelNumber" />
+        </div>
+
+        <div class="input-container">
+            <h4 class="small-text">Type</h4>
+            <input type="text" class="input-field" id="productType" />
+        </div>
+
+        <div class="input-container">
+            <h4 class="small-text">Fee</h4>
+            <input type="text" class="input-field" id="productFee" />
+        </div>
+
     </div>
 
     <div class="right-payment-panel">
@@ -54,10 +43,10 @@
                     <p>Fee:</p>
                 </div>
                 @* <div class="right-column">
-                    <p>@SelectedProduct.Manufacturer</p>
-                    <p>@SelectedProduct.ModelNumber</p>
-                    <p>@SelectedProduct.Type</p>
-                    <p>@SelectedProduct.Fee</p>
+                <p>@SelectedProduct.Manufacturer</p>
+                <p>@SelectedProduct.ModelNumber</p>
+                <p>@SelectedProduct.Type</p>
+                <p>@SelectedProduct.Fee</p>
                 </div> *@
             </div>
         </div>
@@ -149,6 +138,13 @@
     .payment-save-button {
         margin-right: 10px;
         /* Add some spacing between the buttons */
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        /* Adjust this margin as needed */
     }
 </style>
 
