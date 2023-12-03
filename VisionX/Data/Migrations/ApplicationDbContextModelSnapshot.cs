@@ -87,6 +87,9 @@ namespace VisionX.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -94,6 +97,9 @@ namespace VisionX.Data.Migrations
                     b.Property<string>("MiddleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan?>("TotalHoursWorked")
+                        .HasColumnType("time");
 
                     b.HasKey("ID");
 
@@ -104,8 +110,10 @@ namespace VisionX.Data.Migrations
                         {
                             ID = 1,
                             FirstName = "Chris",
+                            IsSelected = false,
                             LastName = "Wu",
-                            MiddleName = "Yue"
+                            MiddleName = "Yue",
+                            TotalHoursWorked = new TimeSpan(0, 0, 0, 0, 0)
                         });
                 });
 

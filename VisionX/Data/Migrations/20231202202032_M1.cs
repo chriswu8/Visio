@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -12,6 +13,25 @@ namespace VisionX.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Employee",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsSelected = table.Column<bool>(type: "bit", nullable: false),
+                    ClockIn = table.Column<TimeSpan>(type: "time", nullable: true),
+                    ClockOut = table.Column<TimeSpan>(type: "time", nullable: true),
+                    TotalHoursWorked = table.Column<TimeSpan>(type: "time", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Employee", x => x.ID);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Patient",
                 columns: table => new
@@ -169,6 +189,11 @@ namespace VisionX.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Employee",
+                columns: new[] { "ID", "ClockIn", "ClockOut", "FirstName", "IsSelected", "LastName", "MiddleName", "TotalHoursWorked" },
+                values: new object[] { 1, null, null, "Chris", false, "Wu", "Yue", new TimeSpan(0, 0, 0, 0, 0) });
+
+            migrationBuilder.InsertData(
                 table: "Patient",
                 columns: new[] { "PatientID", "Address", "BirthDate", "BloodPressure", "City", "Complaint", "CorrectedODAxis", "CorrectedODCylinder", "CorrectedODSphere", "CorrectedOSAxis", "CorrectedOSCylinder", "CorrectedOSSphere", "Email", "ExamDay", "ExamMonth", "ExamTime", "ExamYear", "EyeDrops", "FirstName", "GlaucomaHistory", "HasGlaucoma", "HistoryOfCancer", "HistoryOfCataracts", "HistoryOfDiabetes", "HistoryOfHIV", "HistoryOfHeartProblems", "HistoryOfKidneyDisease", "HistoryOfMacularDegeneration", "HistoryOfNeuromuscularDisease", "HistoryOfRetinalDetachment", "HistoryOfStroke", "HistoryOfThyroid", "HistoryOfTuberculosis", "IsEditing", "IsSelected", "LastName", "LifeStage", "MiddleName", "Occupation", "Phone", "PostalCode", "Province", "ProvincialHealthNumber", "Sex", "Symptoms", "UncorrectedODAxis", "UncorrectedODCylinder", "UncorrectedODSphere", "UncorrectedOSAxis", "UncorrectedOSCylinder", "UncorrectedOSSphere" },
                 values: new object[,]
@@ -243,6 +268,9 @@ namespace VisionX.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Appointment");
+
+            migrationBuilder.DropTable(
+                name: "Employee");
 
             migrationBuilder.DropTable(
                 name: "Invoice");

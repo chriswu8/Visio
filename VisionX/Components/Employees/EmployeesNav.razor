@@ -1,5 +1,9 @@
 ﻿@using VisionX.Components.Employees
 @inject IJSRuntime JSRuntime
+@inject VisionX.Services.EmployeeService EmployeeService
+@inject Data.ApplicationDbContext dbContext
+
+
 <link rel="stylesheet" href="/css/site.css" />
 
 <div class="inner-nav">
@@ -7,7 +11,7 @@
     <button class="nav-underline" @onclick="ShowSignOut">Sign-Out</button>
     <button class="nav-underline" @onclick="ShowTotalHours">Total Hours</button>
 
-        <button class="nav-underline" @onclick="GeneratePdf">Generate PDF</button>
+    <button class="nav-underline" @onclick="GeneratePdf">Generate PDF</button>
 </div>
 
 <br />
@@ -30,88 +34,115 @@
 </div>
 
 @* <div class="employee-table">
-    <table>
-        <thead>
-            <tr class="header-row">
-                <th>EmployeeID</th>
-                <th>Last Name</th>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Address</th>
-                <th>Province</th>
-                <th>City</th>
-                <th>Postal Code</th>
-                <th>Birth Date</th>
-         
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Occupation</th>
-                <th>ImageID</th>
-            </tr>
-        </thead>
-        <tbody>
-          
-             @foreach (var employee in employees)
-            {
-                <tr class="@(employee.EmployeeID % 2 == 0 ? "even-row" : "odd-row") @(employee.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(employee)">
+<table>
+<thead>
+<tr class="header-row">
+<th>EmployeeID</th>
+<th>Last Name</th>
+<th>First Name</th>
+<th>Middle Name</th>
+<th>Address</th>
+<th>Province</th>
+<th>City</th>
+<th>Postal Code</th>
+<th>Birth Date</th>
 
-                   <td>@employee.EmployeeID</td>
-                   <td>@employee.LastName</td>
-                    <td>@employee.FirstName</td>
-                    <td>@employee.MiddleName</td>
-                   <td>@employee.Address</td>
-                    <td>@employee.Province</td>
-                    <td>@employee.City</td>
-                    <td> @employee.PostalCode</td>
-                    <td>@employee.BirthDate</td>
-                    <td>@employee.Phone</td>
-                    <td>@employee.Email</td>
-                    <td>@employee.Occupation</td>
-                     <td>@employee.ImageID</td>
-                
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div> *@
+<th>Phone</th>
+<th>Email</th>
+<th>Occupation</th>
+<th>ImageID</th>
+</tr>
+</thead>
+<tbody>
 
-    <div class="hours-table">
-    <table style ="width: 40%;"> 
+@foreach (var employee in employees)
+{
+<tr class="@(employee.EmployeeID % 2 == 0 ? "even-row" : "odd-row") @(employee.IsSelected ? "selected-row" : "")"
+@onclick="() => SelectRow(employee)">
+
+<td>@employee.EmployeeID</td>
+<td>@employee.LastName</td>
+<td>@employee.FirstName</td>
+<td>@employee.MiddleName</td>
+<td>@employee.Address</td>
+<td>@employee.Province</td>
+<td>@employee.City</td>
+<td> @employee.PostalCode</td>
+<td>@employee.BirthDate</td>
+<td>@employee.Phone</td>
+<td>@employee.Email</td>
+<td>@employee.Occupation</td>
+<td>@employee.ImageID</td>
+
+</tr>
+}
+</tbody>
+</table>
+</div> *@
+
+<div class="hours-table">
+    <button class="book-button" @onclick="ClockIn">Clock In</button>
+    <button class="book-button" @onclick="ClockOut">Clock Out</button>
+    <button class="book-button" @onclick="ShowAddEmployeeModal">Add Employee</button>
+
+    @* <button class="book-button" @onclick="AddEmployee">Add Employee</button> *@
+    <table style="width: 40%;">
         <thead>
             <tr class="header-row">
                 <th>Employee</th>
-                <th>Date</th>
                 <th>Time In</th>
                 <th>Time Out</th>
-                <th>Total Hours Worked</th>
+                @* <th>Total Hours Worked</th> *@
             </tr>
         </thead>
 
 
         <tbody>
-          
-             @foreach (var employee in employees)
-            @* @foreach (var timeintimeout in timeintimeouts) *@
+
+            @foreach (var employee in employees)
+
 
             {
-                <tr class="@(employee.EmployeeID % 2 == 0 ? "even-row" : "odd-row") @(employee.IsSelected ? "selected-row" : "")" @onclick="() => SelectRow(employee)">
-                     
-                  <td>@employee.EmployeeID</td>
-                    <td>@employee.Date</td>
-                   <td>@employee.TimeIn</td>
-                    <td>@employee.TimeOut</td>
-                    <td>@employee.TotalHoursWorked</td>
-                
+                @* <tr class="@(employee.EmployeeID % 2 == 0 ? "even-row" : "odd-row") @(employee.IsSelected ?
+            "selected-row" : "")"
+            @onclick="() => SelectRow(employee)">
+
+            <td>@employee.EmployeeID</td>
+            <td>@employee.Date</td>
+            <td>@employee.TimeIn</td>
+            <td>@employee.TimeOut</td>
+            <td>@employee.TotalHoursWorked</td>
+
+            </tr> *@
+
+                <tr @onclick="() => SelectRow(employee)" class="@GetRowCssClass(employee)">
+
+                    <td>@employee.FirstName</td>
+                    <td>@employee.ClockIn</td>
+                    <td>@employee.ClockOut</td>
+                    @* <td>@employee.TotalHoursWorked</td> *@
                 </tr>
             }
         </tbody>
     </table>
-    </div>
+    @if (showAddEmployeeModal)
+    {
+        <AddEmployeeModal OnSaveClicked="OnAddEmployeeSave" OnCancelClicked="OnAddEmployeeCancel" />
+    }
+
+</div>
 
 @code {
     private bool showSignIn = true;
     private bool showSignOut = false;
     private bool showTotalHours = false;
+
+    private bool showAddEmployeeModal = false;
+
+    private void ShowAddEmployeeModal()
+    {
+        showAddEmployeeModal = true;
+    }
 
     private async Task GeneratePdf()
     {
@@ -141,10 +172,9 @@
 }
 
 <style>
-
     table {
-    margin: 50px;
-}
+        margin: 50px;
+    }
 
     .modal-overlay {
         position: fixed;
@@ -156,11 +186,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000; /* Adjust z-index as needed */
+        z-index: 1000;
+        /* Adjust z-index as needed */
     }
 
     .modal-container {
-        transform: scale(0.9); /* Adjust the scale factor as needed */
+        transform: scale(0.9);
+        /* Adjust the scale factor as needed */
         transform-origin: center;
         transition: transform 0.3s;
     }
@@ -188,18 +220,30 @@
         transform: scale(1);
     }
 
+    .book-button {
+        background-color: #f0f0f0;
+        border: none;
+        color: #333;
+        padding: 10px;
+        width: auto;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 5px;
+        margin: 5px;
+        line-height: 19px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
 
     .patient-controls {
-    @* .employee-controls { *@
-        display: flex;
+        @*.employee-controls{*@display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
     .employee-table {
         margin-top: 10px;
-        @* width: 75%;
-        margin: 0 auto; /* This will center the table */ *@
+        @*width:75%;margin:0auto;/*Thiswillcenterthetable*/*@
     }
 
     table {
@@ -207,7 +251,8 @@
         border-collapse: collapse;
     }
 
-    th, td {
+    th,
+    td {
         border: 1px solid #ccc;
         padding: 8px;
         text-align: center;
@@ -237,67 +282,133 @@
         margin-left: 3em;
     }
 
-
+    .highlighted-row {
+        background-color: lightblue;
+        /* Adjust the color as needed */
+        color: black;
+        /* Adjust the text color as needed */
+    }
 </style>
 
-@code{
-
-
-    private List<TimeInTimeOut> employees = new List<TimeInTimeOut>
-    {
-       @* new TimeInTimeOut { EmployeeID = 1, Date = "2021-01-01", TimeIn = Convert.ToInt32(new TimeSpan(8, 0, 0).TotalHours), TimeOut = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours), TotalHoursWorked = 9 },
-       new TimeInTimeOut { EmployeeID = 2, Date = "2021-01-01", TimeIn = Convert.ToInt32(new TimeSpan(8, 0, 0).TotalHours), TimeOut = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours), TotalHoursWorked = 9 } *@
-      
-      new TimeInTimeOut 
-        { 
-            EmployeeID = 1, 
-            Date = "2021-01-01", 
-            TimeIn = Convert.ToInt32(new TimeSpan(9, 1, 2).TotalHours), 
-            TimeOut = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours), 
-            TotalHoursWorked = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours) - Convert.ToInt32(new TimeSpan(9, 1, 2).TotalHours)
-        },
-
-        new TimeInTimeOut 
-        { 
-            EmployeeID = 2, 
-            Date = "2021-01-01", 
-            TimeIn = Convert.ToInt32(new TimeSpan(8, 0, 0).TotalHours), 
-            TimeOut = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours), 
-            TotalHoursWorked = Convert.ToInt32(new TimeSpan(17, 0, 0).TotalHours) - Convert.ToInt32(new TimeSpan(8, 0, 0).TotalHours)
-        }
-    }; 
+@code {
 
     private int nextEmployeeID = 3;
     private bool isEditing = false;
+    private List<VisionX.Models.Employee> employees;
 
-        private void SelectRow(TimeInTimeOut employee)
+    private VisionX.Models.Employee selectedEmployee;
+
+    protected override async Task OnInitializedAsync()
     {
-        foreach (var p in employees)
+        // Call the GetAllEmployees method from your EmployeeService
+        employees = dbContext.Employees.ToList();
+        selectedEmployee = employees[0];
+    }
+
+    public void SelectRow(VisionX.Models.Employee selectEmployee)
+    {
+        foreach (var employee in employees)
         {
-            p.IsSelected = false;
+            employee.IsSelected = false;
         }
 
-       employee.IsSelected = !employee.IsSelected;
+        selectEmployee.IsSelected = !selectEmployee.IsSelected;
+        selectedEmployee = selectEmployee;
     }
+
+    private string GetRowCssClass(VisionX.Models.Employee employee)
+    {
+        return employee.IsSelected ? "highlighted-row" : (employee.ID % 2 == 0 ? "even-row" : "odd-row");
+    }
+
+    public string CalculateHoursWorked(TimeSpan? clockIn, TimeSpan? clockOut)
+    {
+        if (clockIn.HasValue && clockOut.HasValue)
+        {
+            TimeSpan hoursWorked = clockOut.Value - clockIn.Value;
+            return $"{(int)hoursWorked.TotalHours}h {hoursWorked.Minutes}m";
+        }
+
+        return "N/A"; // Handle the case where either ClockIn or ClockOut is not set
+    }
+
+    public void ClockIn()
+    {
+        // Check if the employee is already clocked in
+
+        // Set the ClockIn property to the current time
+        selectedEmployee.ClockIn = DateTime.Now.TimeOfDay;
+
+        @* TimeSpan? currHours = selectedEmployee.TotalHoursWorked; *@
+        @* TimeSpan? totalHoursWorked = (selectedEmployee.ClockOut - selectedEmployee.ClockIn);  *@
+
+         @* Console.WriteLine(selectedEmployee.TotalHoursWorked + (selectedEmployee.ClockOut - selectedEmployee.ClockIn)); *@
+
+        // Update the employee in the database using the EmployeeService
+        EmployeeService.UpdateEmployeeClockInOut(selectedEmployee.ID, selectedEmployee.ClockIn, selectedEmployee.ClockOut);
+
+    }
+
+    public void ClockOut()
+    {
+        // Check if the employee is already clocked out
+
+        // Set the ClockOut property to the current time
+        selectedEmployee.ClockOut = DateTime.Now.TimeOfDay;
+
+        // Update the cumulative time worked
+        @* TimeSpan? currHours = selectedEmployee.TotalHoursWorked; *@
+        @* TimeSpan? totalHoursWorked = (selectedEmployee.ClockOut - selectedEmployee.ClockIn); *@
+
+        @* Console.WriteLine(totalHoursWorked); *@
+
+        // Update the employee in the database using the EmployeeService
+        EmployeeService.UpdateEmployeeClockInOut(selectedEmployee.ID, selectedEmployee.ClockIn, selectedEmployee.ClockOut);
+
+    }
+
+    private async Task OnAddEmployeeSave()
+    {
+        // Logic to save the new employee
+        // You can add the necessary logic to update the employees list or database
+        // Close the modal
+        showAddEmployeeModal = false;
+    }
+
+    private void OnAddEmployeeCancel()
+    {
+        // Logic to cancel adding a new employee
+        // Close the modal
+        showAddEmployeeModal = false;
+    }
+
+    @* private void SelectRow(TimeInTimeOut employee)
+{
+foreach (var p in employees)
+{
+p.IsSelected = false;
+}
+
+employee.IsSelected = !employee.IsSelected;
+} *@
 
     public class TimeInTimeOut
     {
         public int EmployeeID { get; set; }
         @* public string LastName { get; set; } *@
 
-         public string Date { get; set; }
+        public string Date { get; set; }
         @* public string FirstName { get; set; } *@
 
-         public int TimeIn{ get; set; }
+        public int TimeIn { get; set; }
         @* public string MiddleName { get; set; } *@
 
-          public int TimeOut{ get; set; }
+        public int TimeOut { get; set; }
         @* public string Address { get; set; } *@
 
-          public int TotalHoursWorked{ get; set; }
+        public int TotalHoursWorked { get; set; }
         public bool IsSelected { get; set; }
         public bool IsEditing { get; set; }
     }
 
-    } 
-
+}

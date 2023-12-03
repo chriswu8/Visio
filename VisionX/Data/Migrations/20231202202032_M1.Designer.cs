@@ -12,7 +12,7 @@ using VisionX.Data;
 namespace VisionX.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231202063808_M1")]
+    [Migration("20231202202032_M1")]
     partial class M1
     {
         /// <inheritdoc />
@@ -69,6 +69,54 @@ namespace VisionX.Data.Migrations
                             ServiceID = 1,
                             Time = "9:00",
                             Year = "2023"
+                        });
+                });
+
+            modelBuilder.Entity("VisionX.Models.Employee", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<TimeSpan?>("ClockIn")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("ClockOut")
+                        .HasColumnType("time");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan?>("TotalHoursWorked")
+                        .HasColumnType("time");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Employee", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            FirstName = "Chris",
+                            IsSelected = false,
+                            LastName = "Wu",
+                            MiddleName = "Yue",
+                            TotalHoursWorked = new TimeSpan(0, 0, 0, 0, 0)
                         });
                 });
 

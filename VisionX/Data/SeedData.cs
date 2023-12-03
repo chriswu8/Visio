@@ -414,7 +414,8 @@ namespace VisionX.Data
             FirstName = "Chris",
             LastName = "Wu",
             MiddleName = "Yue",
-            ClockIn = null // Assuming 8:30 AM as the ClockIn time
+            ClockIn = null,
+            TotalHoursWorked = default(TimeSpan) // Assuming 8:30 AM as the ClockIn time
         },
         // Add more employees if needed
     };

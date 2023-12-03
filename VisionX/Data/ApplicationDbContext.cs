@@ -20,6 +20,7 @@ namespace VisionX.Data
         public DbSet<Appointment>? Appointments { get; set; }
         public DbSet<Product>? Products { get; set; }
         public DbSet<Invoice>? Invoices { get; set; }
+        public DbSet<Employee>? Employees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -40,6 +41,15 @@ namespace VisionX.Data
 
 
             builder.Seed();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Disable logging for this specific DbContext
+            optionsBuilder.UseLoggerFactory(LoggerFactory.Create(builder =>
+                builder.AddFilter((category, level) =>
+                    category == DbLoggerCategory.Database.Command.Name
+                    && level == Microsoft.Extensions.Logging.LogLevel.Information)));
         }
 
     }

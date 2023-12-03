@@ -11,9 +11,13 @@ namespace VisionX.Models
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
+        public bool IsSelected { get; set; }
 
         // Clock In and Clock Out
         public TimeSpan? ClockIn { get; set; }
         public TimeSpan? ClockOut { get; set; }
+        public TimeSpan? TotalHoursWorked { get; set; }
+
+
     }
 }

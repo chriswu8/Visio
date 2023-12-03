@@ -1,0 +1,156 @@
+@inject VisionX.Services.EmployeeService EmployeeService
+@inject Microsoft.JSInterop.IJSRuntime JSRuntime
+
+<div class="employee-info">
+    <div class="input-row">
+        <div class="input-label last-name-div">Last Name:</div>
+        <input id="lastNameInput" class="input-field last-name-input" type="text" @bind="SelectedEmployee.LastName" />
+    </div>
+    <div class="input-row">
+        <div class="input-label first-name-div">First Name:</div>
+        <input id="firstNameInput" class="input-field first-name-input" type="text" @bind="SelectedEmployee.FirstName" />
+    </div>
+    <div class="input-row">
+        <div class="input-label middle-name-div">Middle Name:</div>
+        <input id="middleNameInput" class="input-field middle-name-input" type="text" @bind="SelectedEmployee.MiddleName" />
+    </div>
+    <div class="info-columns">
+        <div class="left-column">
+            <div class="input-row">
+                <div class="input-label">Clock In:</div>
+                <input id="clockInInput" class="input-field" type="text" @bind="SelectedEmployee.ClockIn" />
+            </div>
+            <div class="input-row">
+                <div class="input-label">Clock Out:</div>
+                <input id="clockOutInput" class="input-field" type="text" @bind="SelectedEmployee.ClockOut" />
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+        <button class="save-button-info-save" @onclick="OnSave">Save</button>
+        <button class="cancel-button-info-save" @onclick="OnCancel">Cancel</button>
+    </div>
+</div>
+
+<style>
+    .employee-info {
+        padding: 20px;
+    }
+
+    .input-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .input-label {
+        width: 20%;
+        text-align: left;
+        margin-right: 10px;
+    }
+
+    .input-field {
+        width: 75%;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .info-columns {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .left-column,
+    .right-column {
+        width: 48%;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: right;
+        margin-top: -40px;
+        justify-content: flex-end;
+    }
+
+    .save-button-info-save,
+    .cancel-button-info-save {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .save-button-info-save {
+        margin-left: 1000px;
+    }
+
+    .cancel-button-info-save {
+        margin-left: 10px;
+    }
+
+    .save-button-info-save:hover,
+    .cancel-button-info-save:hover {
+        background-color: #666;
+    }
+
+    .last-name {
+        max-width: 40vw;
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: left;
+    }
+
+    .last-name-div {
+        margin-right: -111px;
+    }
+
+    .last-name-input {
+        max-width: 425px;
+    }
+
+    .first-name-div {
+        margin-right: -111px;
+    }
+
+    .first-name-input {
+        max-width: 425px;
+    }
+
+    .middle-name-row {
+        margin-top: -90px;
+        margin-bottom: 100px;
+    }
+
+    .middle-name-input {
+        max-width: 425px;
+    }
+</style>
+
+@code {
+    // Define event callbacks
+    [Parameter] public EventCallback OnSaveClicked { get; set; }
+    [Parameter] public EventCallback OnCancelClicked { get; set; }
+
+    [Parameter]
+    public VisionX.Models.Employee SelectedEmployee { get; set; } = new VisionX.Models.Employee();
+
+    // Event handlers
+    private async Task OnSave()
+    {
+        // Emit the OnSaveClicked event
+        SelectedEmployee.TotalHoursWorked = default(TimeSpan);
+        await EmployeeService.AddEmployeeAsync(SelectedEmployee);
+        await OnSaveClicked.InvokeAsync();
+    }
+
+    private async Task OnCancel()
+    {
+        // Emit the OnCancelClicked event
+        await OnCancelClicked.InvokeAsync();
+    }
+}
