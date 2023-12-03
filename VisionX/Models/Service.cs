@@ -1,7 +1,10 @@
-﻿namespace VisionX.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace VisionX.Models
 {
     public class Service
     {
+        [Key]
         public int Id
         {
             get; set;

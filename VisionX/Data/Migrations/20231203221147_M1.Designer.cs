@@ -12,7 +12,7 @@ using VisionX.Data;
 namespace VisionX.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231203034143_M1")]
+    [Migration("20231203221147_M1")]
     partial class M1
     {
         /// <inheritdoc />
@@ -90,6 +90,9 @@ namespace VisionX.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -97,6 +100,9 @@ namespace VisionX.Data.Migrations
                     b.Property<string>("MiddleName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan?>("TotalHoursWorked")
+                        .HasColumnType("time");
 
                     b.HasKey("ID");
 
@@ -107,8 +113,10 @@ namespace VisionX.Data.Migrations
                         {
                             ID = 1,
                             FirstName = "Chris",
+                            IsSelected = false,
                             LastName = "Wu",
-                            MiddleName = "Yue"
+                            MiddleName = "Yue",
+                            TotalHoursWorked = new TimeSpan(0, 0, 0, 0, 0)
                         });
                 });
 
@@ -387,7 +395,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "Li",
                             Occupation = "student",
                             Phone = "604-567-8901",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V9L 5M6",
                             Province = "BC",
                             ProvincialHealthNumber = "9901234567",
                             Sex = "Male",
@@ -440,7 +448,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "Yue",
                             Occupation = "student",
                             Phone = "778-678-9012",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V1N 7O8   ",
                             Province = "BC",
                             ProvincialHealthNumber = "9123456780",
                             Sex = "Male",
@@ -493,7 +501,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "KO",
                             Occupation = "student",
                             Phone = "236-789-0123",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V2C 4D5",
                             Province = "BC",
                             ProvincialHealthNumber = "9345678901",
                             Sex = "Male",
@@ -546,7 +554,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "BC",
                             Occupation = "student",
                             Phone = "250-890-1234",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V3E 5F6",
                             Province = "BC",
                             ProvincialHealthNumber = "9789012345",
                             Sex = "Male",
@@ -624,7 +632,7 @@ namespace VisionX.Data.Migrations
                             CorrectedOSAxis = "0",
                             CorrectedOSCylinder = "0",
                             CorrectedOSSphere = "0",
-                            Email = "Keving@my.bcit.ca",
+                            Email = "keving@my.bcit.ca",
                             ExamDay = "1",
                             ExamMonth = "1",
                             ExamTime = "11",
@@ -652,7 +660,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "KG",
                             Occupation = "student",
                             Phone = "778-012-3456",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V4G 6H7",
                             Province = "BC",
                             ProvincialHealthNumber = "9123456789",
                             Sex = "Male",
@@ -705,7 +713,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "TH",
                             Occupation = "student",
                             Phone = "236-123-4567",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V5J 8K9",
                             Province = "BC",
                             ProvincialHealthNumber = "9345678901",
                             Sex = "Male",
@@ -730,7 +738,7 @@ namespace VisionX.Data.Migrations
                             CorrectedOSAxis = "0",
                             CorrectedOSCylinder = "0",
                             CorrectedOSSphere = "0",
-                            Email = "Reynard@my.bcit.ca",
+                            Email = "reynard@my.bcit.ca",
                             ExamDay = "1",
                             ExamMonth = "1",
                             ExamTime = "11",
@@ -758,7 +766,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "RL",
                             Occupation = "student",
                             Phone = "250-234-5678",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V6L 1M2",
                             Province = "BC",
                             ProvincialHealthNumber = "9567890123",
                             Sex = "Male",
@@ -811,7 +819,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "JL",
                             Occupation = "student",
                             Phone = "604-345-6789",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V7N 3O4",
                             Province = "BC",
                             ProvincialHealthNumber = "9789012345",
                             Sex = "Male",
@@ -864,7 +872,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "TL",
                             Occupation = "student",
                             Phone = "778-456-7890",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V8P 5Q6",
                             Province = "BC",
                             ProvincialHealthNumber = "9901234567",
                             Sex = "Male",
@@ -889,7 +897,7 @@ namespace VisionX.Data.Migrations
                             CorrectedOSAxis = "0",
                             CorrectedOSCylinder = "0",
                             CorrectedOSSphere = "0",
-                            Email = "Miguel@my.bcit.ca",
+                            Email = "miguel@my.bcit.ca",
                             ExamDay = "1",
                             ExamMonth = "1",
                             ExamTime = "11",
@@ -917,7 +925,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "MM",
                             Occupation = "student",
                             Phone = "236-567-8901",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V9R 7S8",
                             Province = "BC",
                             ProvincialHealthNumber = "9123456789",
                             Sex = "Male",
@@ -970,7 +978,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "SM",
                             Occupation = "student",
                             Phone = "250-678-9012",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V1T 9U0",
                             Province = "BC",
                             ProvincialHealthNumber = "9345678901",
                             Sex = "Female",
@@ -1023,7 +1031,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "AY",
                             Occupation = "student",
                             Phone = "604-789-0123",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V2W 0X1",
                             Province = "BC",
                             ProvincialHealthNumber = "9567890123",
                             Sex = "Female",
@@ -1076,7 +1084,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "NS",
                             Occupation = "student",
                             Phone = "778-890-1234",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V3Y 2Z3",
                             Province = "BC",
                             ProvincialHealthNumber = "9789012345",
                             Sex = "Male",
@@ -1129,7 +1137,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "Class Rep",
                             Occupation = "student",
                             Phone = "236-901-2345",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V4A 4B5",
                             Province = "BC",
                             ProvincialHealthNumber = "9901234567",
                             Sex = "Male",
@@ -1182,7 +1190,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "Li",
                             Occupation = "student",
                             Phone = "604-123-4567",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V5C 6D7",
                             Province = "BC",
                             ProvincialHealthNumber = "9123456789",
                             Sex = "Male",
@@ -1235,7 +1243,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "Li",
                             Occupation = "student",
                             Phone = "778-234-5678",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V6E 8F9",
                             Province = "BC",
                             ProvincialHealthNumber = "9345678901",
                             Sex = "Male",
@@ -1288,7 +1296,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "Li",
                             Occupation = "student",
                             Phone = "236-345-6789",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V7G 1H2",
                             Province = "BC",
                             ProvincialHealthNumber = "9567890123",
                             Sex = "Male",
@@ -1341,7 +1349,7 @@ namespace VisionX.Data.Migrations
                             MiddleName = "Li",
                             Occupation = "instructor",
                             Phone = "250-456-7890",
-                            PostalCode = "VA2 34B",
+                            PostalCode = "V8J 3K4",
                             Province = "BC",
                             ProvincialHealthNumber = "9789012345",
                             Sex = "Female",

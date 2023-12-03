@@ -2,22 +2,30 @@
 @using Microsoft.EntityFrameworkCore
 @inject VisionX.Services.ServicesService ServicesService
 @inject Data.ApplicationDbContext dbContext
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 
 <link rel="stylesheet" href="/css/site.css" />
 
 <div class="service-buttons">
     <div class="service-buttons2">
-        <button class="service-button" @onclick="ModifyService">Modify Service</button>
+        <button class="service-button" @onclick="ModifyService">Add Service</button>
     </div>
 </div>
+
+@if (!string.IsNullOrEmpty(deleteErrorMessage))
+{
+    <div class="alert alert-danger">
+        @deleteErrorMessage
+    </div>
+}
 
 <div class="MyServicesTable">
     <table>
         <thead>
             <tr class="header-row">
-                <th>ServiceID</th>
+                <th>Service Code</th>
                 <th>Fee</th>
-                <th>ServiceDescription</th>
+                <th>Service Description</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
@@ -46,19 +54,19 @@
 
     </table>
     <!--modifyService-->
-    @if (modifyService)
+    @if (addAService)
     {
         <!-- Modal overlay -->
         <div class="modal-overlay">
             <!-- TheModifyService (Services) modal component -->
-            <TheModifyService OnExitClicked="HandleExit" />
+            <TheAddNewService OnSavePaymentClicked="HandleAddAServiceSave" OnExitPaymentClicked="HandleAddAServiceExit" />
         </div>
     }
     else if (editAService)
     {
         <div class="modal-overlay">
             <!-- TheInvoice modal component -->
-            <TheAddNewService OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit"
+            <TheEditNewService OnSavePaymentClicked="HandleEditAServiceSave" OnExitPaymentClicked="HandleEditAServiceExit"
                 SelectedService="selectedService" />
         </div>
     }
@@ -198,9 +206,14 @@
     // modifyService
     private bool modifyService = false;
     //ModifyService
+
+    private bool addAService = false;
+
+    private string deleteErrorMessage;
+
     private void ModifyService()
     { // modif
-        modifyService = true;
+        addAService = true;
     }
 
     private void HandleExit()
@@ -220,9 +233,19 @@
         editAService = true;
     }
 
-    private void DeleteAService(VisionX.Models.Service service)
+    private async Task DeleteAService(VisionX.Models.Service service)
     {
-        ServicesService.DeleteExam(service.Id);
+        try
+        {
+            await ServicesService.DeleteExam(service.Id);
+            NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Rethrow the exception to propagate it to the calling code
+            deleteErrorMessage = $"This service can't be deleted! {ex.Message}";
+        }
+
     }
 
     private List<Service> services = new List<Service>
@@ -241,12 +264,14 @@ new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"
     private void HandleEditAServiceExit()
     {
         editAService = false;
+        StateHasChanged();
     }
 
     // Handle the save action here
     private void HandleEditAServiceSave()
     {
         editAService = false;
+        StateHasChanged();
     }
 
 
@@ -269,6 +294,19 @@ new Service {ServiceID = 202, Fee = "$100", ServiceDescription = "Glaucoma Exam"
         }
 
         service.IsSelected = !service.IsSelected;
+    }
+
+    private void HandleAddAServiceExit()
+    {
+        addAService = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
+    }
+
+    // Handle the save action here
+    private void HandleAddAServiceSave()
+    {
+        addAService = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
 }
