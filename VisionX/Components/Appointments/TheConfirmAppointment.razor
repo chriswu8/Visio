@@ -2,6 +2,7 @@
 @inject Data.ApplicationDbContext dbContext
 @inject VisionX.Services.AppointmentService appointmentService
 @inject VisionX.Services.InvoiceService invoiceService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 
 
 
@@ -132,38 +133,9 @@
         serviceFee = (int)serviceList[0].Fee;
     }
 
-    @* private async Task OnSave()
-{
-var newAppointment = new VisionX.Models.Appointment
-{
-Month = Month,
-Day = Day,
-Year = Year,
-Time = TimeInString,
-PatientID = SelectedPatientModel.PatientID,
-ServiceID = selectedServiceId
-};
-
-var newInvoice = new VisionX.Models.Invoice
-{
-Month = Month,
-PatientID = SelectedPatientModel.PatientID,
-Day = Day,
-Year = Year,
-ServiceID = selectedServiceId,
-Fee = serviceFee,
-IsPaid = false,
-ProductID = null
-};
-
-await appointmentService.AddAppointmentAsync(newAppointment);
-await invoiceService.AddInvoice(newInvoice);
-
-await OnCancel();
-
-} *@
 
     private bool showCannotScheduleMessage = false;
+
 
     private async Task OnSave()
     {
@@ -211,7 +183,8 @@ await OnCancel();
                 await invoiceService.AddInvoice(newInvoice);
 
                 // Close the confirmation modal
-                await OnCancel();
+                @* await OnCancel(); *@
+                NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
             }
         }
         catch (Exception ex)

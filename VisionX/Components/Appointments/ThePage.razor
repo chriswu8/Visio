@@ -6,9 +6,10 @@
     <h3>@DateTime.Now.ToString("MMMM dd, yyyy")</h3>
 
     <div class="finishing-buttons">
-        <button class="book-button" @onclick="ShowPatientModal">Squeeze In</button>
-        <button class="book-button">Change</button>
         <button class="delete-apt-button">Delete</button>
+        <span class="page-guard-message"
+            style="color: red; display: @(string.IsNullOrEmpty(errorMessage) ? "none" : "inline-block"); margin-right: 10px;">@errorMessage</span>
+        <button class="book-button squeeze-in-apt-button" @onclick="ShowPatientModal">Squeeze In</button>
     </div>
 </div>
 
@@ -47,6 +48,16 @@
         color: #fff;
     }
 
+    .squeeze-in-apt-button {
+        float: right;
+    }
+
+    .page-guard-message {
+        display: inline-block;
+        color: red;
+        margin-left: 5vw;
+        margin-top: 10px;
+    }
 
     h3 {
         font-size: 16px;
@@ -129,10 +140,29 @@
 
     private (int, int) selectedTime;
 
-    private void ShowPatientModal() // keep for reference
+    @* private void ShowPatientModal() // keep for reference
+{
+showPatientModal = true;
+} *@
+
+    private string errorMessage = "";
+
+    private void ShowPatientModal()
     {
-        showPatientModal = true;
+        Console.WriteLine("rowClicked: " + PageRowsService.RowClicked);
+        if (!PageRowsService.RowClicked)
+        {
+            // No row selected, set the error message
+            errorMessage = "Please select a time slot";
+        }
+        else
+        {
+            showPatientModal = true;
+            // Reset the error message if a row is selected
+            errorMessage = "";
+        }
     }
+
 
     private void HidePatientModal()
     {
