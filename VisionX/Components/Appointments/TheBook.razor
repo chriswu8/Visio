@@ -110,7 +110,8 @@
     </div>
 
     <div style=" center; align-items: center; height: 100%;">
-        <ThePage TimeInString="@timeInString" Month="@month" Day="@day" Year="@year" />
+        <ThePage TimeInString="@timeInString" Month="@month" Day="@day" Year="@year"
+            SelectedAppointment="@selectedAppointment" OnDeleteAppointment="@DeleteAppointmentHandler" />
         <div class="centered-appointment-section">
             <div class="appointment-section">
                 <div class="appointments-table">
@@ -368,6 +369,7 @@
 
     private List<Appointment> appointmentsWithDetails;
     private List<Appointment> appointmentForDay;
+    private Appointment selectedAppointment;
 
 
     protected override void OnInitialized()
@@ -378,6 +380,33 @@
         HandleDateSelection(DateTime.Now);
         PageRowsService.RowClicked = false;
 
+    }
+
+    @* private async Task DeleteSelectedAppointment()
+{
+if (selectedAppointment != null)
+{
+try
+{
+// Invoke the delete method from AppointmentService
+await AppointmentService.DeleteAppointmentAsync(selectedAppointment.ID);
+
+// Remove the appointment from the list used in rendering the table
+appointmentForDay.Remove(selectedAppointment);
+}
+catch (Exception ex)
+{
+Console.WriteLine($"Error deleting appointment: {ex.Message}");
+}
+}
+} *@
+
+    private async Task DeleteAppointmentHandler(Appointment appointment)
+    {
+        // Call the delete function here using 'appointment'
+        await AppointmentService.DeleteAppointmentAsync(appointment.ID);
+        // Remove the appointment from the list used in rendering the table
+        appointmentForDay.Remove(selectedAppointment);
     }
 
     private void ScheduleTime(int dateInTheFuture)
@@ -398,27 +427,17 @@
     private void HandleRowClick(string combinedTime)
     {
         clickedRow = combinedTime;
-        // Handle the row click, you can use 'hour' and 'minute' as needed
         Console.WriteLine(combinedTime);
-        //Console.WriteLine(selectedDateTime.ToString("yyyy-MM-dd"));
-        @* this.combinedTime = combinedTime; *@
         string selectedYear = selectedDateTime.Year.ToString();
         string selectedMonth = selectedDateTime.Month.ToString("00");
         string selectedDay = selectedDateTime.Day.ToString("00");
-        @* Console.WriteLine(selectedYear);
-Console.WriteLine(selectedMonth);
-Console.WriteLine(selectedDay); *@
         this.year = selectedYear;
         this.month = selectedMonth;
         this.day = selectedDay;
         this.timeInString = combinedTime;
-        //this.selectedDateTime = selectedDateTime.ToString("yyyy-MM-dd");
-        //OnRowClick.InvokeAsync((hour, minute));
-
         PageRowsService.RowClicked = true;
 
-        Appointment selectedAppointment = GetSelectedAppointment(combinedTime); // Get the selected appointment
-
+        selectedAppointment = GetSelectedAppointment(combinedTime); // Get the selected appointment
 
         // Check if the selected row has data in the specified columns
         bool areColumnsEmpty = IsSelectedRowEmpty(selectedAppointment);

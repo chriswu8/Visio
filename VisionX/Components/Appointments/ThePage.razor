@@ -1,4 +1,8 @@
 ﻿@inject VisionX.Services.PageRowsService PageRowsService
+@inject VisionX.Services.AppointmentService AppointmentService
+@using VisionX.Models
+
+
 
 <link rel="stylesheet" href="/css/site.css" />
 
@@ -6,7 +10,12 @@
     <h3>@DateTime.Now.ToString("MMMM dd, yyyy")</h3>
 
     <div class="finishing-buttons">
-        <button class="delete-apt-button">Delete</button>
+        @* <button class="delete-apt-button" @onclick="HandleDeleteAppointment">Delete</button> *@
+        @* <button class="delete-apt-button"
+        @onclick="() => HandleDeleteAppointment(SelectedAppointment.ID)">Delete</button> *@
+        <button class="delete-apt-button" @onclick="DeleteAppointment">Delete</button>
+
+
         <span class="page-guard-message"
             style="color: red; display: @(string.IsNullOrEmpty(errorMessage) ? "none" : "inline-block"); margin-right: 10px;">@errorMessage</span>
         <button class="book-button squeeze-in-apt-button" @onclick="ShowPatientModal">Squeeze In</button>
@@ -133,6 +142,12 @@
     [Parameter] public string Day { get; set; }
     [Parameter] public string Year { get; set; }
     [Parameter] public string TimeInString { get; set; }
+    [Parameter]
+    public Appointment SelectedAppointment { get; set; }
+    [Parameter]
+    public EventCallback<Appointment> OnDeleteAppointment { get; set; }
+
+
 
     private bool showConfirmAppointmentModal = false; // likely needs to be in ThePatient and ThePatientModal
     private bool showPatientModal = false;
@@ -163,6 +178,25 @@ showPatientModal = true;
         }
     }
 
+    @* private async Task HandleDeleteAppointment(int appointmentId)
+{
+try
+{
+await AppointmentService.DeleteAppointmentAsync(appointmentId);
+// Optionally, perform any other actions upon successful deletion
+}
+catch (Exception ex)
+{
+// Handle exceptions or errors if deletion fails
+Console.WriteLine($"Error deleting appointment: {ex.Message}");
+}
+} *@
+
+    private async Task DeleteAppointment()
+    {
+        // Assuming SelectedAppointment.ID holds the appointment ID to delete
+        await OnDeleteAppointment.InvokeAsync(SelectedAppointment);
+    }
 
     private void HidePatientModal()
     {
