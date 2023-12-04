@@ -14,11 +14,15 @@
         <div class="input-label middle-name-div">Middle Name:</div>
         <input id="middleNameInput" class="input-field middle-name-input" type="text" @bind="SelectedEmployee.MiddleName" />
     </div>
-    <div class="buttons">
+
+        <div class="buttons">
         <button class="save-button-info-save" @onclick="OnSave">Save</button>
         <button class="cancel-button-info-save" @onclick="OnCancel">Cancel</button>
     </div>
+
 </div>
+
+
 
 <style>
     .employee-info {
@@ -56,9 +60,9 @@
 
     .buttons {
         display: flex;
-        justify-content: right;
+        @* justify-content: right; *@
         margin-top: -40px;
-        justify-content: flex-end;
+        @* justify-content: flex-end; *@
     }
 
     .save-button-info-save,
@@ -72,7 +76,7 @@
     }
 
     .save-button-info-save {
-        margin-left: 1000px;
+        margin-left: 600px;
     }
 
     .cancel-button-info-save {
@@ -112,6 +116,10 @@
     .middle-name-row {
         margin-top: -90px;
         margin-bottom: 100px;
+    }
+
+    .middle-name-div {
+        margin-right: -111px;
     }
 
     .middle-name-input {
