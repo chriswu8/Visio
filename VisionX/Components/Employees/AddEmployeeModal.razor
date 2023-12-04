@@ -10,6 +10,7 @@
         <div class="input-label first-name-div">First Name:</div>
         <input id="firstNameInput" class="input-field first-name-input" type="text" @bind="SelectedEmployee.FirstName" />
     </div>
+    
     <div class="input-row">
         <div class="input-label middle-name-div">Middle Name:</div>
         <input id="middleNameInput" class="input-field middle-name-input" type="text" @bind="SelectedEmployee.MiddleName" />
@@ -61,7 +62,7 @@
     .buttons {
         display: flex;
         @* justify-content: right; *@
-        margin-top: -40px;
+        margin-top: -50px;
         @* justify-content: flex-end; *@
     }
 
@@ -73,10 +74,14 @@
         padding: 10px 20px;
         border-radius: 5px;
         cursor: pointer;
+        margin-bottom:20px;
+
     }
 
     .save-button-info-save {
-        margin-left: 600px;
+        margin-left: 650px;
+
+   
     }
 
     .cancel-button-info-save {
