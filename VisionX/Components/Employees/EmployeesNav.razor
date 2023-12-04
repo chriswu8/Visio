@@ -339,40 +339,38 @@
         return "N/A"; // Handle the case where either ClockIn or ClockOut is not set
     }
 
-    public void ClockIn()
-    {
-        // Check if the employee is already clocked in
+public void ClockIn()
+{
+    // Check if the employee is already clocked in
 
-        // Set the ClockIn property to the current time
-        selectedEmployee.ClockIn = DateTime.Now.TimeOfDay;
+    // Set the ClockIn property to the current time
+    TimeSpan currentTime = DateTime.Now.TimeOfDay;
 
-        @* TimeSpan? currHours = selectedEmployee.TotalHoursWorked; *@
-        @* TimeSpan? totalHoursWorked = (selectedEmployee.ClockOut - selectedEmployee.ClockIn);  *@
+    // Remove milliseconds
+    selectedEmployee.ClockIn = new TimeSpan(currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
 
-         @* Console.WriteLine(selectedEmployee.TotalHoursWorked + (selectedEmployee.ClockOut - selectedEmployee.ClockIn)); *@
+    // Update the employee in the database using the EmployeeService
+    EmployeeService.UpdateEmployeeClockInOut(selectedEmployee.ID, selectedEmployee.ClockIn, selectedEmployee.ClockOut);
+}
 
-        // Update the employee in the database using the EmployeeService
-        EmployeeService.UpdateEmployeeClockInOut(selectedEmployee.ID, selectedEmployee.ClockIn, selectedEmployee.ClockOut);
+public void ClockOut()
+{
+    // Check if the employee is already clocked out
 
-    }
+    // Set the ClockOut property to the current time
+    TimeSpan currentTime = DateTime.Now.TimeOfDay;
 
-    public void ClockOut()
-    {
-        // Check if the employee is already clocked out
+    // Remove milliseconds
+    selectedEmployee.ClockOut = new TimeSpan(currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
 
-        // Set the ClockOut property to the current time
-        selectedEmployee.ClockOut = DateTime.Now.TimeOfDay;
+    // Update the cumulative time worked
+    // TimeSpan? currHours = selectedEmployee.TotalHoursWorked;
+    // TimeSpan? totalHoursWorked = (selectedEmployee.ClockOut - selectedEmployee.ClockIn);
 
-        // Update the cumulative time worked
-        @* TimeSpan? currHours = selectedEmployee.TotalHoursWorked; *@
-        @* TimeSpan? totalHoursWorked = (selectedEmployee.ClockOut - selectedEmployee.ClockIn); *@
+    // Update the employee in the database using the EmployeeService
+    EmployeeService.UpdateEmployeeClockInOut(selectedEmployee.ID, selectedEmployee.ClockIn, selectedEmployee.ClockOut);
+}
 
-        @* Console.WriteLine(totalHoursWorked); *@
-
-        // Update the employee in the database using the EmployeeService
-        EmployeeService.UpdateEmployeeClockInOut(selectedEmployee.ID, selectedEmployee.ClockIn, selectedEmployee.ClockOut);
-
-    }
 
     private async Task OnAddEmployeeSave()
     {
