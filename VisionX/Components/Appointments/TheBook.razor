@@ -10,28 +10,27 @@
         <button class="today-button @(selectedInterval == 0 ? "selected" : "")"
             @onclick="() => ScheduleTime(0)">Today</button>
         <button class="tomorrow-button @(selectedInterval == 1 ? "selected" : "")"
-            @onclick="() => ScheduleTime(1)">Tomorrow</button>
+            @onclick="() => ScheduleTime(1)">@DateTime.Today.AddDays(1).ToString("MMM d, yyyy")</button>
         <br /><br />
         <div class="left-buttons">
             <button id="btn1WeekToday" class="sub-button wk-button @(selectedInterval == 7 ? "selected" : "")"
-                @onclick="() => ScheduleTime(7)">1 wk today</button>
+                @onclick="() => ScheduleTime(7)">@DateTime.Today.AddDays(7).ToString("MMM d, yyyy")</button>
             <button id="btn2WeeksToday" class="sub-button wk-button @(selectedInterval == 14 ? "selected" : "")"
-                @onclick="() => ScheduleTime(14)">2 wk today</button>
+                @onclick="() => ScheduleTime(14)">@DateTime.Today.AddDays(14).ToString("MMM d, yyyy")</button>
         </div>
         <br />
         <div class="left-buttons no-gap">
             <button class="sub-button mo-button @(selectedInterval == 30 ? "selected" : "")"
-                @onclick="() => ScheduleTime(30)">1 mo today</button>
+                @onclick="() => ScheduleTime(30)">@DateTime.Today.AddDays(30).ToString("MMM d, yyyy")</button>
             <button class="sub-button mo-button @(selectedInterval == 90 ? "selected" : "")"
-                @onclick="() => ScheduleTime(90)">3 mo today</button>
+                @onclick="() => ScheduleTime(90)">@DateTime.Today.AddDays(90).ToString("MMM d, yyyy")</button>
             <button class="sub-button mo-button wide @(selectedInterval == 180 ? "selected" : "")"
-                @onclick="() => ScheduleTime(180)">6 mo today</button>
+                @onclick="() => ScheduleTime(180)">@DateTime.Today.AddDays(180).ToString("MMM d, yyyy")</button>
         </div>
         <br /><br />
-        <button class="year-button @(selectedInterval == 365 ? "selected" : "")" @onclick="() => ScheduleTime(365)">1yr
-            today</button>
-        <button class="year-button @(selectedInterval == 730 ? "selected" : "")" @onclick="() => ScheduleTime(730)">2yr
-            today</button>
+        <button class="year-button @(selectedInterval == 365 ? "selected" : "")" @onclick="() => ScheduleTime(365)">@DateTime.Today.AddDays(365).ToString("MMM d, yyyy")</button>
+        <button class="year-button @(selectedInterval == 730 ? "selected" : "")" @onclick="() => ScheduleTime(730)">@DateTime.Today.AddDays(730).ToString("MMM d, yyyy")
+            </button>
     </div>
 
     <!-- Middle Column -->
@@ -144,7 +143,7 @@
                                                 @if (appointment.Time == combinedTime)
                                                 {
                                                     <td>@appointment.Patient.FirstName</td>
-                                                    <td>@($"{appointment.Year}-{appointment.Month}-{appointment.Day} {appointment.Time}")</td>
+                                                    <td>@appointment.Service.Code</td>
                                                     <td>@appointment.Service.Description</td>
                                                 }
                                             }
