@@ -16,15 +16,36 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @* @if (ServiceList != null)
+                    {
+                    foreach (var service in ServiceList)
+                    {
+                    foreach (var invoice in InvoiceList)
+                    {
+                    if (invoice.ServiceID == service.Id && invoice.IsPaid != true)
+                    {
+                    <tr @onclick="() => SelectService(service, invoice.ID)" class="@(IsRowSelected(invoice.ID) ?
+                    "selected-row" : "")">
+                    <td>@service.Id</td>
+                    <td>@service.Description</td>
+                    <td>@service.Fee</td>
+                    </tr>
+                    break;
+                    }
+                    }
+                    }
+                    } *@
                     @if (ServiceList != null)
                     {
-                        foreach (var service in ServiceList)
+
+                        foreach (var invoice in InvoiceList)
                         {
-                            foreach (var invoice in InvoiceList)
+                            foreach (var service in ServiceList)
                             {
                                 if (invoice.ServiceID == service.Id && invoice.IsPaid != true)
                                 {
-                                    <tr @onclick="() => SelectService(service, invoice.ID)" class="@(IsRowSelected(invoice.ID) ? "selected-row" : "")">
+                                    <tr @onclick="() => SelectService(service, invoice.ID)" class="@(IsRowSelected(invoice.ID) ?
+                    "selected-row" : "")">
                                         <td>@service.Id</td>
                                         <td>@service.Description</td>
                                         <td>@service.Fee</td>
@@ -33,6 +54,7 @@
                                 }
                             }
                         }
+
                     }
                 </tbody>
             </table>
@@ -53,7 +75,8 @@
                             {
                                 if (invoice.ProductID == product.ID && invoice.IsPaid != true)
                                 {
-                                    <tr @onclick="() => SelectProduct(product, invoice.ID)" class="@(IsRowSelected(invoice.ID) ? "selected-row" : "")">
+                                    <tr @onclick="() => SelectProduct(product, invoice.ID)"
+                                        class="@(IsRowSelected(invoice.ID) ? "selected-row" : "")">
                                         <td>@product.ModelNumber</td>
                                         <td>@product.Manufacturer</td>
                                         <td>@product.Fee</td>
@@ -325,7 +348,7 @@ return itemId == SelectedService.Id || itemId == SelectedProduct.ID ? "highlight
 
     private void SelectService(VisionX.Models.Service service, int invoiceID)
     {
-        Console.WriteLine(service.Id);
+        
         SelectedService = service;
         selectedRow = service;
         this.invoiceID = invoiceID;
@@ -348,8 +371,6 @@ openServiceModal = false; *@
 
     bool IsRowSelected(int invoiceId)
     {
-        Console.WriteLine(invoiceId);
-        Console.WriteLine(selectedRowId);
         return selectedRowId == invoiceId;
     }
 

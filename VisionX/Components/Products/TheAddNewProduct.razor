@@ -25,7 +25,7 @@
 
         <div class="input-container">
             <h4 class="small-text">Fee</h4>
-            <input type="text" class="input-field" id="productFee" />
+            <input type="number" class="input-field" id="productFee" value=0/>
         </div>
 
     </div>
@@ -183,7 +183,7 @@
                 Manufacturer = prodMan,
                 Type = prodType,
                 ModelNumber = prodModelNum,
-                Fee = Convert.ToInt32(prodFee)
+                Fee = int.Parse(prodFee)
             };
 
         ProductService.AddProduct(newProduct);

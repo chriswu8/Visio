@@ -105,13 +105,13 @@
                     @if (service.Service != null)
                     {
                         <td>@service.Service.Code</td>
-                        <td>@service.Service.Fee</td>
+                        <td>@((service.Service.Fee * 0.12) + service.Service.Fee)</td>
                     }
 
                     @if (service.Product != null)
                     {
                         <td>@service.Product.Manufacturer @service.Product.ModelNumber @service.Product.Type</td>
-                        <td>@service.Product.Fee</td>
+                        <td>@((service.Product.Fee * 0.12) + service.Product.Fee)</td>
                     }
 
 

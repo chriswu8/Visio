@@ -14,18 +14,6 @@
         <div class="input-label middle-name-div">Middle Name:</div>
         <input id="middleNameInput" class="input-field middle-name-input" type="text" @bind="SelectedEmployee.MiddleName" />
     </div>
-    <div class="info-columns">
-        <div class="left-column">
-            <div class="input-row">
-                <div class="input-label">Clock In:</div>
-                <input id="clockInInput" class="input-field" type="text" @bind="SelectedEmployee.ClockIn" />
-            </div>
-            <div class="input-row">
-                <div class="input-label">Clock Out:</div>
-                <input id="clockOutInput" class="input-field" type="text" @bind="SelectedEmployee.ClockOut" />
-            </div>
-        </div>
-    </div>
     <div class="buttons">
         <button class="save-button-info-save" @onclick="OnSave">Save</button>
         <button class="cancel-button-info-save" @onclick="OnCancel">Cancel</button>
