@@ -278,11 +278,13 @@ Province = "BC", City = "Burnaby", PostalCode = "V8Y1X3", BirthDate = "1985-05-1
         // Handle the save action here
 
         showPatientInfo = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     private void HandleCancel()
     {
         showPatientInfo = false;
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 
     private void AddPatient()
